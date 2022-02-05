@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.gamebroadcast</groupId>
-	<artifactId>forum</artifactId>
+	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>forum</name>
-	<description>Demo project for Spring Boot</description>
+	<name>backend</name>
+	<description>Backend for forum about games</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
