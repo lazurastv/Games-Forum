@@ -58,9 +58,14 @@ public class ArticleService {
             article.setTitle(title);
         }
 
-        String content = newArticle.getContent();
-        if (title != null && title.length() > 0 && !Objects.equals(article.getTitle(), title)) {
-            article.setTitle(content);
+        String contentPath = newArticle.getContentPath();
+        if (contentPath != null && contentPath.length() > 0 && !Objects.equals(article.getContentPath(), contentPath)) {
+            article.setContentPath(contentPath);
+        }
+
+        String imagePath = newArticle.getContentPath();
+        if (contentPath != null && contentPath.length() > 0 && !Objects.equals(article.getImagePath(), imagePath)) {
+            article.setImagePath(imagePath);
         }
     }
 

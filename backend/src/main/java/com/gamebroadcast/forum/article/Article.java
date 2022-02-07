@@ -16,30 +16,31 @@ public class Article {
     @Column(name = "title", nullable = false, length = 512)
     private String title;
 
-    // Some tags for filter
-
-    // Author
-
     @Column(name = "introduction", nullable = false, length = 2048)
     private String introduction;
 
-    @Column(name = "content", nullable = false, length = 2048)
-    private String content;
+    @Column(name = "content_path", nullable = false, length = 1024)
+    private String contentPath;
+
+    @Column(name = "image_path", nullable = true, length = 1024)
+    private String imagePath;
 
     public Article() {
     }
 
-    public Article(String title, String introduction, String content) {
+    public Article(String title, String introduction, String contentPath, String imagePath) {
         this.title = title;
         this.introduction = introduction;
-        this.content = content;
+        this.contentPath = contentPath;
+        this.imagePath = imagePath;
     }
 
-    public Article(Long id, String title, String introduction, String content) {
+    public Article(Long id, String title, String introduction, String contentPath, String imagePath) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
-        this.content = content;
+        this.contentPath = contentPath;
+        this.imagePath = imagePath;
     }
 
     public Long getId() {
@@ -66,11 +67,19 @@ public class Article {
         this.introduction = introduction;
     }
 
-    public String getContent() {
-        return content;
+    public String getContentPath() {
+        return contentPath;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentPath(String contentPath) {
+        this.contentPath = contentPath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
