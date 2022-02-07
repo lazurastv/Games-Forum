@@ -3,7 +3,9 @@ package com.gamebroadcast.forum.article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -17,6 +19,10 @@ public class ArticleService {
     }
 
     public void addArticle(Article article) throws IllegalStateException {
+        Long articleId = article.getId();
+        if (articleId != null && articleRepository.existsById(articleId)) {
+            throw new IllegalStateException("Article with id " + articleId + " already exists");
+        }
         Optional<Article> articleByTitle = articleRepository.findArticleByTitle(article.getTitle());
         if (articleByTitle.isPresent()) {
             throw new IllegalStateException("Article with this title already exists");
@@ -31,21 +37,31 @@ public class ArticleService {
     public Article getArticle(Long articleId) throws IllegalStateException {
         Optional<Article> article = articleRepository.findById(articleId);
         if (article.isEmpty()) {
-            throw new IllegalStateException("Article with id " + article + " does not exist");
+            throw new IllegalStateException("Article with id " + articleId + " does not exist");
         }
         return article.get();
     }
 
-    public void updateArticle(Article article) throws IllegalStateException {
-        Long articleId = article.getId();
-        Optional<Article> optionalArticle = articleRepository.findArticleByTitle(article.getTitle());
+    @Transactional
+    public void updateArticle(Article newArticle) throws IllegalStateException {
+        Long articleId = newArticle.getId();
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(()-> new IllegalStateException("Article with id " + articleId + " does not exist"));
+
+        Optional<Article> optionalArticle = articleRepository.findArticleByTitle(newArticle.getTitle());
         if (optionalArticle.isPresent() && optionalArticle.get().getId() != articleId) {
             throw new IllegalStateException("Article with the same title already exists");
         }
-        if (!articleRepository.existsById(articleId)) {
-            throw new IllegalStateException("Article with id " + articleId + " does not exist");
+
+        String title = newArticle.getTitle();
+        if (title != null && title.length() > 0 && !Objects.equals(article.getTitle(), title)) {
+            article.setTitle(title);
         }
-        articleRepository.save(article);
+
+        String content = newArticle.getContent();
+        if (title != null && title.length() > 0 && !Objects.equals(article.getTitle(), title)) {
+            article.setTitle(content);
+        }
     }
 
     public void deleteArticle(Long articleId) throws IllegalStateException {

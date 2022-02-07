@@ -18,7 +18,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping
     public List<Article> getAllArticles() {
         return articleService.getAllArticles();
     }
@@ -42,10 +42,11 @@ public class ArticleController {
         }
     }
 
-    @PutMapping
+    @PutMapping(path = "/{articleId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateArticle(@RequestBody Article article) {
+    public void updateArticle(@PathVariable("articleId") Long articleId, @RequestBody Article article) {
         try {
+            article.setId(articleId);
             articleService.updateArticle(article);
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
