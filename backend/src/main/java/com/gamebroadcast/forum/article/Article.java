@@ -1,11 +1,14 @@
 package com.gamebroadcast.forum.article;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "article", uniqueConstraints = {
         @UniqueConstraint(name = "article_unique_title", columnNames = "title") })
 @Inheritance(strategy =  InheritanceType.SINGLE_TABLE)
+@Data
 public class Article {
 
     @Id
@@ -41,46 +44,6 @@ public class Article {
         this.title = title;
         this.introduction = introduction;
         this.contentPath = contentPath;
-        this.imagePath = imagePath;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
-    public String getContentPath() {
-        return contentPath;
-    }
-
-    public void setContentPath(String contentPath) {
-        this.contentPath = contentPath;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 }
