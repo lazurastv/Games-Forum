@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleRepository<Article> articleRepository;
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository<Article> articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -23,7 +23,7 @@ public class ArticleService {
         if (articleId != null && articleRepository.existsById(articleId)) {
             throw new IllegalStateException("Article with id " + articleId + " already exists");
         }
-        Optional<Article> articleByTitle = articleRepository.findArticleByTitle(article.getTitle());
+        Optional<Article> articleByTitle = articleRepository.findByTitle(article.getTitle());
         if (articleByTitle.isPresent()) {
             throw new IllegalStateException("Article with this title already exists");
         }
@@ -48,7 +48,7 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(()-> new IllegalStateException("Article with id " + articleId + " does not exist"));
 
-        Optional<Article> optionalArticle = articleRepository.findArticleByTitle(newArticle.getTitle());
+        Optional<Article> optionalArticle = articleRepository.findByTitle(newArticle.getTitle());
         if (optionalArticle.isPresent() && optionalArticle.get().getId() != articleId) {
             throw new IllegalStateException("Article with the same title already exists");
         }
@@ -64,7 +64,7 @@ public class ArticleService {
         }
 
         String imagePath = newArticle.getContentPath();
-        if (contentPath != null && contentPath.length() > 0 && !Objects.equals(article.getImagePath(), imagePath)) {
+        if (imagePath != null && imagePath.length() > 0 && !Objects.equals(article.getImagePath(), imagePath)) {
             article.setImagePath(imagePath);
         }
     }

@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository<T extends Article> extends JpaRepository<T, Long> {
 
     @Query("SELECT a FROM Article a WHERE a.title = ?1")
-    Optional<Article> findArticleByTitle(String title);
+    Optional<T> findByTitle(String title);
 }

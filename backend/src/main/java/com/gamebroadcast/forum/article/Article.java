@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "article", uniqueConstraints = {
         @UniqueConstraint(name = "article_unique_title", columnNames = "title") })
+@Inheritance(strategy =  InheritanceType.SINGLE_TABLE)
 public class Article {
 
     @Id
