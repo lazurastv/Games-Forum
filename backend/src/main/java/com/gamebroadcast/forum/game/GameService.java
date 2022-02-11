@@ -47,7 +47,7 @@ public class GameService {
     public void updateGame(Game newGame) throws IllegalStateException {
         Long gameId = newGame.getId();
         Game game = gameRepository.findById(gameId)
-                .orElseThrow(()-> new IllegalStateException("game with id " + gameId + " does not exist"));
+                .orElseThrow(() -> new IllegalStateException("game with id " + gameId + " does not exist"));
 
         Optional<Game> optionalGame = gameRepository.findByTitle(newGame.getTitle());
         if (optionalGame.isPresent() && optionalGame.get().getId() != gameId) {
@@ -70,7 +70,7 @@ public class GameService {
         }
 
         Date publishDate = newGame.getPublishDate();
-        if (publishDate != null && !Objects.equals(game.getPublishDate(), imagePath)) {
+        if (publishDate != null && !Objects.equals(game.getPublishDate(), publishDate)) {
             game.setPublishDate(publishDate);
         }
 

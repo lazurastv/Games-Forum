@@ -1,8 +1,6 @@
 package com.gamebroadcast.forum.game;
 
-import com.gamebroadcast.forum.article.ArticleService;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/game")
-//@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class GameController {
 
     private final GameService gameService;
