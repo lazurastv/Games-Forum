@@ -21,7 +21,7 @@ public class Game extends Article {
     }
 
     public Game(String title, String introduction, String contentPath, String imagePath,
-                Date publishDate, String Developer, Double editorScore, Double userScore) {
+            Date publishDate, String Developer, Double editorScore, Double userScore) {
         super(title, introduction, contentPath, imagePath);
         this.publishDate = publishDate;
         this.developer = Developer;
@@ -30,7 +30,7 @@ public class Game extends Article {
     }
 
     public Game(Long id, String title, String introduction, String contentPath, String imagePath,
-                Date publishDate, String Developer, Double editorScore, Double userScore) {
+            Date publishDate, String Developer, Double editorScore, Double userScore) {
         super(id, title, introduction, contentPath, imagePath);
         this.publishDate = publishDate;
         this.developer = Developer;

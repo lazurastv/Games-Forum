@@ -14,11 +14,6 @@ public class GameController {
 
     private final GameService gameService;
 
-//    @Autowired
-//    public GameController(GameService gameService) {
-//        this.gameService = gameService;
-//    }
-
     @GetMapping
     public List<Game> getAllGames() {
         return gameService.getAllGames();
