@@ -1,9 +1,7 @@
 package com.gamebroadcast.forum.game;
 
-import com.gamebroadcast.forum.article.ArticleService;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,25 +9,25 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/game")
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class GameController {
 
     private final GameService gameService;
 
-    @Autowired
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
-    }
+//    @Autowired
+//    public GameController(GameService gameService) {
+//        this.gameService = gameService;
+//    }
 
     @GetMapping
     public List<Game> getAllGames() {
         return gameService.getAllGames();
     }
 
-    @GetMapping(path = "/{GameId}")
-    public Game getGame(@PathVariable("GameId") Long GameId) {
+    @GetMapping(path = "/{gameId}")
+    public Game getGame(@PathVariable("gameId") Long gameId) {
         try {
-            return gameService.getGame(GameId);
+            return gameService.getGame(gameId);
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -45,22 +43,22 @@ public class GameController {
         }
     }
 
-    @PutMapping(path = "/{GameId}")
+    @PutMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateGame(@PathVariable("GameId") Long GameId, @RequestBody Game Game) {
+    public void updateGame(@PathVariable("gameId") Long gameId, @RequestBody Game game) {
         try {
-            Game.setId(GameId);
-            gameService.updateGame(Game);
+            game.setId(gameId);
+            gameService.updateGame(game);
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
-    @DeleteMapping(path = "/{GameId}")
+    @DeleteMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteGame(@PathVariable("GameId") Long GameId) {
+    public void deleteGame(@PathVariable("gameId") Long gameId) {
         try {
-            gameService.deleteGame(GameId);
+            gameService.deleteGame(gameId);
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
         }

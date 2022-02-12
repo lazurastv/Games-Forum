@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Entity
@@ -32,7 +31,7 @@ public class Game extends Article {
 
     public Game(Long id, String title, String introduction, String contentPath, String imagePath,
                 Date publishDate, String Developer, Double editorScore, Double userScore) {
-        super(title, introduction, contentPath, imagePath);
+        super(id, title, introduction, contentPath, imagePath);
         this.publishDate = publishDate;
         this.developer = Developer;
         this.editorScore = editorScore;
