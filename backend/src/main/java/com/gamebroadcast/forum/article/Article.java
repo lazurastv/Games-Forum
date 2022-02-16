@@ -23,11 +23,8 @@ public class Article {
     @Column(name = "introduction", nullable = false, length = 2048)
     private String introduction;
 
-    @Column(name = "content_path", nullable = false, length = 1024)
+    @Column(name = "path", nullable = false, length = 1024)
     private String contentPath;
-
-    @Column(name = "image_path", nullable = true, length = 1024)
-    private String imagePath;
 
     public Article() {
     }
@@ -36,7 +33,6 @@ public class Article {
         this.title = title;
         this.introduction = introduction;
         this.contentPath = contentPath;
-        this.imagePath = imagePath;
     }
 
     public Article(Long id, String title, String introduction, String contentPath, String imagePath) {
@@ -44,6 +40,5 @@ public class Article {
         this.title = title;
         this.introduction = introduction;
         this.contentPath = contentPath;
-        this.imagePath = imagePath;
     }
 }

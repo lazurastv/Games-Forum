@@ -64,11 +64,6 @@ public class GameService {
             game.setContentPath(contentPath);
         }
 
-        String imagePath = newGame.getContentPath();
-        if (imagePath != null && imagePath.length() > 0 && !Objects.equals(game.getImagePath(), imagePath)) {
-            game.setImagePath(imagePath);
-        }
-
         Date publishDate = newGame.getPublishDate();
         if (publishDate != null && !Objects.equals(game.getPublishDate(), publishDate)) {
             game.setPublishDate(publishDate);

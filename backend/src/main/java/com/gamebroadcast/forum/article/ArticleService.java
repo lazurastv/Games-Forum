@@ -62,11 +62,6 @@ public class ArticleService {
         if (contentPath != null && contentPath.length() > 0 && !Objects.equals(article.getContentPath(), contentPath)) {
             article.setContentPath(contentPath);
         }
-
-        String imagePath = newArticle.getContentPath();
-        if (imagePath != null && imagePath.length() > 0 && !Objects.equals(article.getImagePath(), imagePath)) {
-            article.setImagePath(imagePath);
-        }
     }
 
     public void deleteArticle(Long articleId) throws IllegalStateException {
