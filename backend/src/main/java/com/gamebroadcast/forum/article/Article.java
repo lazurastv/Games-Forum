@@ -29,13 +29,13 @@ public class Article {
     public Article() {
     }
 
-    public Article(String title, String introduction, String contentPath, String imagePath) {
+    public Article(String title, String introduction, String contentPath) {
         this.title = title;
         this.introduction = introduction;
         this.contentPath = contentPath;
     }
 
-    public Article(Long id, String title, String introduction, String contentPath, String imagePath) {
+    public Article(Long id, String title, String introduction, String contentPath) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;

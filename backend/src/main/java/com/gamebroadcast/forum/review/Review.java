@@ -18,16 +18,16 @@ public class Review extends Article {
     public Review() {
     }
 
-    public Review(String title, String introduction, String contentPath, String imagePath,
+    public Review(String title, String introduction, String contentPath,
                   Double score, String prosConsPath) {
-        super(title, introduction, contentPath, imagePath);
+        super(title, introduction, contentPath);
         this.score = score;
         this.prosConsPath = prosConsPath;
     }
 
-    public Review(Long id, String title, String introduction, String contentPath, String imagePath,
+    public Review(Long id, String title, String introduction, String contentPath,
                 Double score, String prosConsPath) {
-        super(id, title, introduction, contentPath, imagePath);
+        super(id, title, introduction, contentPath);
         this.score = score;
         this.prosConsPath = prosConsPath;
     }

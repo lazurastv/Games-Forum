@@ -59,10 +59,10 @@ public class ReviewService {
             review.setContentPath(contentPath);
         }
 
-        String imagePath = newReview.getContentPath();
-        if (imagePath != null && imagePath.length() > 0 && !Objects.equals(review.getImagePath(), imagePath)) {
-            review.setImagePath(imagePath);
-        }
+//        String imagePath = newReview.getContentPath();
+//        if (imagePath != null && imagePath.length() > 0 && !Objects.equals(review.getImagePath(), imagePath)) {
+//            review.setImagePath(imagePath);
+//        }
 
         Double score = newReview.getScore();
         if (score != null && !Objects.equals(review.getScore(), score)) {
@@ -70,7 +70,7 @@ public class ReviewService {
         }
 
         String prosConsPath = newReview.getProsConsPath();
-        if (prosConsPath != null && imagePath.length() > 0 && !Objects.equals(review.getProsConsPath(), prosConsPath)) {
+        if (prosConsPath != null && prosConsPath.length() > 0 && !Objects.equals(review.getProsConsPath(), prosConsPath)) {
             review.setProsConsPath(prosConsPath);
         }
     }

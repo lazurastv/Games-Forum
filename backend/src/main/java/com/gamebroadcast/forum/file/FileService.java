@@ -34,17 +34,17 @@ public class FileService {
     }
 
     public void writeHtmlContent(String path, String htmlContent) {
-        createFolder(path);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(PATH + "/" + path + "/" + "content.html"))) {
+        //createFolder(PATH + "/" + path);
+        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(/*PATH + "/" + path + "/" + */"content.html"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
-            throw new NullPointerException();
+            throw new NullPointerException(e.getMessage());
         }
     }
 
     public void writeImage(boolean user, String path, byte[] image) throws FileNotFoundException {
-        createFolder(path);
+        createFolder(PATH + "/" + path);
         // If it does not exist create file thumbnail.{image.format} in
         // {PATH}/(user ? "users" : "articles")/{path}
         // Write image.*easiest format to read back to SomeImageClass* to it
@@ -62,7 +62,7 @@ public class FileService {
         // Return its content
         String content = "";
         // TODO change path
-        try (BufferedReader buffer = new BufferedReader(new FileReader(PATH + "/" + path + "/" + "content.html"))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader(/*PATH + "/" + path + "/" + */ "content.html"))) {
             String line;
             while ((line = buffer.readLine()) != null)
                 content += line;
@@ -70,7 +70,7 @@ public class FileService {
             // TODO add custom exception
             throw new NullPointerException();
         }
-        return "";
+        return content;
     }
 
     public byte[] readImage(boolean user, String path) throws IOException {

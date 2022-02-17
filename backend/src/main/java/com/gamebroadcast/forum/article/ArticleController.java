@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/article")
@@ -25,14 +26,25 @@ public class ArticleController {
     }
 
     @GetMapping
-    public List<Article> getAllArticles() {
-        return articleService.getAllArticles();
+    public List<ArticleDTO> getAllArticles() {
+        return articleService.getAllArticles().stream().map(a -> new ArticleDTO(
+                a.getId(),
+                a.getTitle(),
+                a.getIntroduction(),
+                fileService.readHtmlContent(a.getContentPath()))
+        ).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/{articleId}")
-    public Article getArticle(@PathVariable("articleId") Long articleId) {
+    public ArticleDTO getArticle(@PathVariable("articleId") Long articleId) {
         try {
-            return articleService.getArticle(articleId);
+            Article article = articleService.getArticle(articleId);
+            return new ArticleDTO(
+                    article.getId(),
+                    article.getTitle(),
+                    article.getIntroduction(),
+                    fileService.readHtmlContent(article.getContentPath())
+            );
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -40,9 +52,16 @@ public class ArticleController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addArticle(@RequestBody Article newArticle) {
+    public void addArticle(@RequestBody ArticleDTO newArticle) {
         try {
-            articleService.addArticle(newArticle);
+            // TODO get username form auth
+            String filePath = fileService.getUniqueName("username");
+            articleService.addArticle(new Article(
+                    newArticle.getTitle(),
+                    newArticle.getIntroduction(),
+                    filePath
+            ));
+            fileService.writeHtmlContent(filePath, newArticle.getContent());
         } catch (IllegalStateException e) {
             throw new ApiRequestException(e.getMessage());
         }

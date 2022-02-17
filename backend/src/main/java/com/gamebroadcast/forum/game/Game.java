@@ -20,18 +20,18 @@ public class Game extends Article {
     public Game() {
     }
 
-    public Game(String title, String introduction, String contentPath, String imagePath,
+    public Game(String title, String introduction, String contentPath,
             Date publishDate, String Developer, Double editorScore, Double userScore) {
-        super(title, introduction, contentPath, imagePath);
+        super(title, introduction, contentPath);
         this.publishDate = publishDate;
         this.developer = Developer;
         this.editorScore = editorScore;
         this.userScore = userScore;
     }
 
-    public Game(Long id, String title, String introduction, String contentPath, String imagePath,
+    public Game(Long id, String title, String introduction, String contentPath,
             Date publishDate, String Developer, Double editorScore, Double userScore) {
-        super(id, title, introduction, contentPath, imagePath);
+        super(id, title, introduction, contentPath);
         this.publishDate = publishDate;
         this.developer = Developer;
         this.editorScore = editorScore;
