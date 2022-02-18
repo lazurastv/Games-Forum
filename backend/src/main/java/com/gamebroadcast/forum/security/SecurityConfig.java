@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable() // TODO remove in the future
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
@@ -54,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(userConfig);
     }
 
-    @Override
+    @Override // TODO remove in the future
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
