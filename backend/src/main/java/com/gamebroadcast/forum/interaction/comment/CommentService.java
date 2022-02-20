@@ -3,44 +3,68 @@ package com.gamebroadcast.forum.interaction.comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gamebroadcast.forum.article.ArticleRepository;
-import com.gamebroadcast.forum.user.UserRepository;
-import com.gamebroadcast.forum.base.BaseService;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import com.gamebroadcast.forum.article.ArticleService;
+import com.gamebroadcast.forum.interaction.comment.models.Comment;
+import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
+import com.gamebroadcast.forum.interaction.comment.models.CommentUpdate;
+import com.gamebroadcast.forum.interaction.comment.models.CommentVM;
+import com.gamebroadcast.forum.security.SessionUtils;
 
 @Service
-public class CommentService extends BaseService<Comment, CommentDTO> {
+public class CommentService {
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
-    private ArticleRepository articles;
+    private ArticleService articleService;
 
-    @Autowired
-    private UserRepository users;
-
-    @Autowired
-    public CommentService(CommentRepository commentRepository) {
-        super(commentRepository);
+    public List<CommentVM> getAll() {
+        List<Comment> comments = commentRepository.findAll();
+        return CommentVM.toCommentVMList(comments);
     }
 
-    @Override
-    public boolean isValid(CommentDTO itemDTO) {
-        return articles.existsById(itemDTO.articleId) && users.existsById(itemDTO.userId);
+    public List<CommentVM> getByArticleId(Long id) {
+        List<Comment> comments = commentRepository.findByArticleId(id);
+        return CommentVM.toCommentVMList(comments);
     }
 
-    @Override
-    public Comment createItem(CommentDTO itemDTO) {
-        Comment comment = new Comment(itemDTO.content);
-        articles.getById(itemDTO.articleId).getComments().add(comment);
-        users.getById(itemDTO.userId).getComments().add(comment);
-        return comment;
+    public List<CommentVM> getByUserId(Long id) {
+        List<Comment> comments = commentRepository.findByUserId(id);
+        return CommentVM.toCommentVMList(comments);
     }
 
-    @Override
-    public void updateItem(Comment item, CommentDTO itemDTO) {
-        item.setContent(itemDTO.content);
+    public CommentVM get(Long id) throws IllegalStateException {
+        Comment comment = getComment(id);
+        return new CommentVM(comment);
     }
 
-    @Override
-    public boolean userOwns(Comment item) {
-        return true;
+    public void add(CommentAdd commentAdd) throws IllegalStateException {
+        Comment comment = commentAdd.toComment(articleService);
+        commentRepository.save(comment);
+    }
+
+    @Transactional
+    public void update(Long id, CommentUpdate commentUpdate) throws IllegalStateException {
+        Comment comment = getComment(id);
+        commentUpdate.update(comment);
+    }
+
+    public void delete(Long id) throws IllegalStateException {
+        Comment comment = getComment(id);
+        commentRepository.delete(comment);
+    }
+
+    public boolean sessionUserIsOwner(Long id) {
+        return getComment(id).ownedBy(SessionUtils.getUserFromSession());
+    }
+
+    public Comment getComment(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Item with id " + id + " does not exist"));
     }
 }
