@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.interaction.Comment;
+import com.gamebroadcast.forum.interaction.comment.Comment;
 
 import lombok.Data;
 
@@ -32,7 +32,7 @@ public class Article {
     @Column(name = "image_path", nullable = true, length = 1024)
     private String imagePath;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OneToMany
     private List<Comment> comments;
 
     public Article() {

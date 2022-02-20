@@ -1,6 +1,7 @@
-package com.gamebroadcast.forum.interaction;
+package com.gamebroadcast.forum.interaction.comment;
 
 import com.gamebroadcast.forum.base.BaseController;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

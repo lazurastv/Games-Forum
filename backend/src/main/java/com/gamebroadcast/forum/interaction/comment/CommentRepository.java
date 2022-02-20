@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.interaction;
+package com.gamebroadcast.forum.interaction.comment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

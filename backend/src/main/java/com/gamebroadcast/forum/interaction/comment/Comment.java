@@ -1,9 +1,9 @@
-package com.gamebroadcast.forum.interaction;
+package com.gamebroadcast.forum.interaction.comment;
 
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.article.Article;
-import com.gamebroadcast.forum.user.User;
+import com.gamebroadcast.forum.user.AppUser;
 
 import lombok.Data;
 
@@ -17,22 +17,13 @@ public class Comment {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id")
-    // private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
-
     @Column(length = 2048)
     private String content;
 
     public Comment() {
     }
 
-    public Comment(Article article, String content) {
-        this.article = article;
+    public Comment(String content) {
         this.content = content;
     }
 }
