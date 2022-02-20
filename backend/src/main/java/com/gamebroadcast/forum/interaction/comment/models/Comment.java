@@ -2,9 +2,6 @@ package com.gamebroadcast.forum.interaction.comment.models;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gamebroadcast.forum.article.Article;
 import com.gamebroadcast.forum.user.AppUser;
 
