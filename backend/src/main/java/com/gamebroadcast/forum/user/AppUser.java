@@ -10,15 +10,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.gamebroadcast.forum.interaction.comment.models.Comment;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Data;
+
 @Entity
+@Data
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_username", columnNames = "username"),
         @UniqueConstraint(name = "user_unique_email", columnNames = "email") })
@@ -48,6 +54,9 @@ public class AppUser implements UserDetails {
     @Column(name = "role", nullable = false, length = 6)
     private String role;
 
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
+
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
@@ -74,46 +83,6 @@ public class AppUser implements UserDetails {
     public AppUser() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getProfilePicturePath() {
-        return profilePicturePath;
-    }
-
-    public void setProfilePicturePath(String profilePicturePath) {
-        this.profilePicturePath = profilePicturePath;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getAuthoritiesFromRole();
@@ -124,24 +93,6 @@ public class AppUser implements UserDetails {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role));
 
         return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
@@ -166,10 +117,6 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
 }
