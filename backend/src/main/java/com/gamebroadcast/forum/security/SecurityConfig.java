@@ -45,12 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable() // TODO remove in the future
+                .addFilterBefore(new ExceptionFilter(), LoginFilter.class)
+                .addFilter(new LoginFilter(authenticationManager()))
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
-                .and()
-                .formLogin()
                 .and()
                 .rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(userConfig);
     }

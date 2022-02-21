@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.security;
+package com.gamebroadcast.forum.utils;
 
 import com.gamebroadcast.forum.user.AppUser;
 
