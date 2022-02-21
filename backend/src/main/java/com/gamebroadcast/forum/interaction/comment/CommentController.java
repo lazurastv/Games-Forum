@@ -75,7 +75,7 @@ public class CommentController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         try {
-            if (!sessionUserCanEditComment(id)) {
+            if (!sessionUserCanDeleteComment(id)) {
                 throw new NoEditRightsException("Comment");
             }
             commentService.delete(id);
@@ -85,6 +85,10 @@ public class CommentController {
     }
 
     private boolean sessionUserCanEditComment(Long id) {
+        return commentService.sessionUserIsOwner(id);
+    }
+
+    private boolean sessionUserCanDeleteComment(Long id) {
         return commentService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 }
