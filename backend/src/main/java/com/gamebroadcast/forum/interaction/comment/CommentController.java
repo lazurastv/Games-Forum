@@ -3,6 +3,7 @@ package com.gamebroadcast.forum.interaction.comment;
 import java.util.List;
 
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
+import com.gamebroadcast.forum.exceptions.NoEditRightsException;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
 import com.gamebroadcast.forum.interaction.comment.models.CommentUpdate;
 import com.gamebroadcast.forum.interaction.comment.models.CommentVM;
@@ -39,7 +40,7 @@ public class CommentController {
     public CommentVM getById(@PathVariable("id") Long id) {
         try {
             return commentService.get(id);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
@@ -50,7 +51,7 @@ public class CommentController {
     public void add(@RequestBody CommentAdd commentAdd) {
         try {
             commentService.add(commentAdd);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
@@ -61,10 +62,10 @@ public class CommentController {
     public void update(@PathVariable("id") Long id, @RequestBody CommentUpdate commentUpdate) {
         try {
             if (!sessionUserCanEditComment(id)) {
-                throw new NoEditRightException(id);
+                throw new NoEditRightsException("Comment");
             }
             commentService.update(id, commentUpdate);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
@@ -75,21 +76,15 @@ public class CommentController {
     public void delete(@PathVariable("id") Long id) {
         try {
             if (!sessionUserCanEditComment(id)) {
-                throw new NoEditRightException(id);
+                throw new NoEditRightsException("Comment");
             }
             commentService.delete(id);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
     private boolean sessionUserCanEditComment(Long id) {
-        return commentService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole() == "ADMIN";
-    }
-
-    private class NoEditRightException extends IllegalStateException {
-        public NoEditRightException(Long id) {
-            super("You don't have the right to edit comment with id " + id);
-        }
+        return commentService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 }

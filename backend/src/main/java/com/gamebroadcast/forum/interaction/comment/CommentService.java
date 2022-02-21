@@ -8,6 +8,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.gamebroadcast.forum.article.ArticleService;
+import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
 import com.gamebroadcast.forum.interaction.comment.models.CommentUpdate;
@@ -64,6 +65,6 @@ public class CommentService {
 
     public Comment getComment(Long id) {
         return commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Item with id " + id + " does not exist"));
+                .orElseThrow(() -> new ItemNotFoundException("Comment", id));
     }
 }
