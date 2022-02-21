@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
+import com.gamebroadcast.forum.interaction.like.models.Like;
 
 import lombok.Data;
 
@@ -34,6 +35,9 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "article")
+    private List<Like> likes;
 
     public Article() {
     }
