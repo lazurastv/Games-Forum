@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
+import com.gamebroadcast.forum.interaction.like.models.Like;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,8 +55,11 @@ public class AppUser implements UserDetails {
     @Column(name = "role", nullable = false, length = 6)
     private String role;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user")
+    private List<Like> likes;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
