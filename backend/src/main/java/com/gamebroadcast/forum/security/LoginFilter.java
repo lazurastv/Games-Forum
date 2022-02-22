@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gamebroadcast.forum.user.AppUser;
-import com.gamebroadcast.forum.user.requestresponsemodels.UserLoginRequest;
-import com.gamebroadcast.forum.user.requestresponsemodels.UserLoginResponse;
+import com.gamebroadcast.forum.user.models.UserLogin;
+import com.gamebroadcast.forum.user.models.UserVM;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.ResponseUtils;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +26,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     public LoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        super.setFilterProcessesUrl("/api/login");
+        super.setFilterProcessesUrl("/api/user/login");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletRequest request,
             HttpServletResponse response) throws AuthenticationException {
         try {
-            UserLoginRequest body = new ObjectMapper().readValue(request.getInputStream(), UserLoginRequest.class);
+            UserLogin body = new ObjectMapper().readValue(request.getInputStream(), UserLogin.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     body.getUsername(),
                     body.getPassword());
@@ -52,7 +52,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
         AppUser appUser = (AppUser) authResult.getPrincipal();
-        UserLoginResponse resUser = new UserLoginResponse(appUser);
+        UserVM resUser = new UserVM(appUser);
         ResponseUtils.setResponseFields(response, 200, new ObjectMapper().writeValueAsString(resUser));
         SecurityContextHolder.getContext().setAuthentication(authResult);
         // super.successfulAuthentication(request, response, chain, authResult);

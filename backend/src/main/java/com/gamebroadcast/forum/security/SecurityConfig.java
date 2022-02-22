@@ -1,10 +1,10 @@
 package com.gamebroadcast.forum.security;
 
-import javax.sql.DataSource;
+import static com.gamebroadcast.forum.security.Role.ADMIN;
+import static com.gamebroadcast.forum.security.Role.EDITOR;
+import static com.gamebroadcast.forum.security.Role.USER;
 
-import static com.gamebroadcast.forum.user.Role.ADMIN;
-import static com.gamebroadcast.forum.user.Role.EDITOR;
-import static com.gamebroadcast.forum.user.Role.USER;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

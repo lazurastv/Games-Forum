@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.user;
+package com.gamebroadcast.forum.user.schemas;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

@@ -2,8 +2,8 @@ package com.gamebroadcast.forum.security;
 
 import java.util.Optional;
 
-import com.gamebroadcast.forum.user.AppUser;
 import com.gamebroadcast.forum.user.UserRepository;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

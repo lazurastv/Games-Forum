@@ -19,13 +19,14 @@ public class ExceptionFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (RuntimeException e) {
+            String message = e.getMessage();
             int statusCode = 401;
 
-            if (e.getMessage() == ResponseUtils.UNPROCESSABLE_ENTITY_MESSAGE) {
+            if (message == ResponseUtils.UNPROCESSABLE_ENTITY_MESSAGE) {
                 statusCode = 422;
             }
 
-            ResponseUtils.setResponseFields(response, statusCode, e.getMessage());
+            ResponseUtils.setResponseFields(response, statusCode, message);
         }
 
     }

@@ -1,6 +1,6 @@
 package com.gamebroadcast.forum.utils;
 
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 

@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.user.requestresponsemodels;
+package com.gamebroadcast.forum.user.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class UserLoginRequest {
+public class UserLogin {
 
     private String username;
 

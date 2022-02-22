@@ -1,11 +1,11 @@
-package com.gamebroadcast.forum.user.requestresponsemodels;
+package com.gamebroadcast.forum.user.models;
 
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import lombok.Getter;
 
 @Getter
-public class UserLoginResponse {
+public class UserVM {
     private Long id;
 
     private String username;
@@ -18,7 +18,7 @@ public class UserLoginResponse {
 
     private String role;
 
-    public UserLoginResponse(AppUser appUser) {
+    public UserVM(AppUser appUser) {
         this.id = appUser.getId();
         this.username = appUser.getUsername();
         this.email = appUser.getEmail();
