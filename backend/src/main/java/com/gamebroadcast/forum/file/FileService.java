@@ -1,8 +1,8 @@
 package com.gamebroadcast.forum.file;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -26,16 +26,22 @@ public class FileService {
         return name;
     }
 
+    private boolean isPathExists(String path) {
+        File dir = new File(path);
+        return dir.exists();
+    }
+
     private void createFolder(String path) {
         File dir = new File(path);
         if (! dir.exists()) {
             dir.mkdir();
         }
+        System.out.println(path);
     }
 
     public void writeHtmlContent(String path, String htmlContent) {
-        //createFolder(PATH + "/" + path);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(/*PATH + "/" + path + "/" + */"content.html"))) {
+        createFolder(PATH + "/" + path);
+        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(PATH + "/" + path + "/" + "content.html"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
@@ -43,18 +49,17 @@ public class FileService {
         }
     }
 
-    public void writeImage(boolean user, String path, byte[] image) throws FileNotFoundException {
-        createFolder(PATH + "/" + path);
-        // If it does not exist create file thumbnail.{image.format} in
-        // {PATH}/(user ? "users" : "articles")/{path}
-        // Write image.*easiest format to read back to SomeImageClass* to it
-        String type = user ? "users" : "articles";
-        try(FileOutputStream outputStream = new FileOutputStream(PATH + "/" + type + "/" + path + "/" + "image.png")) {
-            outputStream.write(image);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void writeImage(boolean user, String path, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalStateException("provisional exception 1");
         }
 
+        if (!isPathExists(path)) {
+            throw new IllegalStateException("provisional exception 3");
+        }
+
+        String type = user ? "users" : "articles";
+        file.transferTo(new File(PATH + "/" + type + "/" + path + "/" + "image.png"));
     }
 
     public String readHtmlContent(String path) {
@@ -62,7 +67,7 @@ public class FileService {
         // Return its content
         String content = "";
         // TODO change path
-        try (BufferedReader buffer = new BufferedReader(new FileReader(/*PATH + "/" + path + "/" + */ "content.html"))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader(PATH + "/" + path + "/" + "content.html"))) {
             String line;
             while ((line = buffer.readLine()) != null)
                 content += line;
@@ -81,5 +86,12 @@ public class FileService {
         byte[] image = new byte[inStream.available()];
         inStream.read(image);
         return image;
+    }
+
+    public static void main(String[] args) {
+        String username = "Ala";
+        FileService fs = new FileService();
+        String path = fs.getUniqueName(username);
+        fs.writeHtmlContent(path, "<h1>Hello</h1>");
     }
 }

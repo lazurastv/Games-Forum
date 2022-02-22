@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class ArticleController {
         try {
             // TODO get username form auth
             String filePath = fileService.getUniqueName("username");
+            System.out.println(filePath);
             articleService.addArticle(new Article(
                     newArticle.getTitle(),
                     newArticle.getIntroduction(),
@@ -91,14 +93,17 @@ public class ArticleController {
     // TODO add to article create
     @GetMapping(value = "/image/{path}", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[] getImage(@PathVariable("path") String path) throws IOException {
-        return fileService.readImage(true, path);
+        return fileService.readImage(false, path);
     }
 
     // TODO add to article create
-    // TODO fix
-    @PostMapping(value = "/image/{path}", produces = MediaType.IMAGE_PNG_VALUE)
-    public void addImage(@PathVariable("path") String path, @RequestBody byte[] image) throws FileNotFoundException {
-        fileService.writeImage(true, path, image);
+    @PostMapping(path = "/image/{path}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void addImage(@PathVariable("path") String path, @RequestParam("file") MultipartFile file) throws FileNotFoundException {
+        try {
+            fileService.writeImage(false, path, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
