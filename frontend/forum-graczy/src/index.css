@@ -1,3 +1,9 @@
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +16,43 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+.Carousel {
+  margin: 30px -10px;
+}
+
+.slick-slide {
+  padding: 0 10px;
+}
+
+fieldset:hover {
+  border-color: #1c1327;
+}
+
+.CarouselArrow {
+  display: flex;
+  background-color: #1c1327;
+  top: calc(50% - 20px);
+  color: #c48515;
+  transition: opacity 0.3s ease-in-out;
+  opacity: .7;
+  position: absolute;
+  z-index: 1;
+}
+
+.CarouselArrow:hover {
+  color: #1c1327;
+  background-color: #c48515;
+  opacity: 1;
+}
+
+.MuiPagination-ul {
+  justify-content: center;
+  margin: 20px 0 60px 0;
+}
+
+.MuiPagination-ul button {
+  color: #e7e7e7;
 }

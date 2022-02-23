@@ -1,10 +1,8 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 
 interface IReview {
   date: string;

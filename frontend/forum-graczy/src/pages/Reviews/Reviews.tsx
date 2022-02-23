@@ -1,8 +1,6 @@
-import * as React from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import ReviewItem from '../ReviewItem';
-import { reviews } from '../data-mock/reviews';
+import ReviewItem from '../../ReviewItem';
+import { reviews } from '../../data-mock/reviews';
 
 const Reviews = () => {
 

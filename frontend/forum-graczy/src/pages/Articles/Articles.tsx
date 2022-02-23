@@ -1,8 +1,6 @@
-import * as React from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import ArticleItem from '../ArticleItem';
-import { articles } from '../data-mock/articles';
+import { articles } from '../../data-mock/articles';
+import ArticleItem from './ArticleItem';
 
 
 const Articles = () => {
