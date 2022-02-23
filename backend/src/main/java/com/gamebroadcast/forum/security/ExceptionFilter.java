@@ -24,6 +24,9 @@ public class ExceptionFilter extends OncePerRequestFilter {
 
             if (message == ResponseUtils.UNPROCESSABLE_ENTITY_MESSAGE) {
                 statusCode = 422;
+            } else if (message == null) {
+                message = "Unexpected error has occurred";
+                statusCode = 500;
             }
 
             ResponseUtils.setResponseFields(response, statusCode, message);

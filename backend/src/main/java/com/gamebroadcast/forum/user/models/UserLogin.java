@@ -13,6 +13,6 @@ public class UserLogin {
 
     private String password;
 
-    private String rememberMe;
+    private boolean rememberMe;
 
 }

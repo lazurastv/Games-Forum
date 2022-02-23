@@ -19,14 +19,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final PersistentTokenBasedRememberMeServices rememberMeServices;
+    private UserLogin fromBody;
 
-    public LoginFilter(AuthenticationManager authenticationManager) {
+    public LoginFilter(
+            AuthenticationManager authenticationManager,
+            PersistentTokenBasedRememberMeServices rememberMeServices) {
         this.authenticationManager = authenticationManager;
+        this.rememberMeServices = rememberMeServices;
         super.setFilterProcessesUrl("/api/user/login");
+        super.setRememberMeServices(rememberMeServices);
     }
 
     @Override
@@ -34,10 +41,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletRequest request,
             HttpServletResponse response) throws AuthenticationException {
         try {
-            UserLogin body = new ObjectMapper().readValue(request.getInputStream(), UserLogin.class);
+            fromBody = new ObjectMapper().readValue(request.getInputStream(), UserLogin.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    body.getUsername(),
-                    body.getPassword());
+                    fromBody.getUsername(),
+                    fromBody.getPassword());
 
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
@@ -55,14 +62,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         UserVM resUser = new UserVM(appUser);
         ResponseUtils.setResponseFields(response, 200, new ObjectMapper().writeValueAsString(resUser));
         SecurityContextHolder.getContext().setAuthentication(authResult);
-        // super.successfulAuthentication(request, response, chain, authResult);
+
+        if (fromBody.isRememberMe()) {
+            rememberMeServices.loginSuccess(request, response, authResult);
+        }
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        ResponseUtils.setResponseFields(response, 401, "Wrong username or password");
+        throw new RuntimeException("Wrong username or password");
     }
 
 }

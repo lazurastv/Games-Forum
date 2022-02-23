@@ -4,8 +4,6 @@ import static com.gamebroadcast.forum.security.Role.ADMIN;
 import static com.gamebroadcast.forum.security.Role.EDITOR;
 import static com.gamebroadcast.forum.security.Role.USER;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @Configuration
 @EnableWebSecurity
@@ -32,13 +31,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserConfig userConfig;
-    private final DataSource dataSource;
+    private final PersistentTokenBasedRememberMeServices rememberMeServices;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder, UserConfig userConfig, DataSource dataSource) {
+    public SecurityConfig(
+            PasswordEncoder passwordEncoder,
+            UserConfig userConfig,
+            PersistentTokenBasedRememberMeServices rememberMeServices) {
         this.passwordEncoder = passwordEncoder;
         this.userConfig = userConfig;
-        this.dataSource = dataSource;
+        this.rememberMeServices = rememberMeServices;
     }
 
     @Override
@@ -46,13 +48,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // TODO remove in the future
                 .addFilterBefore(new ExceptionFilter(), LoginFilter.class)
-                .addFilter(new LoginFilter(authenticationManager()))
+                .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(userConfig);
+                .rememberMe().rememberMeServices(rememberMeServices)
+                .and()
+                .logout().logoutUrl("/api/user/logout").invalidateHttpSession(true).clearAuthentication(true)
+                .deleteCookies("sessionId").deleteCookies("rememberMe"); // TODO make filter instead
     }
 
     @Override // TODO remove in the future
@@ -75,16 +80,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        return jdbcTokenRepository;
-    }
-
     private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
         DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+
         return defaultWebSecurityExpressionHandler;
     }
 
@@ -102,4 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return roleHierarchy;
     }
 
+    @Bean // TODO add extra params in the future
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("sessionId");
+        serializer.setCookiePath("/api/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        return serializer;
+    }
 }
