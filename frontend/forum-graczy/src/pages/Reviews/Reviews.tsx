@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container';
-import ReviewItem from '../../ReviewItem';
+import ReviewItem from './ReviewItem';
 import { reviews } from '../../data-mock/reviews';
 
 const Reviews = () => {

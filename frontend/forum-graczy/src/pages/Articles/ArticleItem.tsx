@@ -3,6 +3,9 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Typography } from "@mui/material";
+import MultilineTruncatedText from "../../components/MultilineTruncatedText"
+
 
 interface IArticle {
   date: string;
@@ -13,13 +16,17 @@ interface IArticle {
 
 export default function ArticleItem(props:IArticle) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down(600));
-  const isLarge = useMediaQuery(theme.breakpoints.up(1200));
+  //const isMobile = useMediaQuery(theme.breakpoints.down(900));
+  const isMD = useMediaQuery(theme.breakpoints.up(900));
   const height = { xs: 160, sm: 180, md: 200 };
-  const imgWidth = { xs: 160, sm: 180, md: 200 };
+  const imgWidth = { xs: 120, sm: 180, md: 200 };
+  const textBoxSize = { xs: `calc(100% - 120px - 2*24px)`, sm: `calc(100% - 180px - 2*24px)`, md: `calc(100% - 200px - 2*24px)` };
   const titleFontSize = { xs: 20, sm: 24, md: 36 };
+  const maxTitleHeight = { xs: 4.5*20, sm: 4.5*24, md: 80 };
   const secondFontSize = { xs: 12, sm: 14, md: 16 };
   const iconSize = { xs: 20, sm: 20, md: 24 };
+  const maxLine = { xs: '3', sm: '3', md: '2' };
+
 
 
   return (
@@ -48,28 +55,22 @@ export default function ArticleItem(props:IArticle) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           mt: 1.5,
-          mx: 3
+          mx: 3,
+          width: { ...textBoxSize } //image width and padding
         }}
       >
-        <Box component="span" display="flex" alignItems="center" color="text.secondary" sx={{ fontSize: { ...secondFontSize }}}>
-          <AccessTimeIcon sx={{ mr: 1, fontSize: { ...iconSize }}}/>
-          {props.date}
+        <Box>
+          <Box component="div" display="flex" alignItems="center" color="text.secondary" sx={{ fontSize: { ...secondFontSize }}}>
+            <AccessTimeIcon sx={{ mr: 1, fontSize: { ...iconSize }}}/>
+            {props.date}
+          </Box>
+          <Box component ="div" sx={{ mb: 0.1, wordWrap: "break-word", fontSize: { ...titleFontSize}}}>        
+            <MultilineTruncatedText text={props.title} maxLine ={ isMD ? '2' : '3' }/>
+          </Box>
         </Box>
-        <Box
-          component="span"
-          sx={{ fontSize: { ...titleFontSize }, mb: 0.1 }}
-        >
-          {isMobile
-            ? props.title.length > 50
-              ? props.title.substring(0, 50).concat("...")
-              : props.title
-            : props.title.length > 60
-            ? isLarge ? props.title : props.title.substring(0, 60).concat("...")
-            : props.title}
-        </Box>
-        <Box component="span" color="text.secondary" sx={{ fontSize: { ...secondFontSize} }}>
+        <Box component="div" color="text.secondary" sx={{ mb: 1.5, fontSize: { ...secondFontSize} }}>
           {props.author}
         </Box>
       </Box>

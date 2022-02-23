@@ -19,7 +19,7 @@ export const articles = [
     },
     {
     date: '15.02.2022',
-    title: 'Zmyślony tytuł służący testowi,Bardzodługiesłowo i Jeszczejednodługie',
+    title: 'Zmyślony tytuł służącytestowi,BardzodługiesłowoiJeszczejednodługie',
     author: 'Bartłomiej Czekaj',
     image: 'https://img.g2a.com/1080x1080/1x1x0/grand-theft-auto-v-premium-online-edition-rockstar-key-global/5cefd93246177c6a7f52a443'
     },
