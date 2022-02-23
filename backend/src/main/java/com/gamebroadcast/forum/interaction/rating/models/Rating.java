@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "rating")
+@Table(name = "rating", uniqueConstraints = @UniqueConstraint(name = "rating_unique_game_and_user", columnNames = {"game_id", "user_id"}))
 public class Rating {
 	@Id
     @SequenceGenerator(name = "rating_sequence", sequenceName = "rating_sequence", allocationSize = 1)

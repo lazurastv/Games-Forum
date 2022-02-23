@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.gamebroadcast.forum.article.ArticleService;
+import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
@@ -45,6 +46,11 @@ public class RatingService {
 
     public void add(RatingAdd ratingAdd) throws IllegalStateException {
         Rating rating = ratingAdd.toRating(articleService);
+        
+        if (!ratingDoesNotExsist(rating)) {
+            throw new ItemAlreadyExistsException("rating");
+        }
+
         ratingRepository.save(rating);
     }
 
@@ -66,5 +72,10 @@ public class RatingService {
     public Rating getRating(Long id) {
         return ratingRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException("Rating", id));
+    }
+
+    public boolean ratingDoesNotExsist(Rating rating) {
+        List<Rating> v = ratingRepository.findByUserIdAndGameId(rating.getUser().getId(), rating.getGame().getId());
+        return (v == null || v.isEmpty());
     }
 }
