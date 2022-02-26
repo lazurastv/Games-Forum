@@ -56,3 +56,22 @@ fieldset:hover {
 .MuiPagination-ul button {
   color: #e7e7e7;
 }
+
+.login {
+  z-index: 1;
+}
+.login:before {
+  background: url("https://wallpaperaccess.com/full/7445.jpg") 
+  no-repeat;   
+  position: fixed;       
+  min-width: 100%;   
+  min-height: 100%; 
+  background-size: cover;
+  opacity: 0.3;
+  content: "";
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

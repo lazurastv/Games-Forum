@@ -11,6 +11,6 @@ export default function ThemeSwitch() {
     <Switch icon={<NightsStayIcon fontSize="small" color="secondary"/>} 
             checkedIcon={<LightModeIcon fontSize="small" color="secondary"/>}
             color="secondary"
-            onChange={colorMode.toggleColorMode}/>
+            onChange={colorMode.toggleColorMode} />
   );
 }

@@ -16,8 +16,8 @@ interface IReview {
 
 export default function ReviewItem(props:IReview) {
   const theme = useTheme();
-  const isMD = useMediaQuery(theme.breakpoints.up(900));
-  const isXS = useMediaQuery(theme.breakpoints.down(600));
+  const isMD = useMediaQuery(theme.breakpoints.up('md'));
+  const isXS = useMediaQuery(theme.breakpoints.down('sm'));
   const height = { xs: 'auto', sm: 280, md: 300 };
   const imgWidth = { xs: 'auto', sm: 180, md: 200 };
   const imgHeight = { xs: 200, sm: 280, md: 300 };
@@ -26,6 +26,7 @@ export default function ReviewItem(props:IReview) {
   const contentFontSize = { xs: 12, sm: 14, md: 16 };
   const rateFontSize = { xs: 18, sm: 24, md: 28 };
   const iconSize = { xs: 20, sm: 20, md: 24 };
+  const mode = theme.palette.mode;
 
   return (
     <Box
@@ -39,6 +40,11 @@ export default function ReviewItem(props:IReview) {
         boxShadow: 2,
         mt: 2,
         height: { ...height },
+        '&:hover': {
+          filter:  mode === "light" ? "brightness(105%)" : "brightness(120%)" ,
+          cursor: "pointer",
+        },
+        transition: "all 0.3s ease-in-out"
       }}
     >
       <Box

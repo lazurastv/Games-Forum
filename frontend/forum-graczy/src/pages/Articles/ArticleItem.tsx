@@ -26,8 +26,7 @@ export default function ArticleItem(props:IArticle) {
   const secondFontSize = { xs: 12, sm: 14, md: 16 };
   const iconSize = { xs: 20, sm: 20, md: 24 };
   const maxLine = { xs: '3', sm: '3', md: '2' };
-
-
+  const mode = theme.palette.mode;
 
   return (
     <Box
@@ -40,6 +39,12 @@ export default function ArticleItem(props:IArticle) {
         boxShadow: 2,
         mt: 2,
         height: { ...height },
+        '&:hover': {
+          filter:  mode === "light" ? "brightness(105%)" : "brightness(120%)" ,
+          cursor: "pointer",
+          color: "secondary.main"
+        },
+        transition: "all 0.3s ease-in-out"
       }}
     >
       <Box
