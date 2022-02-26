@@ -3,22 +3,22 @@ package com.gamebroadcast.forum.article;
 import lombok.Data;
 
 @Data
-public class ArticleDTO {
+public class ArticleVM {
     private Long id;
     private String title;
     private String introduction;
     private String content;
 
-    public ArticleDTO() {
+    public ArticleVM() {
     }
 
-    public ArticleDTO(String title, String introduction, String content/*, String imagePath*/) {
+    public ArticleVM(String title, String introduction, String content) {
         this.title = title;
         this.introduction = introduction;
         this.content= content;
     }
 
-    public ArticleDTO(Long id, String title, String introduction, String content/*, String image*/) {
+    public ArticleVM(Long id, String title, String introduction, String content) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;

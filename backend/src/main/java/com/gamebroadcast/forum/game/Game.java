@@ -12,10 +12,10 @@ import java.util.Date;
 @Data
 public class Game extends Article {
 
-    Date publishDate;
-    String developer;
-    Double editorScore;
-    Double userScore;
+    private Date publishDate;
+    private String developer;
+    private Double editorScore;
+    private Double userScore;
 
     public Game() {
     }

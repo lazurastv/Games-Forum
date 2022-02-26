@@ -1,5 +1,6 @@
 package com.gamebroadcast.forum.article;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,14 +10,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleRepository<Article> articleRepository;
-
     @Autowired
-    public ArticleService(ArticleRepository<Article> articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+    private final ArticleRepository<Article> articleRepository;
 
     public void addArticle(Article article) throws IllegalStateException {
         Long articleId = article.getId();

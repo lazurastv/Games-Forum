@@ -2,7 +2,7 @@ package com.gamebroadcast.forum.article;
 
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.file.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +15,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/article")
+@RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
     private final FileService fileService;
 
-    @Autowired
-    public ArticleController(ArticleService articleService, FileService fileService) {
-        this.articleService = articleService;
-        this.fileService = fileService;
-    }
-
     @GetMapping
-    public List<ArticleDTO> getAllArticles() {
-        return articleService.getAllArticles().stream().map(a -> new ArticleDTO(
+    public List<ArticleVM> getAllArticles() {
+        return articleService.getAllArticles().stream().map(a -> new ArticleVM(
                 a.getId(),
                 a.getTitle(),
                 a.getIntroduction(),
@@ -37,10 +32,10 @@ public class ArticleController {
     }
 
     @GetMapping(path = "/{articleId}")
-    public ArticleDTO getArticle(@PathVariable("articleId") Long articleId) {
+    public ArticleVM getArticle(@PathVariable("articleId") Long articleId) {
         try {
             Article article = articleService.getArticle(articleId);
-            return new ArticleDTO(
+            return new ArticleVM(
                     article.getId(),
                     article.getTitle(),
                     article.getIntroduction(),
@@ -53,7 +48,7 @@ public class ArticleController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addArticle(@RequestBody ArticleDTO newArticle) {
+    public void addArticle(@RequestBody ArticleVM newArticle) {
         try {
             // TODO get username form auth
             String filePath = fileService.getUniqueName("username");
