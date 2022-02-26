@@ -7,9 +7,9 @@ import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
 
 export default function Home() {
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ my: 4 }}>
       <TopNews />
-      <Typography variant="h4" gutterBottom sx={{ textAlign: "left", color: "secondary.main" }}>
+      <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: "left", color: "secondary.main" }}>
         Najnowsze recenzje
       </Typography>
       <Divider sx={{ borderColor: "secondary.main" }} />

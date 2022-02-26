@@ -42,7 +42,7 @@ export default function Game() {
               oprawę graficzną na nowy poziom.
             </Typography>
           </Grid>
-          <Grid item xs={12} md={4} >
+          <Grid item xs={12} md={4}>
             <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={setRating} />
             <Details sx={{ mb: 5 }} producer="CD Project" publisher="CD Project RED" date="20 marca 2021" />
           </Grid>

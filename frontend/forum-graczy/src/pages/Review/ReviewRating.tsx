@@ -19,9 +19,9 @@ const Minus = (props: any) => (
 export default function ReviewRating(props: any) {
   return (
     <Widget sx={{ ...props.sx, fontSize: "16px", textAlign: "left" }}>
-      <Typography sx={{ fontSize: "24px", textAlign: "center" }}>
+      <Typography sx={{ fontSize: "24px", textAlign: "center"}}>
         Moja ocena:
-        <Typography component="span" sx={{ fontSize: "30px", color: "primary.main", fontWeight: 500 }}> 7/10</Typography>
+        <Typography component="span" sx={{ fontSize: "30px",  color:"secondary.main" , fontWeight: 500 }}> 7/10</Typography>
       </Typography>
       <Typography sx={{ mb: 1 }}>Zalety:</Typography>
       <Plus>Lorem ipsum</Plus>

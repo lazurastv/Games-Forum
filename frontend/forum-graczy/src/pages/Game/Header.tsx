@@ -1,4 +1,5 @@
 import { Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { TileImage, TileShadow, TileText } from "../../components/Tile";
 
 export default function Header(props: any) {
@@ -16,6 +17,7 @@ export default function Header(props: any) {
           sx={{
             fontSize: "42px",
             fontWeight: 500,
+            textAlign: "center",
             textShadow: `3px 4px 7px rgba(0,0,0,0.4)`,
             mb: 3
           }}
@@ -32,27 +34,62 @@ export default function Header(props: any) {
             width: "100%",
           }}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4} sx={{ textAlign: "left" }}>
+          <Grid container spacing={2} sx={{ color: "text.secondary" }}>
+            <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>
               CD-Project Red
             </Grid>
-            <Grid item xs={12} sm={4} sx={{
+            <Grid item xs={12} md={4} sx={{
               textAlign:
               {
                 xs: "left",
-                sm: "center"
-              }
+                md: "center"
+              },
+              marginTop: "auto"
             }}>
               RPG, fabularna, science-fiction
             </Grid>
-            <Grid item xs={12} sm={4} sx={{
+            <Grid item xs={12} md={4} sx={{
               textAlign:
               {
                 xs: "left",
-                sm: "right  "
-              }
+                md: "right"
+              },
+              color: "text.primary",
+              marginTop: "auto"
             }}>
-              Ocena redakcji: 7/10
+
+              <Box>
+                Ocena redakcji:
+                <Typography sx={{
+                  color: "secondary.main",
+                  fontSize: "24px",
+                  fontWeight: 700,
+                  display: "inline-block",
+                  py: 1,
+                  px: 1.5,
+                  ml: 1,
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                  borderRadius: "10px",
+                }}>
+                  7/10
+                </Typography>
+              </Box>
+              <Box>
+                Ocena użytkowników:
+                <Typography sx={{
+                  color: "text.primary",
+                  fontSize: "24px",
+                  fontWeight: 700,
+                  display: "inline-block",
+                  py: 1,
+                  px: 1.5,
+                  ml: 1,
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                  borderRadius: "10px",
+                }}>
+                  8.24
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Typography>

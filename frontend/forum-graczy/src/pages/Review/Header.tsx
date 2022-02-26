@@ -14,6 +14,7 @@ export default function Header(props: any) {
       <TileText >
         <Typography
           sx={{
+            textAlign: "center",
             fontSize: "42px",
             fontWeight: 500,
             textShadow: `3px 4px 7px rgba(0,0,0,0.4)`,
@@ -25,6 +26,7 @@ export default function Header(props: any) {
         <Typography
           component="div"
           sx={{
+            color: "text.secondary",
             textAlign: "right",
             fontSize: "18px",
             fontWeight: 300,

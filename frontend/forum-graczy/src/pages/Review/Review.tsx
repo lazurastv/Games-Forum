@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Author from "./Author";
 import Header from "./Header";
 import ReviewRating from "./ReviewRating";
@@ -6,7 +6,7 @@ export default function Review() {
   return (
     <Box>
       <Header />
-      <Box className="PageContent" >
+      <Container maxWidth="xl">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
           <Grid item xs={12} md={8} sx={{
             pr: {
@@ -44,7 +44,7 @@ export default function Review() {
             <Author sx={{ mb: 5 }} producer="CD Project" publisher="CD Project RED" date="20 marca 2021" />
           </Grid>
         </Grid>
-      </Box>
+      </Container>
     </Box>
   );
 }

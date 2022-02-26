@@ -6,7 +6,11 @@ const Detail = (props: any) => (
     textAlign: "left",
     mt: 2,
   }}>
-    <Typography component="span" sx={{ fontWeight: "300" }}>
+    <Typography component="span" sx={{
+      color: "text.secondary",
+      fontWeight: "300",
+      mr: 1 
+    }}>
       {props.label}
     </Typography>
     <Typography component="span">
@@ -20,6 +24,7 @@ export default function Details(props: any) {
       <Typography sx={{
         fontSize: "18px",
         mb: 2,
+        textAlign: "center"
       }}>
         Szczegóły
       </Typography>

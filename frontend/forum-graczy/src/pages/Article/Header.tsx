@@ -16,6 +16,7 @@ export default function Header(props: any) {
           sx={{
             fontSize: "42px",
             fontWeight: 500,
+            textAlign:"center",
             textShadow: `3px 4px 7px rgba(0,0,0,0.4)`,
             mb: 3
           }}
@@ -27,7 +28,7 @@ export default function Header(props: any) {
           sx={{
             textAlign: "right",
             fontSize: "18px",
-            fontWeight: 300,
+            color:"text.secondary"
           }}
         >
           01.01.2022
