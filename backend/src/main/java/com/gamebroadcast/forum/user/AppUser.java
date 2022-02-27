@@ -1,6 +1,7 @@
 package com.gamebroadcast.forum.user;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,6 +83,16 @@ public class AppUser implements UserDetails {
         this.enabled = enabled;
         this.locked = locked;
         this.lastUsed = lastUsed;
+    }
+
+    public AppUser(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = "USER";
+        this.enabled = false;
+        this.locked = false;
+        this.lastUsed = Timestamp.from(Instant.now());
     }
 
     public AppUser() {
