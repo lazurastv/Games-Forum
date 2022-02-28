@@ -1,10 +1,17 @@
 package com.gamebroadcast.forum.article;
 
 import lombok.Data;
+import java.util.List;
 
 import javax.persistence.*;
 
+import com.gamebroadcast.forum.interaction.comment.models.Comment;
+import com.gamebroadcast.forum.interaction.like.models.Like;
+
+import lombok.Data;
+
 @Entity
+@Data
 @Table(name = "article", uniqueConstraints = {
         @UniqueConstraint(name = "article_unique_title", columnNames = "title") })
 @Inheritance(strategy =  InheritanceType.SINGLE_TABLE)
@@ -28,6 +35,12 @@ public class Article {
 
     @Column(name = "image_path", nullable = true, length = 1024)
     private String imagePath;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "article")
+    private List<Like> likes;
 
     public Article() {
     }
