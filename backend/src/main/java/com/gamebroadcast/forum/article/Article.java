@@ -8,14 +8,11 @@ import javax.persistence.*;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 
-import lombok.Data;
-
 @Entity
 @Data
 @Table(name = "article", uniqueConstraints = {
         @UniqueConstraint(name = "article_unique_title", columnNames = "title") })
-@Inheritance(strategy =  InheritanceType.SINGLE_TABLE)
-@Data
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Article {
 
     @Id
