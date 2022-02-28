@@ -3,6 +3,9 @@ package com.gamebroadcast.forum.security;
 import static com.gamebroadcast.forum.security.Role.ADMIN;
 import static com.gamebroadcast.forum.security.Role.EDITOR;
 import static com.gamebroadcast.forum.security.Role.USER;
+import static com.gamebroadcast.forum.utils.ResponseUtils.SESSION_COOKIE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
@@ -50,14 +54,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new ExceptionFilter(), LoginFilter.class)
                 .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
+                .antMatchers(GET).permitAll()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .rememberMe().rememberMeServices(rememberMeServices)
-                .and()
-                .logout().logoutUrl("/api/user/logout").invalidateHttpSession(true).clearAuthentication(true)
-                .deleteCookies("sessionId").deleteCookies("rememberMe"); // TODO make filter instead
+                .rememberMe().rememberMeServices(rememberMeServices);
+
+        http
+                .logout()
+                .logoutUrl("/api/user/logout")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(NO_CONTENT));
     }
 
     @Override // TODO remove in the future
@@ -104,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean // TODO add extra params in the future
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("sessionId");
+        serializer.setCookieName(SESSION_COOKIE);
         serializer.setCookiePath("/api/");
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
         return serializer;

@@ -1,5 +1,7 @@
 package com.gamebroadcast.forum.security;
 
+import static com.gamebroadcast.forum.utils.ResponseUtils.REMEMBER_ME_COOKIE;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class RememberMeConfig {
     public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
         PersistentTokenBasedRememberMeServices rememberMeServices = new PersistentTokenBasedRememberMeServices(
                 "secretKeyIGuess", userConfig, persistentTokenRepository());
-        rememberMeServices.setCookieName("rememberMe");
+        rememberMeServices.setCookieName(REMEMBER_ME_COOKIE);
         rememberMeServices.setAlwaysRemember(true);
 
         return rememberMeServices;

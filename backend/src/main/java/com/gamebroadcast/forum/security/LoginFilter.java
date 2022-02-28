@@ -1,5 +1,7 @@
 package com.gamebroadcast.forum.security;
 
+import static com.gamebroadcast.forum.utils.ResponseUtils.UNPROCESSABLE_ENTITY;
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -48,7 +50,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
-            throw new RuntimeException(ResponseUtils.UNPROCESSABLE_ENTITY_MESSAGE);
+            throw new RuntimeException(UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -72,7 +74,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        throw new RuntimeException("Wrong username or password");
+        throw new RuntimeException(failed.getMessage());
     }
 
 }
