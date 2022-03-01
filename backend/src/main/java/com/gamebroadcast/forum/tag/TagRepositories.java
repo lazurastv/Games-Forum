@@ -16,7 +16,7 @@ public class TagRepositories {
             "PlayStation 4"
     });
 
-    public static final List<String> distributors = Arrays.asList(new String[] {
+    public static final List<String> distributions = Arrays.asList(new String[] {
             "Steam",
             "Epic Games",
             "Ubisoft"
@@ -47,11 +47,11 @@ public class TagRepositories {
         return itemsExist(givenPlatforms, platforms);
     }
 
-    public static boolean distributorExists(String distributor) {
-        return distributors.contains(distributor);
+    public static boolean distributionExists(String distribution) {
+        return distributions.contains(distribution);
     }
 
-    public static boolean distributorsExist(List<String> givenDistributors) {
-        return itemsExist(givenDistributors, distributors);
+    public static boolean distributionsExist(List<String> givenDistributions) {
+        return itemsExist(givenDistributions, distributions);
     }
 }

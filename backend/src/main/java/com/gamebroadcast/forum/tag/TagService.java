@@ -14,7 +14,7 @@ public class TagService {
         return TagRepositories.platforms;
     }
 
-    public List<String> getAllDistributors() {
-        return TagRepositories.distributors;
+    public List<String> getAllDistributions() {
+        return TagRepositories.distributions;
     }
 }

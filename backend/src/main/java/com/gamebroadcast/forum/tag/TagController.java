@@ -2,15 +2,16 @@ package com.gamebroadcast.forum.tag;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "api")
+@RequiredArgsConstructor
 public class TagController {
 
-    @Autowired
-    private TagService tagService;
+    private final TagService tagService;
 
     @GetMapping(path = "/genres")
     public List<String> getAllGenres() {
@@ -22,8 +23,8 @@ public class TagController {
         return tagService.getAllPlatforms();
     }
 
-    @GetMapping(path = "/distributors")
-    public List<String> getAllDistributors() {
-        return tagService.getAllDistributors();
+    @GetMapping(path = "/distributions")
+    public List<String> getAllDistributions() {
+        return tagService.getAllDistributions();
     }
 }
