@@ -2,7 +2,7 @@ package com.gamebroadcast.forum.interaction.comment.models;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.article.Article;
+import com.gamebroadcast.forum.article.models.Article;
 import com.gamebroadcast.forum.user.AppUser;
 
 import lombok.Data;
