@@ -7,12 +7,14 @@ import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 
 public class ReviewFullInfoVM extends ArticleFullInfoVM {
     public int score;
-    public String plusMinusJSON;
+    public List<String> pluses;
+    public List<String> minuses;
 
     public ReviewFullInfoVM(Review review) {
         super(review);
         this.score = review.getScore();
-        this.plusMinusJSON = review.getPlusMinusJSON();
+        this.pluses = review.getPluses();
+        this.minuses = review.getMinuses();
     }
 
     public static List<ReviewFullInfoVM> toReviewVMList(List<Review> reviews) {

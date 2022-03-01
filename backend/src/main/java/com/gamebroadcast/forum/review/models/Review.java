@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.article.models.Article;
@@ -18,12 +20,17 @@ public class Review extends Article {
     @Column
     private int score;
 
-    @Column(length = 2048)
-    private String plusMinusJSON;
+    @ElementCollection
+    private List<String> pluses;
 
-    public Review(String title, String introduction, String path, int score, String plusMinusJSON) {
+    @ElementCollection
+    private List<String> minuses;
+
+    public Review(String title, String introduction, String path, int score, List<String> pluses,
+            List<String> minuses) {
         super(title, introduction, path);
         this.score = score;
-        this.plusMinusJSON = plusMinusJSON;
+        this.pluses = pluses;
+        this.minuses = minuses;
     }
 }
