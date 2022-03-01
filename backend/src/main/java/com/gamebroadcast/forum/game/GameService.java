@@ -66,7 +66,7 @@ public class GameService {
     private void checkIfTitleIsUnique(String title) {
         Optional<Game> game = gameRepository.findByTitle(title);
         if (game.isPresent()) {
-            throw new ItemAlreadyExistsException("article");
+            throw new ItemAlreadyExistsException("game");
         }
     }
 

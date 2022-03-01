@@ -22,22 +22,22 @@ public class CommentController {
     private CommentService commentService;
 
     @GetMapping
-    public List<CommentVM> getAll() {
+    public List<CommentVM> getAllComments() {
         return commentService.getAll();
     }
 
     @GetMapping(path = "/ArticleId/{id}")
-    public List<CommentVM> getByArticleId(@PathVariable("id") Long id) {
+    public List<CommentVM> getCommentByArticleId(@PathVariable("id") Long id) {
         return commentService.getByArticleId(id);
     }
 
     @GetMapping(path = "/UserId/{id}")
-    public List<CommentVM> getByUserId(@PathVariable("id") Long id) {
+    public List<CommentVM> getCommentByUserId(@PathVariable("id") Long id) {
         return commentService.getByUserId(id);
     }
 
     @GetMapping(path = "/Id/{id}")
-    public CommentVM getById(@PathVariable("id") Long id) {
+    public CommentVM getCommentById(@PathVariable("id") Long id) {
         try {
             return commentService.get(id);
         } catch (RuntimeException e) {
@@ -48,7 +48,7 @@ public class CommentController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void add(@RequestBody CommentAdd commentAdd) {
+    public void addComment(@RequestBody CommentAdd commentAdd) {
         try {
             commentService.add(commentAdd);
         } catch (RuntimeException e) {
@@ -59,7 +59,7 @@ public class CommentController {
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") Long id, @RequestBody CommentUpdate commentUpdate) {
+    public void updateComment(@PathVariable("id") Long id, @RequestBody CommentUpdate commentUpdate) {
         try {
             if (!sessionUserCanEditComment(id)) {
                 throw new NoEditRightsException("Comment");
@@ -73,7 +73,7 @@ public class CommentController {
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id) {
+    public void deleteComment(@PathVariable("id") Long id) {
         try {
             if (!sessionUserCanDeleteComment(id)) {
                 throw new NoEditRightsException("Comment");

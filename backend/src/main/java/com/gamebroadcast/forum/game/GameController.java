@@ -28,7 +28,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/{gameId}")
-    public GameVM getArticle(@PathVariable("gameId") Long gameId) {
+    public GameVM getGame(@PathVariable("gameId") Long gameId) {
         try {
             return gameService.getGameById(gameId);
         } catch (RuntimeException e) {
@@ -37,7 +37,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/FullInfo/{gameId}")
-    public GameFullInfoVM getArticleFullInfo(@PathVariable("gameId") Long gameId) {
+    public GameFullInfoVM getGameFullInfo(@PathVariable("gameId") Long gameId) {
         try {
             return gameService.getGameFullInfoById(gameId);
         } catch (RuntimeException e) {
@@ -48,7 +48,7 @@ public class GameController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticle(@RequestBody GameAddUpdate newGame) {
+    public void addGame(@RequestBody GameAddUpdate newGame) {
         try {
             gameService.addGame(newGame, newGame.content);
         } catch (RuntimeException e) {
@@ -59,10 +59,10 @@ public class GameController {
     @PutMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public void updateArticle(@PathVariable("gameId") Long gameId, @RequestBody GameAddUpdate gameUpdate) {
+    public void updateGame(@PathVariable("gameId") Long gameId, @RequestBody GameAddUpdate gameUpdate) {
         try {
-            if (!sessionUserCanEditArticle(gameId)) {
-                throw new NoEditRightsException("article");
+            if (!sessionUserCanEditGame(gameId)) {
+                throw new NoEditRightsException("game");
             }
             gameService.updateGame(gameId, gameUpdate);
         } catch (RuntimeException e) {
@@ -73,10 +73,10 @@ public class GameController {
     @DeleteMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public void deleteArticle(@PathVariable("gameId") Long gameId) {
+    public void deleteGame(@PathVariable("gameId") Long gameId) {
         try {
-            if (!sessionUserCanDeleteArticle(gameId)) {
-                throw new NoEditRightsException("article");
+            if (!sessionUserCanDeleteGame(gameId)) {
+                throw new NoEditRightsException("game");
             }
             gameService.deleteGame(gameId);
         } catch (RuntimeException e) {
@@ -84,11 +84,11 @@ public class GameController {
         }
     }
 
-    private boolean sessionUserCanEditArticle(Long id) {
+    private boolean sessionUserCanEditGame(Long id) {
         return gameService.sessionUserIsOwner(id);
     }
 
-    private boolean sessionUserCanDeleteArticle(Long id) {
+    private boolean sessionUserCanDeleteGame(Long id) {
         return gameService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 }
