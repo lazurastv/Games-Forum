@@ -4,31 +4,37 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.article.ArticleService;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
+import com.gamebroadcast.forum.game.GameService;
+import com.gamebroadcast.forum.game.models.Game;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
 import com.gamebroadcast.forum.interaction.rating.models.RatingUpdate;
 import com.gamebroadcast.forum.interaction.rating.models.RatingVM;
 import com.gamebroadcast.forum.security.SessionUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class RatingService {
-    @Autowired
     private RatingRepository ratingRepository;
 
-    @Autowired
-    private ArticleService articleService;
+    private GameService gameService;
 
     public List<RatingVM> getAll() {
         List<Rating> ratings = ratingRepository.findAll();
         return RatingVM.toRatingVMList(ratings);
     }
-    
+
+    public RatingVM getById(Long id) {
+        Rating rating = getRating(id);
+        return new RatingVM(rating);
+    }
+
     public List<RatingVM> getByGameId(Long id) {
         List<Rating> ratings = ratingRepository.findByGameId(id);
         return RatingVM.toRatingVMList(ratings);
@@ -39,14 +45,10 @@ public class RatingService {
         return RatingVM.toRatingVMList(ratings);
     }
 
-    public RatingVM get(Long id) throws IllegalStateException {
-        Rating rating = getRating(id);
-        return new RatingVM(rating);
-    }
+    public void add(RatingAdd ratingAdd) {
+        Game game = gameService.getGame(ratingAdd.gameId);
+        Rating rating = ratingAdd.toRating(game);
 
-    public void add(RatingAdd ratingAdd) throws IllegalStateException {
-        Rating rating = ratingAdd.toRating(articleService);
-        
         if (!ratingDoesNotExsist(rating)) {
             throw new ItemAlreadyExistsException("rating");
         }
@@ -55,12 +57,12 @@ public class RatingService {
     }
 
     @Transactional
-    public void update(Long id, RatingUpdate ratingUpdate) throws IllegalStateException {
+    public void update(Long id, RatingUpdate ratingUpdate) {
         Rating rating = getRating(id);
         ratingUpdate.update(rating);
     }
 
-    public void delete(Long id) throws IllegalStateException {
+    public void delete(Long id) {
         Rating rating = getRating(id);
         ratingRepository.delete(rating);
     }

@@ -14,20 +14,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping(path = "api/rating")
 public class RatingController {
-	
-	@Autowired
-	private RatingService ratingService;
 
-	@GetMapping
-	public List<RatingVM> getAll() {
-		return ratingService.getAll();
-	}
+    @Autowired
+    private RatingService ratingService;
 
-	@GetMapping(path = "/GameId/{id}")
+    @GetMapping
+    public List<RatingVM> getAll() {
+        return ratingService.getAll();
+    }
+
+    @GetMapping(path = "/GameId/{id}")
     public List<RatingVM> getByGameId(@PathVariable("id") Long id) {
         return ratingService.getByGameId(id);
     }
@@ -40,7 +39,7 @@ public class RatingController {
     @GetMapping(path = "/Id/{id}")
     public RatingVM getById(@PathVariable("id") Long id) {
         try {
-            return ratingService.get(id);
+            return ratingService.getById(id);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

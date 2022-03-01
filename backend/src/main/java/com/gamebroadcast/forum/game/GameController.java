@@ -1,10 +1,10 @@
-package com.gamebroadcast.forum.article;
+package com.gamebroadcast.forum.game;
 
-import com.gamebroadcast.forum.article.models.ArticleAddUpdate;
-import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
-import com.gamebroadcast.forum.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
+import com.gamebroadcast.forum.game.models.GameAddUpdate;
+import com.gamebroadcast.forum.game.models.GameFullInfoVM;
+import com.gamebroadcast.forum.game.models.GameVM;
 import com.gamebroadcast.forum.security.SessionUtils;
 
 import org.springframework.http.HttpStatus;
@@ -16,30 +16,30 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/article")
+@RequestMapping("/api/game")
 @RequiredArgsConstructor
-public class ArticleController {
+public class GameController {
 
-    private final ArticleService articleService;
+    private final GameService gameService;
 
     @GetMapping
-    public List<ArticleVM> getAllArticles() {
-        return articleService.getAllArticles();
+    public List<GameVM> getAllGames() {
+        return gameService.getAllGames();
     }
 
-    @GetMapping(path = "/{articleId}")
-    public ArticleVM getArticle(@PathVariable("articleId") Long articleId) {
+    @GetMapping(path = "/{gameId}")
+    public GameVM getArticle(@PathVariable("gameId") Long gameId) {
         try {
-            return articleService.getArticleById(articleId);
+            return gameService.getGameById(gameId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
-    @GetMapping(path = "/FullInfo/{articleId}")
-    public ArticleFullInfoVM getArticleFullInfo(@PathVariable("articleId") Long articleId) {
+    @GetMapping(path = "/FullInfo/{gameId}")
+    public GameFullInfoVM getArticleFullInfo(@PathVariable("gameId") Long gameId) {
         try {
-            return articleService.getArticleFullInfoById(articleId);
+            return gameService.getGameFullInfoById(gameId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -48,47 +48,47 @@ public class ArticleController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticle(@RequestBody ArticleAddUpdate newArticle) {
+    public void addArticle(@RequestBody GameAddUpdate newGame) {
         try {
-            articleService.addArticle(newArticle, newArticle.content);
+            gameService.addGame(newGame, newGame.content);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
-    @PutMapping(path = "/{articleId}")
+    @PutMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public void updateArticle(@PathVariable("articleId") Long articleId, @RequestBody ArticleAddUpdate articleUpdate) {
+    public void updateArticle(@PathVariable("gameId") Long gameId, @RequestBody GameAddUpdate gameUpdate) {
         try {
-            if (!sessionUserCanEditArticle(articleId)) {
+            if (!sessionUserCanEditArticle(gameId)) {
                 throw new NoEditRightsException("article");
             }
-            articleService.updateArticle(articleId, articleUpdate);
+            gameService.updateGame(gameId, gameUpdate);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
-    @DeleteMapping(path = "/{articleId}")
+    @DeleteMapping(path = "/{gameId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public void deleteArticle(@PathVariable("articleId") Long articleId) {
+    public void deleteArticle(@PathVariable("gameId") Long gameId) {
         try {
-            if (!sessionUserCanDeleteArticle(articleId)) {
+            if (!sessionUserCanDeleteArticle(gameId)) {
                 throw new NoEditRightsException("article");
             }
-            articleService.deleteArticle(articleId);
+            gameService.deleteGame(gameId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
     private boolean sessionUserCanEditArticle(Long id) {
-        return articleService.sessionUserIsOwner(id);
+        return gameService.sessionUserIsOwner(id);
     }
 
     private boolean sessionUserCanDeleteArticle(Long id) {
-        return articleService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
+        return gameService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 }
