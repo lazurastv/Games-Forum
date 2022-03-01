@@ -2,6 +2,7 @@ package com.gamebroadcast.forum.game.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.util.List;
 @Table(name = "game")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Game extends Article {
 
     @Column
