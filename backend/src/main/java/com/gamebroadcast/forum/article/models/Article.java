@@ -3,7 +3,6 @@ package com.gamebroadcast.forum.article.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,11 +58,17 @@ public class Article {
     }
 
     public int getLikeCount() {
-        return Collections.frequency(likes, true);
+        int count = 0;
+        for (Like like : likes) {
+            if (like.isLike()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public int getDislikeCount() {
-        return Collections.frequency(likes, false);
+        return likes.size() - getLikeCount();
     }
 
     public boolean ownedBy(AppUser user) {
