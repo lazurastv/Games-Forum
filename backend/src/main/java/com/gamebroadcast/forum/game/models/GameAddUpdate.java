@@ -14,6 +14,7 @@ public class GameAddUpdate extends ArticleAddUpdate {
     }
 
     public void update(Game game) {
+        update(game);
         game.setGamePublishDate(gamePublishDate);
         game.setDeveloper(developer);
         game.setEditorScore(editorScore);
