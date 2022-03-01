@@ -27,6 +27,11 @@ public class GameController {
         return gameService.getAllGames();
     }
 
+    @GetMapping(path = "/Similar/{gameId}")
+    public List<GameVM> getAllGames(@PathVariable("gameId") Long gameId) {
+        return gameService.getSimilarGames(gameId);
+    }
+
     @GetMapping(path = "/{gameId}")
     public GameVM getGame(@PathVariable("gameId") Long gameId) {
         try {
