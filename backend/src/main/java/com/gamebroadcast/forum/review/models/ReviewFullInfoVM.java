@@ -6,10 +6,12 @@ import java.util.List;
 import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 
 public class ReviewFullInfoVM extends ArticleFullInfoVM {
+    public int score;
     public String plusMinusJSON;
 
     public ReviewFullInfoVM(Review review) {
         super(review);
+        this.score = review.getScore();
         this.plusMinusJSON = review.getPlusMinusJSON();
     }
 

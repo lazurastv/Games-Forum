@@ -15,11 +15,15 @@ import com.gamebroadcast.forum.article.models.Article;
 @NoArgsConstructor
 public class Review extends Article {
 
+    @Column
+    private int score;
+
     @Column(length = 2048)
     private String plusMinusJSON;
 
-    public Review(String title, String introduction, String path, String plusMinusJSON) {
+    public Review(String title, String introduction, String path, int score, String plusMinusJSON) {
         super(title, introduction, path);
+        this.score = score;
         this.plusMinusJSON = plusMinusJSON;
     }
 }
