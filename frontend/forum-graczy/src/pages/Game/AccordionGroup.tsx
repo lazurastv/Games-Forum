@@ -1,12 +1,19 @@
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function AccordionGroup(props: any) {
   return (
-    <Box>
+    <Box sx={{ mb: 4 }}>
       <Accordion sx={{ backgroundColor: "primary.main" }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />} >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />}
+        >
           <Typography>Platformy</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -16,8 +23,10 @@ export default function AccordionGroup(props: any) {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion sx={{ backgroundColor: "primary.main"}}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />} >
+      <Accordion sx={{ backgroundColor: "primary.main" }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />}
+        >
           <Typography>Dystrybucje</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -28,7 +37,9 @@ export default function AccordionGroup(props: any) {
         </AccordionDetails>
       </Accordion>
       <Accordion sx={{ backgroundColor: "primary.main" }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />} >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: "secondary.main" }} />}
+        >
           <Typography>Wymagania</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -39,5 +50,5 @@ export default function AccordionGroup(props: any) {
         </AccordionDetails>
       </Accordion>
     </Box>
-  )
+  );
 }

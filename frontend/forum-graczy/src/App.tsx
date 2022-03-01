@@ -16,6 +16,8 @@ import Reviews from './pages/Reviews/Reviews';
 import Game from './pages/Game/Game';
 import Article from './pages/Article/Article';
 import Review from './pages/Review/Review';
+import ScrollToTop from "./components/ScrollToTop";
+import DraftEditor from "./components/DraftEditor";
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -42,8 +44,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <Navigation />
           <CssBaseline />
+          <ScrollToTop/>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="mockEditor" element={<DraftEditor />} />
             <Route path="artykuly" element={<Articles />} />
             <Route path="artykuly/:title" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />

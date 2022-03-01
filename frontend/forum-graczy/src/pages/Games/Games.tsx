@@ -18,9 +18,10 @@ import {
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import GameTile from "../../components/Carousel/GameTile";
+import GameTile from "../../components/Tile/GameTile";
 import { games } from "../../data-mock/games";
 import { styled } from "@mui/material/styles";
+import SectionHeader from "../../components/SectionHeader";
 const checkboxGroup = [
   {
     name: "Gatunek",
@@ -128,17 +129,7 @@ export default function Games() {
   // );
   return (
     <Container maxWidth="xl" sx={{ my: 4 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ textAlign: "left", color: "secondary.main" }}
-      >
-        Gry
-      </Typography>
-      <Divider
-        sx={{ borderColor: "secondary.main", color: "secondary.main", mb: 4 }}
-      />
-
+      <SectionHeader>Gry</SectionHeader>
       <Box sx={{ mb: 4, textAlign: "left" }}>
         <Box sx={{ mb: 3 }}>
           <Button

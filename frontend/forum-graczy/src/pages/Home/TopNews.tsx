@@ -1,8 +1,8 @@
 import { Box, Grid } from "@mui/material";
-import ArticleTile from "../../components/ArticleTile";
+import ArticleTile from "../../components/Tile/ArticleTile";
 export default function TopNews() {
   return (
-    <Box className="TopNews" >
+    <Box className="TopNews" sx={{ mb: 4 }}>
       <Grid container spacing={3}>
         <Grid item xs={8}>
           <ArticleTile
