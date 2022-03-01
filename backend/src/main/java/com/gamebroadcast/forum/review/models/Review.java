@@ -29,8 +29,15 @@ public class Review extends Article {
     public Review(String title, String introduction, String path, int score, List<String> pluses,
             List<String> minuses) {
         super(title, introduction, path);
-        this.score = score;
+        this.setScore(score);
         this.pluses = pluses;
         this.minuses = minuses;
+    }
+
+    public void setScore(int score) {
+        if (score < 1 || score > 10) {
+            throw new IllegalArgumentException("Score must be between 1 and 10.");
+        }
+        this.score = score;
     }
 }
