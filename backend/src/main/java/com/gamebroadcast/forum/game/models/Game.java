@@ -7,7 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.gamebroadcast.forum.article.models.Article;
@@ -24,6 +28,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Game extends Article {
+    @Id
+    @SequenceGenerator(name = "game_sequence", sequenceName = "game_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_sequence")
+    @Column(updatable = false)
+    private Long id;
 
     @Column(nullable = false)
     private Date gamePublishDate;

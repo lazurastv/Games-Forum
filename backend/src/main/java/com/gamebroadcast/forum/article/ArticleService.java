@@ -28,6 +28,13 @@ public class ArticleService {
         return ArticleVM.toArticleVMList(articles);
     }
 
+    public List<ArticleVM> getSimilarArticles(Long articleId) {
+        Article article = getArticle(articleId);
+        List<Article> articles = articleRepository.findByAuthorId(article.getAuthor().getId());
+        articles.remove(article);
+        return ArticleVM.toArticleVMList(articles);
+    }
+
     public ArticleVM getArticleById(Long articleId) {
         Article article = getArticle(articleId);
         return new ArticleVM(article);

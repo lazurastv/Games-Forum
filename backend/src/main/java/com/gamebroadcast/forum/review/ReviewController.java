@@ -27,6 +27,11 @@ public class ReviewController {
         return reviewService.getAllReviews();
     }
 
+    @GetMapping(path = "/Similar/{reviewId}")
+    public List<ReviewVM> getAllReviews(@PathVariable("reviewId") Long reviewId) {
+        return reviewService.getSimilarReviews(reviewId);
+    }
+
     @GetMapping(path = "/{reviewId}")
     public ReviewVM getReview(@PathVariable("reviewId") Long reviewId) {
         try {

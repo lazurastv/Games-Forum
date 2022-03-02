@@ -8,6 +8,7 @@ import com.gamebroadcast.forum.article.models.ArticleVM;
 public class GameVM extends ArticleVM {
     public GameVM(Game game) {
         super(game);
+        id = game.getId();
     }
 
     public static List<GameVM> toGameVMList(List<Game> games) {

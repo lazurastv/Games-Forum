@@ -12,6 +12,7 @@ public class ReviewFullInfoVM extends ArticleFullInfoVM {
 
     public ReviewFullInfoVM(Review review) {
         super(review);
+        this.id = review.getId();
         this.score = review.getScore();
         this.pluses = review.getPluses();
         this.minuses = review.getMinuses();

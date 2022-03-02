@@ -21,10 +21,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewRepository<Review> reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     public List<ReviewVM> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
+        return ReviewVM.toReviewVMList(reviews);
+    }
+
+    public List<ReviewVM> getSimilarReviews(Long reviewId) {
+        Review review = getReview(reviewId);
+        List<Review> reviews = reviewRepository.findByAuthorId(review.getAuthor().getId());
+        reviews.remove(review);
         return ReviewVM.toReviewVMList(reviews);
     }
 

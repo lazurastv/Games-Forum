@@ -8,6 +8,7 @@ import com.gamebroadcast.forum.article.models.ArticleVM;
 public class ReviewVM extends ArticleVM {
     public ReviewVM(Review review) {
         super(review);
+        id = review.getId();
     }
 
     public static List<ReviewVM> toReviewVMList(List<Review> reviews) {

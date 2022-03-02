@@ -16,6 +16,11 @@ import com.gamebroadcast.forum.article.models.Article;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Review extends Article {
+    @Id
+    @SequenceGenerator(name = "review_sequence", sequenceName = "review_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence")
+    @Column(updatable = false)
+    private Long id;
 
     @Column
     private int score;

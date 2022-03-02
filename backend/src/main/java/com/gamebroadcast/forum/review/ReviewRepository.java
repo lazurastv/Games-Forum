@@ -1,12 +1,14 @@
 package com.gamebroadcast.forum.review;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
-import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.article.ArticleRepository;
+import com.gamebroadcast.forum.review.models.Review;
 
-public interface ReviewRepository<T extends Article> extends JpaRepository<T, Long> {
+public interface ReviewRepository extends ArticleRepository<Review> {
 
-    Optional<T> findByTitle(String title);
+    Optional<Review> findByTitle(String title);
+
+    List<Review> findByAuthorId(Long id);
 }

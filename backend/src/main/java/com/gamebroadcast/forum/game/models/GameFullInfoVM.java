@@ -16,6 +16,7 @@ public class GameFullInfoVM extends ArticleFullInfoVM {
 
     public GameFullInfoVM(Game game) {
         super(game);
+        id = game.getId();
         gamePublishDate = game.getGamePublishDate();
         developer = game.getDeveloper();
         editorScore = game.getEditorScore();
