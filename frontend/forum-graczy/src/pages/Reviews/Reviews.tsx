@@ -6,8 +6,8 @@ const Reviews = () => {
 
   return (
     <Container maxWidth="xl">
-      {reviews.map((r) =>
-      <ReviewItem date={r.date} title={r.title} content={r.content} author={r.author} rate={r.rate} image={r.image}/>
+      {reviews.map((r, idx) =>
+      <ReviewItem key={idx} date={r.date} title={r.title} content={r.content} author={r.author} rate={r.rate} image={r.image}/>
       )}
     </Container>
   );

@@ -12,22 +12,40 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import "../../index.css";
+import { GoogleIcon } from '../../assets/GoogleIcon';
+import DividerWithText from '../../components/DividerWithText';
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
 
 export default function Login() {
+  const [session, setSession] = useSessionContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const hasPreviousState = location.key !== "default";
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+    console.log(session.isAuthenticated);
+    if(email === 'test' && password === 'test'){
+      setSession({...session, isAuthenticated: true});
+      //navigate(session.redirectPath);
+      if (hasPreviousState) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
+    }
   };
+
+
 
   return (
     <div className="login">
       <Container component="main" maxWidth="sm">
-        <Box sx={{p:{xs: 4, sm: 6, md: 8}}}></Box>
+        <Box sx={{p:{xs: 4, sm: 6, md: 6}}}></Box>
         <Box
           sx={{
             display: 'flex',
@@ -76,13 +94,31 @@ export default function Login() {
             <Button
               type="submit"
               fullWidth
+              size="large"
               variant="contained"
               color="secondary"
               sx={{ mt: 3, mb: 2 }}
             >
               Zaloguj
             </Button>
-            <Grid container>
+            <DividerWithText>Lub</DividerWithText>
+            <Button
+              disableElevation
+              fullWidth
+              size="large"
+              variant="outlined"
+              color="secondary"
+              sx={{
+                  color: 'text.primary',
+                  borderColor: 'secondary.main',
+                  mt: 2
+              }}
+            >
+              <GoogleIcon/>
+              <Box sx={{mr: 1}}></Box>         
+              Zaloguj się kontem Google
+            </Button>
+            <Grid container sx={{mt: 1}}>
               <Grid item xs>
                 <Box component={Link} to="/" sx={{color: "text.secondary"}}>
                   Nie pamiętasz hasła?
