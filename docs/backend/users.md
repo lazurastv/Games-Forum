@@ -7,7 +7,7 @@ Jest użytkownikiem naszego cudownego forum
 - String ShortDescr
 - String ImagePath
     - Jest ścieżką do zdjęcia profilowego
-- Long RoleId
+- String Role
 
 ## Serwis
 - Add
