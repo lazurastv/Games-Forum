@@ -3,7 +3,7 @@ package com.gamebroadcast.forum.interaction.like.models;
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.article.models.Article;
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import lombok.Data;
 

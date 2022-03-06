@@ -12,7 +12,7 @@ import com.gamebroadcast.forum.review.models.Review;
 import com.gamebroadcast.forum.review.models.ReviewAddUpdate;
 import com.gamebroadcast.forum.review.models.ReviewFullInfoVM;
 import com.gamebroadcast.forum.review.models.ReviewVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import java.util.List;
 import java.util.Optional;

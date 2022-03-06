@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import com.gamebroadcast.forum.game.models.Game;
-import com.gamebroadcast.forum.security.SessionUtils;
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import lombok.Data;
 

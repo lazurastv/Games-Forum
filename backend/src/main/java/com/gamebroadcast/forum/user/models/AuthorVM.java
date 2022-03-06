@@ -1,6 +1,6 @@
 package com.gamebroadcast.forum.user.models;
 
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 public class AuthorVM {
     public Long id;
