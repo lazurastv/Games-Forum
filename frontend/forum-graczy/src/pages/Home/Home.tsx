@@ -4,10 +4,14 @@ import ReviewTile from "../../components/Carousel/ReviewTile";
 import Carousel from "../../components/Carousel/Carousel";
 import GameTile from "../../components/Carousel/GameTile";
 import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
+import { ArticleControllerApi } from "C:/Users/lazurastv/Desktop/Zespolowy/Forum-Graczy/frontend/forum-graczy/src/api/api/apis/ArticleControllerApi";
 
 export default function Home() {
+  const articles = new ArticleControllerApi();
+  articles.login();
+  articles.getAllArticles().then(result => console.log(result)).catch(error => console.error(error));
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl">``
       <TopNews />
       <Typography variant="h4" gutterBottom sx={{ textAlign: "left", color: "secondary.main" }}>
         Najnowsze recenzje

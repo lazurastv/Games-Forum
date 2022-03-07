@@ -45,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable() // TODO remove in the future
+                .cors()
+                .and()
                 .authorizeRequests()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
