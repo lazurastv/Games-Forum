@@ -12,7 +12,7 @@ import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
 import com.gamebroadcast.forum.interaction.rating.models.RatingUpdate;
 import com.gamebroadcast.forum.interaction.rating.models.RatingVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.stereotype.Service;
 

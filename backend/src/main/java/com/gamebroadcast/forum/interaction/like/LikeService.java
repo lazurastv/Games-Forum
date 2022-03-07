@@ -12,7 +12,7 @@ import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.like.models.LikeAdd;
 import com.gamebroadcast.forum.interaction.like.models.LikeVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 @Service
 public class LikeService {

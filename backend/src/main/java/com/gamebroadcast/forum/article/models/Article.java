@@ -10,8 +10,8 @@ import javax.persistence.*;
 
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
-import com.gamebroadcast.forum.security.SessionUtils;
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 @Entity
 @Data

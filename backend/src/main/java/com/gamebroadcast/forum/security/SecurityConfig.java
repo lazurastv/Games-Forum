@@ -1,10 +1,13 @@
 package com.gamebroadcast.forum.security;
 
-import javax.sql.DataSource;
+import static com.gamebroadcast.forum.security.Role.ADMIN;
+import static com.gamebroadcast.forum.security.Role.EDITOR;
+import static com.gamebroadcast.forum.security.Role.USER;
+import static com.gamebroadcast.forum.utils.ResponseUtils.SESSION_COOKIE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import static com.gamebroadcast.forum.user.Role.ADMIN;
-import static com.gamebroadcast.forum.user.Role.EDITOR;
-import static com.gamebroadcast.forum.user.Role.USER;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +25,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -32,29 +40,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserConfig userConfig;
-    private final DataSource dataSource;
+    private final PersistentTokenBasedRememberMeServices rememberMeServices;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder, UserConfig userConfig, DataSource dataSource) {
+    public SecurityConfig(
+            PasswordEncoder passwordEncoder,
+            UserConfig userConfig,
+            PersistentTokenBasedRememberMeServices rememberMeServices) {
         this.passwordEncoder = passwordEncoder;
         this.userConfig = userConfig;
-        this.dataSource = dataSource;
+        this.rememberMeServices = rememberMeServices;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // TODO remove in the future
                 .cors()
                 .and()
+                .csrf().disable() // TODO remove in the future
+                .addFilterBefore(new ExceptionFilter(), LoginFilter.class)
+                .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
+                .antMatchers(GET, "/api/**").permitAll()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
-                .and()
-                .rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(userConfig);
+                .rememberMe().rememberMeServices(rememberMeServices);
+
+        http
+                .logout()
+                .logoutUrl("/api/user/logout")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(NO_CONTENT));
     }
 
     @Override // TODO remove in the future
@@ -77,16 +96,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        return jdbcTokenRepository;
-    }
-
     private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
         DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+
         return defaultWebSecurityExpressionHandler;
     }
 
@@ -104,4 +117,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return roleHierarchy;
     }
 
+    @Bean // TODO add frontend url and maybe tweak settings
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        // configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
+        // "DELETE", "OPTIONS"));
+        // configuration.setAllowedHeaders(Arrays.asList("authorization",
+        // "content-type", "x-auth-token"));
+        // configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        source.registerCorsConfiguration("/api/**", configuration);
+
+        return source;
+    }
+
+    @Bean // TODO add extra params in the future
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+
+        serializer.setCookieName(SESSION_COOKIE);
+        serializer.setCookiePath("/api/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+
+        return serializer;
+    }
 }

@@ -12,7 +12,7 @@ import com.gamebroadcast.forum.game.models.Game;
 import com.gamebroadcast.forum.game.models.GameAddUpdate;
 import com.gamebroadcast.forum.game.models.GameFullInfoVM;
 import com.gamebroadcast.forum.game.models.GameVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import java.util.List;
 import java.util.Optional;

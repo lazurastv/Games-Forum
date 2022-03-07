@@ -7,7 +7,7 @@ import com.gamebroadcast.forum.exceptions.NoEditRightsException;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
 import com.gamebroadcast.forum.interaction.rating.models.RatingUpdate;
 import com.gamebroadcast.forum.interaction.rating.models.RatingVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
