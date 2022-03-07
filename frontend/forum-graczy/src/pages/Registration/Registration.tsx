@@ -27,7 +27,7 @@ export default function Registration() {
   return (
     <div className="login">
       <Container component="main" maxWidth="sm">
-        <Box sx={{p:{xs: 4, sm: 6, md: 8}}}></Box>
+        <Box sx={{p:{xs: 4, sm: 6, md: 6}}}></Box>
         <Box
           sx={{
             display: 'flex',
@@ -115,6 +115,7 @@ export default function Registration() {
             <Button
               type="submit"
               fullWidth
+              size="large"
               variant="contained"
               color="secondary"
               sx={{ mt: 3, mb: 2 }}

@@ -15,18 +15,20 @@ import MenuItem from '@mui/material/MenuItem';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import Grid from '@mui/material/Grid';
 import ThemeSwitch from "../ThemeSwitch";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ColorModeContext } from '../App';
+import AccountIconButton from "./AccountIconButton";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useSessionContext } from './Authentication/SessionContext';
 
 const Navigation = () => {
   const theme = useTheme();
   const loginBreak = useMediaQuery(theme.breakpoints.up(970));
   const tabPaths = ['/artykuly', '/recenzje', '/gry', '/chat']
+  const [sessionContext, updateSessionContext] = useSessionContext();
 
   let location = useLocation();
 
@@ -81,16 +83,18 @@ const Navigation = () => {
                           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
                             <ThemeSwitch/>
                             {loginBreak ? (
+                            sessionContext.isAuthenticated ? (
+                              <AccountIconButton/>
+                            ) : ( 
                             <Box sx={{ flexGrow: 1, display: 'flex' }}>
                               <Button component={Link} to="logowanie" sx={{color: 'text.primary'}}>Logowanie</Button>
                                <Typography variant="h6" component="div" sx={{mx: 0.5, color:"text.primary"}}>|</Typography>
                               <Button component={Link} to="rejestracja" sx={{color: 'text.primary'}}>Rejestracja</Button>
                             </Box>
+                            )
                             ):(
                             <Box sx={{ flexGrow: 1, display: 'flex' }}>
-                              <IconButton aria-label="delete">
-                                <AccountCircleIcon />
-                              </IconButton>
+                              <AccountIconButton/>
                             </Box>
                             )}
                           </Box>

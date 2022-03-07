@@ -7,8 +7,8 @@ const Articles = () => {
 
   return (
     <Container maxWidth="xl">
-      {articles.map((a) => 
-      <ArticleItem date={a.date} title={a.title} author={a.author} image={a.image}/>
+      {articles.map((a, idx) => 
+      <ArticleItem key={idx} date={a.date} title={a.title} author={a.author} image={a.image}/>
       )}
     </Container>
   );
