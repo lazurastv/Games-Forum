@@ -12,7 +12,7 @@ import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 import com.gamebroadcast.forum.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import java.util.List;
 import java.util.Optional;

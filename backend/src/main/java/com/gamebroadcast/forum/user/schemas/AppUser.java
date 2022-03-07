@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.user;
+package com.gamebroadcast.forum.user.schemas;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,10 +22,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_username", columnNames = "username"),
         @UniqueConstraint(name = "user_unique_email", columnNames = "email") })
@@ -70,23 +74,6 @@ public class AppUser implements UserDetails {
     @Column(name = "last_used", nullable = false)
     private Timestamp lastUsed;
 
-    public AppUser(Long id, String username, String email, String password, String shortDescription,
-            String profilePicturePath, String role, boolean enabled, boolean locked, Timestamp lastUsed) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.shortDescription = shortDescription;
-        this.profilePicturePath = profilePicturePath;
-        this.role = role;
-        this.enabled = enabled;
-        this.locked = locked;
-        this.lastUsed = lastUsed;
-    }
-
-    public AppUser() {
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getAuthoritiesFromRole();
@@ -109,18 +96,8 @@ public class AppUser implements UserDetails {
         return !this.locked;
     }
 
-    public void setAccountNonLocked(boolean nonLocked) {
-        this.locked = !nonLocked;
-    }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
 }

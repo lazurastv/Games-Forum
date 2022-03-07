@@ -5,7 +5,7 @@ import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 import com.gamebroadcast.forum.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

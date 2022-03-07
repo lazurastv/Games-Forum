@@ -14,7 +14,7 @@ import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
 import com.gamebroadcast.forum.interaction.comment.models.CommentUpdate;
 import com.gamebroadcast.forum.interaction.comment.models.CommentVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 @Service
 @RequiredArgsConstructor
