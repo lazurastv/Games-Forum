@@ -54,7 +54,7 @@ public class Rating {
 
 	// ----------------
 
-	public boolean checkValue(int value) {
+	public static boolean checkValue(int value) {
         return (value >= 1 && value <= 10);
     }
 }

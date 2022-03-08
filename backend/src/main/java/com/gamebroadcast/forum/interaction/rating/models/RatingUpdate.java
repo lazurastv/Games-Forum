@@ -7,14 +7,10 @@ public class RatingUpdate {
 
     public void update(Rating rating) {
         
-        if (!checkValue(this.value)) {
+        if (!Rating.checkValue(this.value)) {
             throw new InvalidInputException("Rating value must be an integer between 1 and 10.");
         }
 
         rating.setValue(this.value);
-    }
-
-    public boolean checkValue(int value) {
-        return (value >= 1 && value <= 10);
     }
 }

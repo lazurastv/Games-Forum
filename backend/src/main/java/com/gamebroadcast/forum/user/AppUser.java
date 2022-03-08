@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.UniqueConstraint;
 
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
+import com.gamebroadcast.forum.interaction.rating.models.Rating;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,7 +49,7 @@ public class AppUser implements UserDetails {
     @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "short_description", nullable = false, length = 300)
+    @Column(name = "short_description", nullable = true, length = 300)
     private String shortDescription;
 
     @Column(name = "profile_picture_path", nullable = false, length = 100)
@@ -56,11 +58,14 @@ public class AppUser implements UserDetails {
     @Column(name = "role", nullable = false, length = 6)
     private String role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Like> likes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Rating> ratings;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
@@ -89,8 +94,10 @@ public class AppUser implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.shortDescription = "Hello there!";
+        this.profilePicturePath = "none";
         this.role = "USER";
-        this.enabled = false;
+        this.enabled = true; // to be changed
         this.locked = false;
         this.lastUsed = Timestamp.from(Instant.now());
     }
@@ -134,4 +141,30 @@ public class AppUser implements UserDetails {
         return this.enabled;
     }
 
+    // ----------------
+
+    public static String checkUsername(String username) {
+        if (username.length() > 60) {
+            return "Username is too long.";
+        }
+        return null;
+    }
+
+    public static String checkEmail(String email) {
+        if (email.length() > 254) {
+            return "Email is too long.";
+        }
+        return null;
+    }
+
+    public static String checkPassword(String password) {
+        if (password.length() > 60) {
+            return "Password is too long.";
+        }
+        return null;
+    }
+
+    public static String hashPassword(String password) {
+        return password;
+    }
 }
