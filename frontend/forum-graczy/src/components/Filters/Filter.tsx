@@ -10,6 +10,7 @@ import {
   FormControl,
   MenuItem,
   Collapse,
+  InputLabel,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
@@ -33,6 +34,7 @@ export default function Filter(props: any) {
   const [searchValue, setSearchValue] = useState("");
   const [year, setYear] = useState<number[]>([1990, 2022]);
   const [filterInCollapse, setFilterInCollapse] = useState<boolean>(false);
+  const [sortValue, setSortValue] = useState<string>("Popularność");
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
       return;
@@ -50,10 +52,26 @@ export default function Filter(props: any) {
       props.clearOtherFilters();
     }
   };
+  const handleSort = (event: { target: { value: string } }) => {
+    if (event.target.value != sortValue) {
+      onSearch();
+      setSortValue(event.target.value);
+    }
+  };
+  const onSearch = () => {
+    console.log(
+      JSON.stringify(
+        { search: searchValue, year: year, page: props.page, ...props.otherFilters, sort: sortValue },
+        null,
+        4
+      )
+    );
+  };
   return (
     <Box sx={{ mb: 6, textAlign: "left" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3, height: "36px" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3, height: "43px" }}>
         <Button
+          size="large"
           variant="contained"
           color="secondary"
           startIcon={<FilterListIcon />}
@@ -62,13 +80,23 @@ export default function Filter(props: any) {
           Filtruj
         </Button>
         <FormControl>
+          <InputLabel id="demo-simple-select-label" color="secondary">
+            Sortuj:
+          </InputLabel>
           <Select
-            value={10}
-            // onChange={handleChange}
+            sx={{
+              minWidth: "165px",
+            }}
+            labelId="demo-simple-select-label"
+            color="secondary"
+            label="Sortuj:"
+            value={sortValue}
+            onChange={handleSort}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value="Alfabetycznie">Alfabetycznie</MenuItem>
+            <MenuItem value="Popularność">Popularność</MenuItem>
+            <MenuItem value="Od najnowszych">Od najnowszych</MenuItem>
+            <MenuItem value="Od najstarszych">Od najstarszych</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -139,7 +167,11 @@ export default function Filter(props: any) {
               fullWidth
               onClick={() =>
                 console.log(
-                  JSON.stringify({ search: searchValue, year: year, page: props.page, ...props.otherFilters }, null, 4)
+                  JSON.stringify(
+                    { search: searchValue, year: year, page: props.page, ...props.otherFilters, sort: sortValue },
+                    null,
+                    4
+                  )
                 )
               }
             >
