@@ -68,5 +68,5 @@ const settings = {
   ],
 };
 export default function Carousel(props: any) {
-  return <Slider {...settings}>{props.children}</Slider>;
+  return <Slider {...settings} {...props.settings}>{props.children}</Slider>;
 }
