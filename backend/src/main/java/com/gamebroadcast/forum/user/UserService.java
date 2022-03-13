@@ -5,11 +5,12 @@ import java.util.List;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
-import com.gamebroadcast.forum.security.SessionUtils;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCreditentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
+import com.gamebroadcast.forum.user.schemas.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

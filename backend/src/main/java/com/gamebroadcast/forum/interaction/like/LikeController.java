@@ -20,22 +20,22 @@ public class LikeController {
     private LikeService likeService;
 
     @GetMapping
-    public List<LikeVM> getAll() {
+    public List<LikeVM> getAllLikes() {
         return likeService.getAll();
     }
 
     @GetMapping(path = "/ArticleId/{id}")
-    public List<LikeVM> getByArticleId(@PathVariable("id") Long id) {
+    public List<LikeVM> getLikeByArticleId(@PathVariable("id") Long id) {
         return likeService.getByArticleId(id);
     }
 
     @GetMapping(path = "/UserId/{id}")
-    public List<LikeVM> getByUserId(@PathVariable("id") Long id) {
+    public List<LikeVM> getLikeByUserId(@PathVariable("id") Long id) {
         return likeService.getByUserId(id);
     }
 
     @GetMapping(path = "/Id/{id}")
-    public LikeVM getById(@PathVariable("id") Long id) {
+    public LikeVM getLikeById(@PathVariable("id") Long id) {
         try {
             return likeService.get(id);
         } catch (RuntimeException e) {
@@ -46,7 +46,7 @@ public class LikeController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void add(@RequestBody LikeAdd likeAdd) {
+    public void addLike(@RequestBody LikeAdd likeAdd) {
         try {
             likeService.add(likeAdd);
         } catch (RuntimeException e) {
@@ -57,7 +57,7 @@ public class LikeController {
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void toggle(@PathVariable("id") Long id) {
+    public void toggleLike(@PathVariable("id") Long id) {
         try {
             if (!sessionUserIsOwner(id)) {
                 throw new NoEditRightsException("Like");
@@ -71,7 +71,7 @@ public class LikeController {
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id) {
+    public void deleteLike(@PathVariable("id") Long id) {
         try {
             if (!sessionUserIsOwner(id)) {
                 throw new NoEditRightsException("Like");

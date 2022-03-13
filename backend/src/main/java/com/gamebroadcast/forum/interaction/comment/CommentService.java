@@ -1,7 +1,8 @@
 package com.gamebroadcast.forum.interaction.comment;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -13,15 +14,13 @@ import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
 import com.gamebroadcast.forum.interaction.comment.models.CommentUpdate;
 import com.gamebroadcast.forum.interaction.comment.models.CommentVM;
-import com.gamebroadcast.forum.security.SessionUtils;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
-    @Autowired
-    private CommentRepository commentRepository;
-
-    @Autowired
-    private ArticleService articleService;
+    private final CommentRepository commentRepository;
+    private final ArticleService articleService;
 
     public List<CommentVM> getAll() {
         List<Comment> comments = commentRepository.findAll();

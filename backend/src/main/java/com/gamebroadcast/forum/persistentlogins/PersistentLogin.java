@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.persistent_logins;
+package com.gamebroadcast.forum.persistentlogins;
 
 import java.sql.Timestamp;
 

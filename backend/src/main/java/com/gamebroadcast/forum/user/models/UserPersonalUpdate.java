@@ -1,6 +1,6 @@
 package com.gamebroadcast.forum.user.models;
 
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

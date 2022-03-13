@@ -1,9 +1,9 @@
 package com.gamebroadcast.forum.interaction.like.models;
 
-import com.gamebroadcast.forum.article.Article;
 import com.gamebroadcast.forum.article.ArticleService;
-import com.gamebroadcast.forum.security.SessionUtils;
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.utils.SessionUtils;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 public class LikeAdd {
     public Long articleId;

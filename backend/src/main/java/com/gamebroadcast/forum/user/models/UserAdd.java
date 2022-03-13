@@ -1,7 +1,7 @@
 package com.gamebroadcast.forum.user.models;
 
-import com.gamebroadcast.forum.user.AppUser;
 import com.gamebroadcast.forum.user.UserService;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,7 +20,11 @@ public class UserAdd {
         
         String passwordHash = passwordEncoder.encode(password);
 
-        return new AppUser(username, email, passwordHash);
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordHash);
+        return user;
     }
 
     public String getUsername(){

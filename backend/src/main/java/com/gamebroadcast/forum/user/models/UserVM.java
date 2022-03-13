@@ -3,21 +3,31 @@ package com.gamebroadcast.forum.user.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gamebroadcast.forum.user.AppUser;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
+import lombok.Getter;
+
+@Getter
 public class UserVM {
-    public String username;
-    public String email;
-    public String shortDescription;
-    public String profilePicturePath;
-    public String role;
+    private Long id;
 
-    public UserVM(AppUser user) {
-        this.username = user.getUsername();
-        this.email = user.getEmail();
-        this.shortDescription = user.getShortDescription();
-        this.profilePicturePath = user.getProfilePicturePath();
-        this.role = user.getRole();
+    private String username;
+
+    private String email;
+
+    private String shortDescription;
+
+    private String profilePicturePath;
+
+    private String role;
+
+    public UserVM(AppUser appUser) {
+        this.id = appUser.getId();
+        this.username = appUser.getUsername();
+        this.email = appUser.getEmail();
+        this.shortDescription = appUser.getShortDescription();
+        this.profilePicturePath = appUser.getProfilePicturePath();
+        this.role = appUser.getRole();
     }
 
     public static List<UserVM> toUserVMList(List<AppUser> users) {
@@ -25,4 +35,5 @@ public class UserVM {
         users.forEach(user -> userVMs.add(new UserVM(user)));
         return userVMs;
     }
+
 }
