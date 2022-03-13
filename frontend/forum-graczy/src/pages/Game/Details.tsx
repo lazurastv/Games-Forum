@@ -7,6 +7,8 @@ const Detail = (props: any) => (
     mt: 2,
   }}>
     <Typography component="span" sx={{
+      minWidth:"120px",
+      display:"inline-block",
       color: "text.secondary",
       fontWeight: "300",
       mr: 1 
@@ -22,19 +24,19 @@ export default function Details(props: any) {
   return (
     <Widget sx={props.sx} >
       <Typography sx={{
-        fontSize: "18px",
+        fontSize: "20px",
         mb: 2,
-        textAlign: "center"
+        textAlign: "left"
       }}>
         Szczegóły
       </Typography>
-      <Detail label="Producent: ">
+      <Detail label="Producent:">
         {props.producer}
       </Detail>
-      <Detail label="Wydawca: ">
+      <Detail label="Wydawca:">
         {props.publisher}
       </Detail>
-      <Detail label="Data premiery: ">
+      <Detail label="Data premiery:">
         {props.date}
       </Detail>
     </Widget>

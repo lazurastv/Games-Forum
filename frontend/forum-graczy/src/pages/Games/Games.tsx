@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import GameTile from "../../components/Tile/GameTile";
 import { games } from "../../data-mock/games";
 import SectionHeader from "../../components/SectionHeader";
-import GamesFilter from "./GamesFilter";
+import GamesFilter from "../../components/Filters/GamesFilter";
 import PaginationFilter from "../../components/Filters/PaginationFilter";
 import { useState } from "react";
 export default function Games() {

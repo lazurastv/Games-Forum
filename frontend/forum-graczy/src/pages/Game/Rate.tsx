@@ -34,7 +34,7 @@ export default function Rate(props: any) {
         sx={{
           mt: 3,
           mb: 2,
-          fontSize: "18px",
+          fontSize: "20px",
         }}
       >
         Oceń grę

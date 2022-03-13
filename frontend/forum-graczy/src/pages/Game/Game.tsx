@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import Rate from "./Rate";
 import Details from "./Details";
-import AccordionGroup from "./AccordionGroup";
+import CollapsedInfo from "./CollapsedInfo";
 import HeaderTile from "../../components/Tile/HeaderTile";
 import SectionHeader from "../../components/SectionHeader";
 import Carousel from "../../components/Carousel/Carousel";
@@ -89,7 +89,7 @@ export default function Game() {
         }
       />
       <Container maxWidth="xl">
-        <Grid container sx={{ flexWrap: "wrap-reverse", mb: 6 }}>
+        <Grid container sx={{ flexWrap: "wrap-reverse", mb: 3 }}>
           <Grid
             item
             xs={12}
@@ -118,7 +118,7 @@ export default function Game() {
             <Details sx={{ mb: 5 }} producer="CD Project" publisher="CD Project RED" date="20 marca 2021" />
           </Grid>
         </Grid>
-        <AccordionGroup />
+        <CollapsedInfo />
 
         <SectionHeader>Podobne gry</SectionHeader>
         <Carousel>

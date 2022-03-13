@@ -1,18 +1,7 @@
-import {
-  Box,
-  Button,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  FormControl,
-  Divider,
-  Collapse,
-} from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Box, Checkbox, FormControlLabel, FormGroup, FormControl } from "@mui/material";
 import { useState } from "react";
-import Filter from "../../components/Filters/Filter";
+import Filter from "./Filter";
+import CollapseButton from "../CollapseButton";
 const checkboxGroup = [
   {
     name: "Gatunek",
@@ -34,16 +23,8 @@ const checkedStateInitial = checkboxGroup.reduce(
   }),
   {}
 );
-const checkboxInCollapseInitial = checkboxGroup.reduce(
-  (a, v) => ({
-    ...a,
-    [v.name]: false,
-  }),
-  {}
-);
 export default function GamesFilter(props: any) {
   const [checkedState, setCheckedState] = useState<{ [key: string]: any }>(checkedStateInitial);
-  const [checkboxInCollapse, setCheckboxInCollapse] = useState<{ [key: string]: any }>(checkboxInCollapseInitial);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, groupName: string) => {
     setCheckedState({
       ...checkedState,
@@ -54,40 +35,14 @@ export default function GamesFilter(props: any) {
     });
   };
   const handleClearCheckboxes = () => {
-    setCheckboxInCollapse(checkboxInCollapseInitial);
     setCheckedState(checkedStateInitial);
   };
   return (
     <Filter otherFilters={{ booleanFilters: checkedState }} clearOtherFilters={handleClearCheckboxes} page={props.page}>
       <Box>
         {checkboxGroup.map((group) => (
-          <FormControl
-            sx={{
-              display: "flex",
-              mb: 2,
-            }}
-            key={group.name}
-            variant="standard"
-          >
-            <Button
-              disableRipple
-              sx={{ display: "flex", justifyContent: "space-between" }}
-              onClick={() =>
-                setCheckboxInCollapse({ ...checkboxInCollapse, [group.name]: !checkboxInCollapse[group.name] })
-              }
-            >
-              <Typography variant="button" sx={{ color: "text.secondary", fontSize: "16px" }}>
-                {group.name}
-              </Typography>
-              {checkboxInCollapse[group.name] ? (
-                <KeyboardArrowUpIcon color="secondary" />
-              ) : (
-                <KeyboardArrowDownIcon color="secondary" />
-              )}
-            </Button>
-            <Divider sx={{ mb: 1, borderColor: "secondary.dark", opacity: ".8" }} />
-
-            <Collapse in={checkboxInCollapse[group.name]} sx={{ ml: 2 }}>
+          <FormControl sx={{ display: "flex" }} key={group.name} variant="standard">
+            <CollapseButton name={group.name}>
               <FormGroup>
                 {group.checkboxLabels.map((checkboxLabel) => (
                   <FormControlLabel
@@ -104,7 +59,7 @@ export default function GamesFilter(props: any) {
                   />
                 ))}
               </FormGroup>
-            </Collapse>
+            </CollapseButton>
           </FormControl>
         ))}
       </Box>
