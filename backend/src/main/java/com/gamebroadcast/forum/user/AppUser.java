@@ -26,9 +26,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_username", columnNames = "username"),
         @UniqueConstraint(name = "user_unique_email", columnNames = "email") })
@@ -38,6 +40,7 @@ public class AppUser implements UserDetails {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @Column(name = "id", updatable = false)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "username", nullable = false, length = 60)
@@ -76,18 +79,8 @@ public class AppUser implements UserDetails {
     @Column(name = "last_used", nullable = false)
     private Timestamp lastUsed;
 
-    public AppUser(Long id, String username, String email, String password, String shortDescription,
-            String profilePicturePath, String role, boolean enabled, boolean locked, Timestamp lastUsed) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.shortDescription = shortDescription;
-        this.profilePicturePath = profilePicturePath;
-        this.role = role;
-        this.enabled = enabled;
-        this.locked = locked;
-        this.lastUsed = lastUsed;
+    public AppUser() {
+        super();
     }
 
     public AppUser(String username, String email, String password) {
@@ -100,9 +93,6 @@ public class AppUser implements UserDetails {
         this.enabled = true; // to be changed
         this.locked = false;
         this.lastUsed = Timestamp.from(Instant.now());
-    }
-
-    public AppUser() {
     }
 
     @Override
@@ -141,30 +131,5 @@ public class AppUser implements UserDetails {
         return this.enabled;
     }
 
-    // ----------------
 
-    public static String checkUsername(String username) {
-        if (username.length() > 60) {
-            return "Username is too long.";
-        }
-        return null;
-    }
-
-    public static String checkEmail(String email) {
-        if (email.length() > 254) {
-            return "Email is too long.";
-        }
-        return null;
-    }
-
-    public static String checkPassword(String password) {
-        if (password.length() > 60) {
-            return "Password is too long.";
-        }
-        return null;
-    }
-
-    public static String hashPassword(String password) {
-        return password;
-    }
 }

@@ -1,26 +1,41 @@
 package com.gamebroadcast.forum.user.models;
 
-import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import com.gamebroadcast.forum.user.AppUser;
 import com.gamebroadcast.forum.user.UserService;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 public class UserAdd {
     public String username;
     public String email;
     public String password;
+    public String repeatPassword;
+    
+    public AppUser toAppUser(UserService userService, PasswordEncoder passwordEncoder) {
+        UserValidators.checkUsername(username);
+        UserValidators.checkEmail(email);
+        UserValidators.checkPassword(password);
+        UserValidators.checkPasswordMatch(password, repeatPassword);
+        
+        String passwordHash = passwordEncoder.encode(password);
 
-    public AppUser toAppUser(UserService userService) {
-        String message = null;
+        return new AppUser(username, email, passwordHash);
+    }
 
-        if ((message = AppUser.checkUsername(this.username)) != null) {
-            throw new InvalidInputException(message);
-        } else if ((message = AppUser.checkEmail(this.username)) != null) {
-            throw new InvalidInputException(message);
-        } else if ((message = AppUser.checkPassword(this.password)) != null) {
-            throw new InvalidInputException(message);
-        } else {
-            password = AppUser.hashPassword(password);
-            return new AppUser(username, email, password);
-        }
+    public String getUsername(){
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRepeatPassword() {
+        return repeatPassword;
     }
 }
