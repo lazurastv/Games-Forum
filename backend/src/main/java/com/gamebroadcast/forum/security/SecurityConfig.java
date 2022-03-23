@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new ExceptionFilter(), LoginFilter.class)
                 .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
-                .antMatchers(GET, "/api/**").permitAll()
+                .antMatchers(GET, "**").permitAll()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
@@ -122,16 +122,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         // configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
         // "DELETE", "OPTIONS"));
         // configuration.setAllowedHeaders(Arrays.asList("authorization",
         // "content-type", "x-auth-token"));
         // configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }

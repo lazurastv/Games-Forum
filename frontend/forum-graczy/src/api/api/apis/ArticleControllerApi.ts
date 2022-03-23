@@ -68,11 +68,15 @@ export class ArticleControllerApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+
             body: {
-                "username": "a",
-                "password": "p",
-                "rememberMe": false
-            }
+                username: "a",
+                password: "p",
+                rememberMe: false
+            },
+        }, {
+            mode: 'cors',
+            credentials: 'include'
         });
 
         return response;

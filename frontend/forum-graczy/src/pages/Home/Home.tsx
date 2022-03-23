@@ -13,12 +13,16 @@ export default function Home() {
   articles.login()
     .then(result => {
       console.log(result);
-      const article = { 'title': 'Article 1', 'introduction': 'Hello', 'content': '<html><html/>' } as ArticleAddUpdate;
-      articles.addArticle({ 'articleAddUpdate': article })
+      const article = { 'title': 'Article 11', 'introduction': 'Hello', 'content': '<html><html/>' } as ArticleAddUpdate;
+      articles.addArticle({ 'articleAddUpdate': article }, {
+        credentials: 'include'
+      })
         .then(result => {
           console.log('Add ' + result);
           articles.getAllArticles()
-            .then(result => console.log('Read ' + result))
+            .then(result => {
+              result.forEach(x => console.log(x));
+            })
             .catch(error => console.error('Read' + error));
         })
         .catch(error => console.error('Add ' + error));
