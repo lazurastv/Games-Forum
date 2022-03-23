@@ -4,12 +4,28 @@ import ReviewTile from "../../components/Carousel/ReviewTile";
 import Carousel from "../../components/Carousel/Carousel";
 import GameTile from "../../components/Carousel/GameTile";
 import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
-import { ArticleControllerApi } from "C:/Users/lazurastv/Desktop/Zespolowy/Forum-Graczy/frontend/forum-graczy/src/api/api/apis/ArticleControllerApi";
+
+import { ArticleAddUpdate } from "../../api/api/models";
+import { ArticleControllerApi } from "../../api/api";
 
 export default function Home() {
   const articles = new ArticleControllerApi();
-  articles.login();
-  articles.getAllArticles().then(result => console.log(result)).catch(error => console.error(error));
+  articles.login()
+    .then(result => {
+      console.log(result);
+      const article = { 'title': 'Article 1', 'introduction': 'Hello', 'content': '<html><html/>' } as ArticleAddUpdate;
+      articles.addArticle({ 'articleAddUpdate': article })
+        .then(result => {
+          console.log('Add ' + result);
+          articles.getAllArticles()
+            .then(result => console.log('Read ' + result))
+            .catch(error => console.error('Read' + error));
+        })
+        .catch(error => console.error('Add ' + error));
+    })
+    .catch(
+      error => console.error('Login ' + error)
+    );
   return (
     <Container maxWidth="xl">``
       <TopNews />

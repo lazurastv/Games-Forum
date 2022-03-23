@@ -57,30 +57,25 @@ export interface UpdateArticleRequest {
 export class ArticleControllerApi extends runtime.BaseAPI {
 
     async login() {
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        // headerParameters['Content-Type'] = '';
+        headerParameters['Content-Type'] = 'application/json';
 
-        // const response = await this.request({
-        //     path: `/login`,
-        //     method: 'POST',
-        //     headers: headerParameters,
-        //     query: queryParameters,
-        //     body: { 'username': 'a', 'password': 'p' },
-        // });
+        const response = await this.request({
+            path: `/api/user/login`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: {
+                "username": "a",
+                "password": "p",
+                "rememberMe": false
+            }
+        });
 
-        var formdata = new FormData();
-        formdata.append("username", "a");
-        formdata.append("password", "p");
-
-        var request = new XMLHttpRequest();
-        request.open("POST", "http://localhost:8080/login");
-        request.send(formdata);
-
-        request.onreadystatechange = () => console.log(request.responseText);
+        return response;
     }
 
     /**
