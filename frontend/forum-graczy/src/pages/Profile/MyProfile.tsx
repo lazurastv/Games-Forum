@@ -1,7 +1,8 @@
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import MultilineTruncatedText from "../../components/MultilineTruncatedText";
 import { styled } from "@mui/material/styles";
+import * as React from "react";
 
 const MyProfile = () => {
   return (
@@ -118,7 +119,26 @@ interface IProfileDataBox {
   description: string;
 }
 
+interface IChangeDesc {
+  editing: boolean;
+  text: string;
+}
+
+const dataFontSize = { xs: 16, sm: 18, md: 20 };
+const labelFontSize = { xs: 14, sm: 16, md: 18 };
+
 const ProfileDataBox = (props:IProfileDataBox) => {
+  const [descValue, setDescValue] = React.useState(props.description);
+  const [editingDesc, setEditingDesc] = React.useState<IChangeDesc>({ editing: false, text: "Zmień opis" });
+
+  const handleChangeDesc = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescValue(event.target.value);
+  };
+
+  const handleChangeDescButton = () => {
+    let txt = editingDesc.text === "Zmień opis" ? "Zapisz zmiany" : "Zmień opis";
+    setEditingDesc({ editing: !editingDesc.editing, text: txt});
+  }
 
   return (
     <Box
@@ -140,27 +160,42 @@ const ProfileDataBox = (props:IProfileDataBox) => {
       <ProfileData label="Liczba komentarzy:">
         {props.number_of_comments}
       </ProfileData>
-      <ProfileData label="Opis:">{props.description}</ProfileData>
+      {editingDesc.editing === false ? (
+        <ProfileData label="Opis:">{descValue}</ProfileData>
+      ) : (
+        <TextField
+          id="outlined-multiline-static"
+          label="Edycja opisu"
+          multiline
+          rows={5}
+          color="secondary"
+          value={descValue}
+          onChange={handleChangeDesc}
+          autoFocus={true}
+          helperText="Wprowadź opis swojego profilu, maksymalna długość XXX znaków."
+        />
+      )}
       <Stack direction="row" justifyContent="end">
         <Button
           disableElevation
           variant="outlined"
           color="secondary"
+          onClick={handleChangeDescButton}
           sx={{
             color: "text.primary",
             borderColor: "secondary.main",
             width: 200,
+            mt: 1
           }}
         >
-          Zmień opis
+          {editingDesc.text}
         </Button>
       </Stack>
     </Box>
   );
 };
 
-const dataFontSize = { xs: 16, sm: 18, md: 20 };
-const labelFontSize = { xs: 14, sm: 16, md: 18 };
+
 
 const ProfileData = (props: any) => (
   <>

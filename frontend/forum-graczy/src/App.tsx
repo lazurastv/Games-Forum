@@ -18,6 +18,7 @@ import Game from './pages/Game/Game';
 import Article from './pages/Article/Article';
 import Review from './pages/Review/Review';
 import MyProfile from "./pages/Profile/MyProfile";
+import Profile from "./pages/Profile/Profile";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
 import ScrollToTop from "./components/ScrollToTop";
@@ -70,7 +71,7 @@ function App() {
               <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
               <Route path="mojprofil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
               <Route path="logowanie" element={<Login />} />
-              <Route path="profiletmp" element={<MyProfile />} />
+              <Route path="profiletmp" element={<Profile />} />
               <Route path="rejestracja" element={<Registration />} />
             </Routes>
           </ThemeProvider>
