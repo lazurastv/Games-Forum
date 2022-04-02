@@ -56,32 +56,6 @@ export interface UpdateArticleRequest {
  */
 export class ArticleControllerApi extends runtime.BaseAPI {
 
-    async login() {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/user/login`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-
-            body: {
-                username: "a",
-                password: "p",
-                rememberMe: false
-            },
-        }, {
-            mode: 'cors',
-            credentials: 'include'
-        });
-
-        return response;
-    }
-
     /**
      */
     async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
