@@ -17,8 +17,13 @@ import Reviews from './pages/Reviews/Reviews';
 import Game from './pages/Game/Game';
 import Article from './pages/Article/Article';
 import Review from './pages/Review/Review';
+import MyProfile from "./pages/Profile/MyProfile";
+import Profile from "./pages/Profile/Profile";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
+import ScrollToTop from "./components/ScrollToTop";
+import DraftEditor from "./components/DraftEditor";
+
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -53,8 +58,10 @@ function App() {
           <ThemeProvider theme={theme}>
             <Navigation />
             <CssBaseline />
+            <ScrollToTop/>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="mockEditor" element={<DraftEditor />} />
               <Route path="artykuly" element={<Articles />} />
               <Route path="artykuly/:title" element={<Article />} />
               <Route path="recenzje" element={<Reviews />} />
@@ -62,7 +69,9 @@ function App() {
               <Route path="gry" element={<Games />} />
               <Route path="gry/:title" element={<Game />} />
               <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
+              <Route path="mojprofil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
               <Route path="logowanie" element={<Login />} />
+              <Route path="profiletmp" element={<Profile />} />
               <Route path="rejestracja" element={<Registration />} />
             </Routes>
           </ThemeProvider>

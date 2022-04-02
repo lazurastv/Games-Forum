@@ -27,27 +27,32 @@ export default function Registration() {
   return (
     <div className="login">
       <Container component="main" maxWidth="sm">
-        <Box sx={{p:{xs: 4, sm: 6, md: 6}}}></Box>
+        <Box sx={{ p: { xs: 4, sm: 6, md: 6 } }}></Box>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             backgroundColor: "primary.main",
             p: 5,
             borderRadius: "12px",
             boxShadow: 2,
-            mb: {xs: 8, sm: 12, md: 16}
+            mb: { xs: 8, sm: 12, md: 16 },
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Rejestracja
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>          
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -57,28 +62,6 @@ export default function Registration() {
                   name="username"
                   autoComplete="username"
                   autoFocus
-                  color="secondary"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Imię"
-                  color="secondary"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Nazwisko"
-                  name="lastName"
-                  autoComplete="family-name"
                   color="secondary"
                 />
               </Grid>
@@ -106,8 +89,22 @@ export default function Registration() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Potwierdź Hasło"
+                  type="password"
+                  id="password2"
+                  autoComplete="confirm-password"
+                  color="secondary"
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="secondary" />}
+                  control={
+                    <Checkbox value="allowExtraEmails" color="secondary" />
+                  }
                   label="Akceptuje regulamin forum itd..."
                 />
               </Grid>
@@ -124,7 +121,11 @@ export default function Registration() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Box component={Link} to="/logowanie" sx={{color: "text.secondary"}}>
+                <Box
+                  component={Link}
+                  to="/logowanie"
+                  sx={{ color: "text.secondary" }}
+                >
                   Masz już konto? Zaloguj się
                 </Box>
               </Grid>
