@@ -118,7 +118,7 @@ export default function AccountIconButton() {
       >
         {sessionContext.isAuthenticated ? (
         [
-        <MenuItemLink key="profile" jsxElement={<Avatar sx={{mr: 2, ml: -1, width: 24, height: 24}}/>} path="/profil" text="Mój profil"/>,
+        <MenuItemLink key="profile" jsxElement={<Avatar sx={{mr: 2, ml: -1, width: 24, height: 24}}/>} path="/mojprofil" text="Mój profil"/>,
         <Divider key="divider" sx={{my: 1}}/>,
         <MenuItem key="logout" onClick={logoutHandler}>
           <ListItemIcon>

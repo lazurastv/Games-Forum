@@ -40,11 +40,5 @@ export const games = [
         src: "./images/Games/dl2.jpg",
         author: "Bartłomiej Czekaj",
         date: "11.02.2022"
-    },
-    {
-        title: "Elden Ring",
-        src: "./images/Games/elden-ring.jpg",
-        author: "Bartłomiej Czekaj",
-        date: "10.02.2022",
-    },
+    }
 ]
