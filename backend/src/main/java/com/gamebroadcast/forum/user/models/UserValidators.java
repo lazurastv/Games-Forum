@@ -8,6 +8,7 @@ import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
 
 public class UserValidators {
+    
     public static boolean checkUsername(String username) {
         final String USERNAME_PATTERN = "^[\\p{L}]+([\\p{L}0-9_-]+)$";
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
@@ -39,7 +40,7 @@ public class UserValidators {
 
     public static boolean checkPassword(String password) {
         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])" 
-        + "(?=.*[@#$%^&+=\\-_?])(?=\\S+$).{8,}$";
+        + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,\\.])(?=\\S+$).{8,}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         if (password == null) {
@@ -60,6 +61,9 @@ public class UserValidators {
     }
 
     public static boolean checkShortDescription(String shortDescription) {
+        if(shortDescription.length() > 256) {
+            throw new InvalidInputException("Short description is not short.");
+        }
         return true;
     }
 
