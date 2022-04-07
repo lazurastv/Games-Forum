@@ -1,0 +1,1084 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/review/{reviewId}:
+    get:
+      tags:
+      - review-controller
+      operationId: getReview
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReviewVM'
+    put:
+      tags:
+      - review-controller
+      operationId: updateReview
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewAddUpdate'
+        required: true
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - review-controller
+      operationId: deleteReview
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/rating/{id}:
+    put:
+      tags:
+      - rating-controller
+      operationId: updateRating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingUpdate'
+        required: true
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - rating-controller
+      operationId: deleteRating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/like/{id}:
+    put:
+      tags:
+      - like-controller
+      operationId: toggleLike
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - like-controller
+      operationId: deleteLike
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/game/{gameId}:
+    get:
+      tags:
+      - game-controller
+      operationId: getGame
+      parameters:
+      - name: gameId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GameVM'
+    put:
+      tags:
+      - game-controller
+      operationId: updateGame
+      parameters:
+      - name: gameId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameAddUpdate'
+        required: true
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - game-controller
+      operationId: deleteGame
+      parameters:
+      - name: gameId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/comment/{id}:
+    put:
+      tags:
+      - comment-controller
+      operationId: updateComment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentUpdate'
+        required: true
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - comment-controller
+      operationId: deleteComment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/article/{articleId}:
+    get:
+      tags:
+      - article-controller
+      operationId: getArticle
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ArticleVM'
+    put:
+      tags:
+      - article-controller
+      operationId: updateArticle
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleAddUpdate'
+        required: true
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - article-controller
+      operationId: deleteArticle
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /api/review:
+    get:
+      tags:
+      - review-controller
+      operationId: getAllReviews
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewVM'
+    post:
+      tags:
+      - review-controller
+      operationId: addReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewAddUpdate'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/rating:
+    get:
+      tags:
+      - rating-controller
+      operationId: getAllRatings
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatingVM'
+    post:
+      tags:
+      - rating-controller
+      operationId: addRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingAdd'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/like:
+    get:
+      tags:
+      - like-controller
+      operationId: getAllLikes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LikeVM'
+    post:
+      tags:
+      - like-controller
+      operationId: addLike
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LikeAdd'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/game:
+    get:
+      tags:
+      - game-controller
+      operationId: getAllGames
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameVM'
+    post:
+      tags:
+      - game-controller
+      operationId: addGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameAddUpdate'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/comment:
+    get:
+      tags:
+      - comment-controller
+      operationId: getAllComments
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentVM'
+    post:
+      tags:
+      - comment-controller
+      operationId: addComment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentAdd'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/article:
+    get:
+      tags:
+      - article-controller
+      operationId: getAllArticles
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleVM'
+    post:
+      tags:
+      - article-controller
+      operationId: addArticle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleAddUpdate'
+        required: true
+      responses:
+        "201":
+          description: Created
+  /api/review/Similar/{reviewId}:
+    get:
+      tags:
+      - review-controller
+      operationId: getAllReviews_1
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewVM'
+  /api/review/FullInfo/{reviewId}:
+    get:
+      tags:
+      - review-controller
+      operationId: getReviewFullInfo
+      parameters:
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReviewFullInfoVM'
+  /api/rating/UserId/{id}:
+    get:
+      tags:
+      - rating-controller
+      operationId: getRatingByUserId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatingVM'
+  /api/rating/Id/{id}:
+    get:
+      tags:
+      - rating-controller
+      operationId: getRatingById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RatingVM'
+  /api/rating/GameId/{id}:
+    get:
+      tags:
+      - rating-controller
+      operationId: getRatingByGameId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatingVM'
+  /api/platforms:
+    get:
+      tags:
+      - tag-controller
+      operationId: getAllPlatforms
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/like/UserId/{id}:
+    get:
+      tags:
+      - like-controller
+      operationId: getLikeByUserId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LikeVM'
+  /api/like/Id/{id}:
+    get:
+      tags:
+      - like-controller
+      operationId: getLikeById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LikeVM'
+  /api/like/ArticleId/{id}:
+    get:
+      tags:
+      - like-controller
+      operationId: getLikeByArticleId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LikeVM'
+  /api/genres:
+    get:
+      tags:
+      - tag-controller
+      operationId: getAllGenres
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/game/Similar/{gameId}:
+    get:
+      tags:
+      - game-controller
+      operationId: getAllGames_1
+      parameters:
+      - name: gameId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameVM'
+  /api/game/FullInfo/{gameId}:
+    get:
+      tags:
+      - game-controller
+      operationId: getGameFullInfo
+      parameters:
+      - name: gameId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GameFullInfoVM'
+  /api/distributions:
+    get:
+      tags:
+      - tag-controller
+      operationId: getAllDistributions
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/comment/UserId/{id}:
+    get:
+      tags:
+      - comment-controller
+      operationId: getCommentByUserId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentVM'
+  /api/comment/Id/{id}:
+    get:
+      tags:
+      - comment-controller
+      operationId: getCommentById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CommentVM'
+  /api/comment/ArticleId/{id}:
+    get:
+      tags:
+      - comment-controller
+      operationId: getCommentByArticleId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentVM'
+  /api/article/Similar/{articleId}:
+    get:
+      tags:
+      - article-controller
+      operationId: getSimilarArticles
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleVM'
+  /api/article/FullInfo/{articleId}:
+    get:
+      tags:
+      - article-controller
+      operationId: getArticleFullInfo
+      parameters:
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ArticleFullInfoVM'
+components:
+  schemas:
+    ReviewAddUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        introduction:
+          type: string
+        content:
+          type: string
+        score:
+          type: integer
+          format: int32
+        pluses:
+          type: array
+          items:
+            type: string
+        minuses:
+          type: array
+          items:
+            type: string
+    RatingUpdate:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+    GameAddUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        introduction:
+          type: string
+        content:
+          type: string
+        gamePublishDate:
+          type: string
+          format: date-time
+        developer:
+          type: string
+        editorScore:
+          type: number
+          format: double
+        genres:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        distributions:
+          type: array
+          items:
+            type: string
+    CommentUpdate:
+      type: object
+      properties:
+        content:
+          type: string
+    ArticleAddUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        introduction:
+          type: string
+        content:
+          type: string
+    RatingAdd:
+      type: object
+      properties:
+        gameId:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int32
+    LikeAdd:
+      type: object
+      properties:
+        articleId:
+          type: integer
+          format: int64
+        isLike:
+          type: boolean
+    CommentAdd:
+      type: object
+      properties:
+        articleId:
+          type: integer
+          format: int64
+        content:
+          type: string
+    ReviewVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        authorName:
+          type: string
+    AuthorVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        shortDescription:
+          type: string
+        profilePicturePath:
+          type: string
+    CommentVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        articleId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        content:
+          type: string
+    ReviewFullInfoVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        introduction:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/AuthorVM'
+        likes:
+          type: integer
+          format: int32
+        dislikes:
+          type: integer
+          format: int32
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentVM'
+        score:
+          type: integer
+          format: int32
+        pluses:
+          type: array
+          items:
+            type: string
+        minuses:
+          type: array
+          items:
+            type: string
+    RatingVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        gameId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int32
+    LikeVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        articleId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        isLike:
+          type: boolean
+    GameVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        authorName:
+          type: string
+    GameFullInfoVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        introduction:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/AuthorVM'
+        likes:
+          type: integer
+          format: int32
+        dislikes:
+          type: integer
+          format: int32
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentVM'
+        gamePublishDate:
+          type: string
+          format: date-time
+        developer:
+          type: string
+        editorScore:
+          type: number
+          format: double
+        userScore:
+          type: number
+          format: double
+        genres:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        distributions:
+          type: array
+          items:
+            type: string
+    ArticleVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        authorName:
+          type: string
+    ArticleFullInfoVM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        introduction:
+          type: string
+        path:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/AuthorVM'
+        likes:
+          type: integer
+          format: int32
+        dislikes:
+          type: integer
+          format: int32
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentVM'
