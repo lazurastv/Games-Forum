@@ -18,6 +18,8 @@ public class UserVM {
 
     private String role;
 
+    public int commentCount;
+
     public UserVM(AppUser appUser) {
         this.id = appUser.getId();
         this.username = appUser.getUsername();
@@ -25,6 +27,7 @@ public class UserVM {
         this.shortDescription = appUser.getShortDescription();
         this.profilePicturePath = appUser.getProfilePicturePath();
         this.role = appUser.getRole();
+        this.commentCount = appUser.getComments().size();
     }
 
 }
