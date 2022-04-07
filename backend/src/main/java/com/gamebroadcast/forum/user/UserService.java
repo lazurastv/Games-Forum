@@ -1,12 +1,10 @@
 package com.gamebroadcast.forum.user;
 
-import java.util.List;
-
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.user.models.UserAdd;
-import com.gamebroadcast.forum.user.models.UserCreditentialsUpdate;
+import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.user.schemas.AppUser;
@@ -26,11 +24,6 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-    public List<UserVM> getAll() {
-        List<AppUser> users = userRepository.findAll();
-        return UserVM.toUserVMList(users);
-    }
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(userRepository.findById(id)
@@ -52,9 +45,7 @@ public class UserService {
 
     public void add(UserAdd userAdd) throws IllegalStateException { 
         try {
-            if (usernameExists(userAdd.getUsername())) {
-                throw new ItemAlreadyExistsException("user");
-            } else if (emailExists(userAdd.getEmail())) {
+            if (usernameExists(userAdd.getUsername()) || emailExists(userAdd.getEmail())) {
                 throw new ItemAlreadyExistsException("user");
             }
             AppUser user = userAdd.toAppUser(userService, passwordEncoder);
@@ -70,19 +61,14 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void updateCreditentials(Long id, UserCreditentialsUpdate userUpdate) throws IllegalStateException {
+    public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
         try {
-            if (usernameExists(userUpdate.getUsername())) {
-                if (!isCurrentUsername(userUpdate.getUsername(), id)) {
-                    throw new ItemAlreadyExistsException("user");
-                }
-            } else if (emailExists(userUpdate.getEmail())) {
-                if (!isCurrentEmail(userUpdate.getEmail(), id)) {
-                    throw new ItemAlreadyExistsException("user");
-                }
+            if ((usernameExists(userUpdate.getUsername()) && !isCurrentUsername(userUpdate.getUsername(), id))
+            || (emailExists(userUpdate.getEmail()) && !isCurrentEmail(userUpdate.getEmail(), id))) { 
+                throw new ItemAlreadyExistsException("user");
             }
             AppUser user = getUser(id);
-            userUpdate.updateCreditentials(user);
+            userUpdate.updateCredentials(user, passwordEncoder);
             userRepository.save(user);
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());

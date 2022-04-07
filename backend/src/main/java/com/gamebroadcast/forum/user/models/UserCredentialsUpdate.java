@@ -2,14 +2,15 @@ package com.gamebroadcast.forum.user.models;
 
 import com.gamebroadcast.forum.user.schemas.AppUser;
 
-public class UserCreditentialsUpdate {
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+public class UserCredentialsUpdate {
     public String username;
     public String email;
     public String password;
-    public String repeatPassword;
-    public String role;
+    public String shortDescription;
 
-    public void updateCreditentials(AppUser user) {
+    public void updateCredentials(AppUser user, PasswordEncoder passwordEncoder) {
         if (username != null && username != "") {
             if (UserValidators.checkUsername(username)) {
                 user.setUsername(this.username);
@@ -21,15 +22,17 @@ public class UserCreditentialsUpdate {
             }
         }
         if (password != null && password !="") {
-            if (UserValidators.checkPassword(password) && UserValidators.checkPasswordMatch(password, repeatPassword)) {
-                
+            if (UserValidators.checkPassword(password)) {
+                String passwordHash = passwordEncoder.encode(password);
+                user.setPassword(passwordHash);
             }
         }
-        if (role != null && role != "") {
-            if (UserValidators.checkRole(role)) {
-                user.setRole(this.role);
+        if (shortDescription != null) {
+            if (UserValidators.checkShortDescription(shortDescription)) {
+                user.setShortDescription(shortDescription);
             }
         }
+        
     }
 
     public String getUsername() {

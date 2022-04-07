@@ -40,7 +40,7 @@ public class UserValidators {
 
     public static boolean checkPassword(String password) {
         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])" 
-        + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,\\.])(?=\\S+$).{8,}$";
+        + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,.])(?=\\S+$).{8,}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         if (password == null) {
@@ -49,13 +49,6 @@ public class UserValidators {
             throw new InvalidInputException("Password is too short.");
         } else if (!matcher.matches()) {
             throw new InvalidInputException("Invalid password.");
-        }
-        return true;
-    }
-
-    public static boolean checkPasswordMatch(String password, String repeatPassword) {
-        if(!password.equals(repeatPassword)) {
-            throw new InvalidInputException("Passwords don't match.");
         }
         return true;
     }

@@ -10,13 +10,11 @@ public class UserAdd {
     public String username;
     public String email;
     public String password;
-    public String repeatPassword;
     
     public AppUser toAppUser(UserService userService, PasswordEncoder passwordEncoder) {
         UserValidators.checkUsername(username);
         UserValidators.checkEmail(email);
         UserValidators.checkPassword(password);
-        UserValidators.checkPasswordMatch(password, repeatPassword);
         
         String passwordHash = passwordEncoder.encode(password);
 
@@ -37,9 +35,5 @@ public class UserAdd {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getRepeatPassword() {
-        return repeatPassword;
     }
 }

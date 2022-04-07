@@ -1,11 +1,9 @@
 package com.gamebroadcast.forum.user;
 
-import java.util.List;
-
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
 import com.gamebroadcast.forum.user.models.UserAdd;
-import com.gamebroadcast.forum.user.models.UserCreditentialsUpdate;
+import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
@@ -30,13 +28,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<UserVM> getAll() {
-        return userService.getAll();
-    }
-
     @GetMapping(path = "/{id}")
-    public UserVM getByUsername(@PathVariable("id") Long id) {
+    public UserVM getById(@PathVariable("id") Long id) {
         try {
             return userService.getByUserId(id);
         } catch (RuntimeException e) {
@@ -86,23 +79,26 @@ public class UserController {
         }
     }
 
-    @PutMapping(path = "/{id}/creditentials")
+    @PutMapping(path = "/{id}/credentials")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void UpdateCreditentials(@PathVariable("id") Long id, @RequestBody UserCreditentialsUpdate userUpdate) {
+    public void UpdateCredentials(@PathVariable("id") Long id, @RequestBody UserCredentialsUpdate userUpdate) {
         try {
-            userService.updateCreditentials(id, userUpdate);
+            if (!sessionUserCanUpdateUser(id)) {
+                throw new NoEditRightsException("User");
+            }
+            userService.updateCredentials(id, userUpdate);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
     }
 
-    @PutMapping(path = "/{id}/edit")
+    @PutMapping(path = "/{id}/editrole")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void UpdatePersonal(@PathVariable("id") Long id, @RequestBody UserPersonalUpdate userUpdate) {
+    public void UpdateRole(@PathVariable("id") Long id, @RequestBody UserPersonalUpdate userUpdate) {
         try {
-            if (!sessionUserCanUpdateUser(id)) {
+            if (!SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {
                 throw new NoEditRightsException("User");
             }
             userService.updatePersonal(id, userUpdate);
