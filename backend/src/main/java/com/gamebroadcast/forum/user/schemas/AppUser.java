@@ -1,6 +1,7 @@
 package com.gamebroadcast.forum.user.schemas;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.persistence.UniqueConstraint;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
+import com.gamebroadcast.forum.security.Role;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,12 +29,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_username", columnNames = "username"),
@@ -107,5 +107,12 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public AppUser() {
+        this.role = Role.USER.toString();
+        this.enabled = false;
+        this.locked = false;
+        this.lastUsed = Timestamp.from(Instant.now());
     }
 }

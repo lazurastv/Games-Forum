@@ -8,8 +8,8 @@ import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
 
 public class UserValidators {
-    
-    public static boolean checkUsername(String username) {
+
+    public static void checkUsername(String username) {
         final String USERNAME_PATTERN = "^[\\p{L}]+([\\p{L}0-9_-]+)$";
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
         Matcher matcher = pattern.matcher(username);
@@ -22,12 +22,11 @@ public class UserValidators {
         } else if (!matcher.matches()) {
             throw new InvalidInputException("Invalid username");
         }
-        return true;
     }
 
-    public static boolean checkEmail(String email) {
+    public static void checkEmail(String email) {
         final String EMAIL_PATTERN = "^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@"
-        + "[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$";
+                + "[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         if (email == null) {
@@ -35,12 +34,11 @@ public class UserValidators {
         } else if (!matcher.matches()) {
             throw new InvalidInputException("Invalid email.");
         }
-        return true;
     }
 
-    public static boolean checkPassword(String password) {
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])" 
-        + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,.])(?=\\S+$).{8,}$";
+    public static void checkPassword(String password) {
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,.])(?=\\S+$).{8,}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         if (password == null) {
@@ -50,20 +48,18 @@ public class UserValidators {
         } else if (!matcher.matches()) {
             throw new InvalidInputException("Invalid password.");
         }
-        return true;
     }
 
-    public static boolean checkShortDescription(String shortDescription) {
-        if(shortDescription.length() > 256) {
+    public static void checkShortDescription(String shortDescription) {
+        if (shortDescription.length() > 256) {
             throw new InvalidInputException("Short description is not short.");
         }
-        return true;
     }
 
-    public static boolean checkRole(String role) {
+    public static void checkRole(String role) {
         for (Role e : Role.values()) {
             if (role.equals(e.name())) {
-                return true;
+                return;
             }
         }
         throw new InvalidInputException("Such role doesn't exist.");

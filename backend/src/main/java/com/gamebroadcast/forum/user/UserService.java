@@ -1,30 +1,29 @@
 package com.gamebroadcast.forum.user;
 
-import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserRoleUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
+import com.gamebroadcast.forum.user.models.UserValidators;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+import lombok.RequiredArgsConstructor;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
-        UserVM userVM = new UserVM(userRepository.findById(id)
-                .orElseThrow(() -> new ItemNotFoundException("User", "id", Long.toString(id))));
+        UserVM userVM = new UserVM(getUser(id));
         return userVM;
     }
 
@@ -46,46 +45,42 @@ public class UserService {
         return new UserVM(user);
     }
 
-    public void add(UserAdd userAdd) throws IllegalStateException {
-        try {
-            if (usernameExists(userAdd.getUsername()) || emailExists(userAdd.getEmail())) {
-                throw new ItemAlreadyExistsException("user");
-            }
-            AppUser user = userAdd.toAppUser(this, passwordEncoder);
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new ApiRequestException(e.getMessage());
+    public void add(UserAdd userAdd) {
+        UserValidators.checkUsername(userAdd.username);
+        UserValidators.checkEmail(userAdd.email);
+        UserValidators.checkPassword(userAdd.password);
+
+        if (usernameExists(userAdd.username) || emailExists(userAdd.email)) {
+            throw new ItemAlreadyExistsException("user");
         }
 
-    }
-
-    public void delete(Long id) throws IllegalStateException {
-        AppUser user = getUser(id);
-        userRepository.delete(user);
+        userAdd.password = passwordEncoder.encode(userAdd.password);
+        AppUser user = userAdd.toAppUser();
+        userRepository.save(user);
     }
 
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
-        try {
-            if ((usernameExists(userUpdate.getUsername()) && !isCurrentUsername(userUpdate.getUsername(), id))
-                    || (emailExists(userUpdate.getEmail()) && !isCurrentEmail(userUpdate.getEmail(), id))) {
-                throw new ItemAlreadyExistsException("user");
-            }
-            AppUser user = getUser(id);
-            userUpdate.updateCredentials(user, passwordEncoder);
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new ApiRequestException(e.getMessage());
+        UserValidators.checkUsername(userUpdate.username);
+        UserValidators.checkEmail(userUpdate.email);
+        UserValidators.checkPassword(userUpdate.password);
+        UserValidators.checkShortDescription(userUpdate.shortDescription);
+
+        if ((usernameExists(userUpdate.username) && !isCurrentUsername(userUpdate.email, id))
+                || (emailExists(userUpdate.email) && !isCurrentEmail(userUpdate.email, id))) {
+            throw new ItemAlreadyExistsException("user");
         }
+
+        AppUser user = getUser(id);
+        userUpdate.updateCredentials(user);
+        userRepository.save(user);
     }
 
     public void updateRole(Long id, UserRoleUpdate userUpdate) throws IllegalStateException {
-        try {
-            AppUser user = getUser(id);
-            userUpdate.updateRole(user);
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new ApiRequestException(e.getMessage());
-        }
+        UserValidators.checkRole(userUpdate.role);
+
+        AppUser user = getUser(id);
+        userUpdate.updateRole(user);
+        userRepository.save(user);
     }
 
     public void banUser(Long id) throws IllegalStateException {
@@ -98,6 +93,11 @@ public class UserService {
         AppUser user = getUser(id);
         user.setLocked(false);
         userRepository.save(user);
+    }
+
+    public void delete(Long id) throws IllegalStateException {
+        AppUser user = getUser(id);
+        userRepository.delete(user);
     }
 
     public boolean sessionUserIsOwner(Long id) {
