@@ -1,5 +1,6 @@
 package com.gamebroadcast.forum.user;
 
+import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.user.models.UserAdd;
@@ -60,17 +61,36 @@ public class UserService {
     }
 
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
-        UserValidators.checkUsername(userUpdate.username);
-        UserValidators.checkEmail(userUpdate.email);
-        UserValidators.checkPassword(userUpdate.password);
+        boolean requirePasswordConfirmation = false;
+        if (userUpdate.username != "") {
+            UserValidators.checkUsername(userUpdate.username);
+            requirePasswordConfirmation = true;
+        }
+        if (userUpdate.username != "") {
+            UserValidators.checkEmail(userUpdate.email);
+            requirePasswordConfirmation = true;
+        }
+        if (userUpdate.password != "") {
+            UserValidators.checkPassword(userUpdate.password);
+            userUpdate.password = passwordEncoder.encode(userUpdate.password);
+            requirePasswordConfirmation = true;
+        }
         UserValidators.checkShortDescription(userUpdate.shortDescription);
 
-        if ((usernameExists(userUpdate.username) && !isCurrentUsername(userUpdate.email, id))
+        AppUser user = getUser(id);
+
+        if(requirePasswordConfirmation && !SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {  // should be changed to a better solution
+            if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword()))
+            {
+                throw new InvalidInputException("Current password doesn't match.");
+            }
+        }
+
+        if ((usernameExists(userUpdate.username) && !isCurrentUsername(userUpdate.username, id))
                 || (emailExists(userUpdate.email) && !isCurrentEmail(userUpdate.email, id))) {
             throw new ItemAlreadyExistsException("user");
         }
 
-        AppUser user = getUser(id);
         userUpdate.updateCredentials(user);
         userRepository.save(user);
     }
