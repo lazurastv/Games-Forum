@@ -20,9 +20,6 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
@@ -43,12 +40,18 @@ public class UserService {
         return userVM;
     }
 
+    public UserVM getSessionUser() {
+        Long id = SessionUtils.getUserFromSession().getId();
+        AppUser user = getUser(id);
+        return new UserVM(user);
+    }
+
     public void add(UserAdd userAdd) throws IllegalStateException {
         try {
             if (usernameExists(userAdd.getUsername()) || emailExists(userAdd.getEmail())) {
                 throw new ItemAlreadyExistsException("user");
             }
-            AppUser user = userAdd.toAppUser(userService, passwordEncoder);
+            AppUser user = userAdd.toAppUser(this, passwordEncoder);
             userRepository.save(user);
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());

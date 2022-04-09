@@ -55,6 +55,12 @@ public class UserController {
         }
     }
 
+    @GetMapping(path = "/session")
+    @PreAuthorize("hasRole('USER')")
+    public UserVM getSessionUser() {
+        return userService.getSessionUser();
+    }
+
     @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public void add(@RequestBody UserAdd userAdd) {
