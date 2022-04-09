@@ -25,8 +25,8 @@ public class UserValidators {
     }
 
     public static void checkEmail(String email) {
-        final String EMAIL_PATTERN = "^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@"
-                + "[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$";
+        final String EMAIL_PATTERN = "^[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@"
+                + "[a-zA-Z0-9][a-zA-Z0-9-]*(\\.[a-zA-Z0-9_+-]+)+$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         if (email == null) {
@@ -37,8 +37,8 @@ public class UserValidators {
     }
 
     public static void checkPassword(String password) {
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=\\-_?!*(){}[\\]\\\\\\/<>,.])(?=\\S+$).{8,}$";
+        final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$^&%+=\\-_?!*(){}<>,\\./\\\\\\[\\]])(?=\\S+$).{8,}$"; // /
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         if (password == null) {
