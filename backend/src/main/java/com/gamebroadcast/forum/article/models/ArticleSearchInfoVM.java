@@ -10,6 +10,7 @@ public class ArticleSearchInfoVM {
     public String path;
     public Date publishDate;
     public String authorName;
+    public int popularity;
 
     public ArticleSearchInfoVM(Article article) {
         this.id = article.getId();
@@ -17,6 +18,7 @@ public class ArticleSearchInfoVM {
         this.path = article.getPath();
         this.publishDate = article.getPublishDate();
         this.authorName = article.getAuthor().getUsername();
+        this.popularity = article.getLikeCount() + article.getDislikeCount();
     }
 
     public static List<ArticleSearchInfoVM> toArticleSearchInfoVMList(List<Article> articles) {
