@@ -6,8 +6,4 @@ public class RatingUpdate {
     public void update(Rating rating) {
         rating.setValue(this.value);
     }
-
-    public boolean checkValue(int value) {
-        return (value >= 1 && value <= 10);
-    }
 }

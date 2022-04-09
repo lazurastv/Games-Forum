@@ -29,5 +29,4 @@ public class UserVM {
         this.role = appUser.getRole();
         this.commentCount = appUser.getComments().size();
     }
-
 }

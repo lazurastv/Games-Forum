@@ -1,10 +1,12 @@
 package com.gamebroadcast.forum.user.schemas;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,8 @@ import javax.persistence.UniqueConstraint;
 
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
+import com.gamebroadcast.forum.interaction.rating.models.Rating;
+import com.gamebroadcast.forum.security.Role;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,11 +28,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "user_unique_username", columnNames = "username"),
@@ -39,6 +43,7 @@ public class AppUser implements UserDetails {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @Column(name = "id", updatable = false)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "username", nullable = false, length = 60)
@@ -50,7 +55,7 @@ public class AppUser implements UserDetails {
     @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "short_description", nullable = false, length = 300)
+    @Column(name = "short_description", nullable = true, length = 300)
     private String shortDescription;
 
     @Column(name = "profile_picture_path", nullable = false, length = 100)
@@ -59,11 +64,14 @@ public class AppUser implements UserDetails {
     @Column(name = "role", nullable = false, length = 6)
     private String role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Like> likes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Rating> ratings;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
@@ -99,5 +107,12 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public AppUser() {
+        this.role = Role.USER.toString();
+        this.enabled = false;
+        this.locked = false;
+        this.lastUsed = Timestamp.from(Instant.now());
     }
 }
