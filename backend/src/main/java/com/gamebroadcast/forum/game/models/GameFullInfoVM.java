@@ -3,6 +3,7 @@ package com.gamebroadcast.forum.game.models;
 import java.util.Date;
 import java.util.List;
 
+import com.gamebroadcast.forum.article.models.Article;
 import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 
 public class GameFullInfoVM extends ArticleFullInfoVM {
@@ -15,8 +16,10 @@ public class GameFullInfoVM extends ArticleFullInfoVM {
     public List<String> distributions;
 
     public GameFullInfoVM(Game game) {
-        super(game);
+        super(new Article());
         id = game.getId();
+        title = game.getTitle();
+        introduction = game.getIntroduction();
         gamePublishDate = game.getGamePublishDate();
         developer = game.getDeveloper();
         editorScore = game.getEditorScore();

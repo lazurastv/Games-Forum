@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.article.models.ArticleType;
 import com.gamebroadcast.forum.exceptions.InvalidTagException;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.tag.TagRepositories;
@@ -27,7 +27,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Game extends Article {
+public class Game extends ArticleType {
     @Id
     @SequenceGenerator(name = "game_sequence", sequenceName = "game_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_sequence")
@@ -54,17 +54,6 @@ public class Game extends Article {
 
     @ElementCollection
     private List<String> distributions;
-
-    public Game(String title, String introduction, String path, Date gamePublishDate, String developer,
-            Double editorScore, List<String> genres, List<String> platforms, List<String> distributions) {
-        super(title, introduction, path);
-        this.gamePublishDate = gamePublishDate;
-        this.developer = developer;
-        this.editorScore = editorScore;
-        this.setGenres(genres);
-        this.setPlatforms(platforms);
-        this.setDistributions(distributions);
-    }
 
     public void setGenres(List<String> genres) {
         if (!TagRepositories.genresExist(genres)) {

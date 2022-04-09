@@ -3,6 +3,7 @@ package com.gamebroadcast.forum.review.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gamebroadcast.forum.article.models.Article;
 import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
 
 public class ReviewFullInfoVM extends ArticleFullInfoVM {
@@ -11,11 +12,13 @@ public class ReviewFullInfoVM extends ArticleFullInfoVM {
     public List<String> minuses;
 
     public ReviewFullInfoVM(Review review) {
-        super(review);
-        this.id = review.getId();
-        this.score = review.getScore();
-        this.pluses = review.getPluses();
-        this.minuses = review.getMinuses();
+        super(new Article());
+        id = review.getId();
+        title = review.getTitle();
+        introduction = review.getIntroduction();
+        score = review.getScore();
+        pluses = review.getPluses();
+        minuses = review.getMinuses();
     }
 
     public static List<ReviewFullInfoVM> toReviewVMList(List<Review> reviews) {

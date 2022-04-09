@@ -10,11 +10,15 @@ public class ReviewAddUpdate extends ArticleAddUpdate {
     public List<String> minuses;
 
     public Review toReview(String path) {
-        return new Review(title, introduction, path, score, pluses, minuses);
+        Review review = new Review();
+        update(review);
+        review.setPath(path);
+        return review;
     }
 
     public void update(Review review) {
-        update(review);
+        review.setTitle(title);
+        review.setIntroduction(introduction);
         review.setScore(score);
         review.setPluses(pluses);
         review.setMinuses(minuses);

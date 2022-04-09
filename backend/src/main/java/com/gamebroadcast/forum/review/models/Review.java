@@ -8,14 +8,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.article.models.ArticleType;
 
 @Entity
 @Table(name = "review")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Review extends Article {
+public class Review extends ArticleType {
     @Id
     @SequenceGenerator(name = "review_sequence", sequenceName = "review_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence")
@@ -30,14 +30,6 @@ public class Review extends Article {
 
     @ElementCollection
     private List<String> minuses;
-
-    public Review(String title, String introduction, String path, int score, List<String> pluses,
-            List<String> minuses) {
-        super(title, introduction, path);
-        this.setScore(score);
-        this.pluses = pluses;
-        this.minuses = minuses;
-    }
 
     public void setScore(int score) {
         if (score < 1 || score > 10) {

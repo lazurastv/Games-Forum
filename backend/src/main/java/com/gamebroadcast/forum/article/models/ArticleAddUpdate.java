@@ -6,7 +6,10 @@ public class ArticleAddUpdate {
     public String content;
 
     public Article toArticle(String path) {
-        return new Article(title, introduction, path);
+        Article article = new Article();
+        update(article);
+        article.setPath(path);
+        return article;
     }
 
     public void update(Article article) {

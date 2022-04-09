@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleRepository<Article> articleRepository;
+    private final ArticleTypeRepository<Article> articleRepository;
 
     public List<ArticleVM> getAllArticles() {
         List<Article> articles = articleRepository.findAll();

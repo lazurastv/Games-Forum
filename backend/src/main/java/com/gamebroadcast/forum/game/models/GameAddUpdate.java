@@ -14,22 +14,20 @@ public class GameAddUpdate extends ArticleAddUpdate {
     public List<String> distributions;
 
     public Game toGame(String path) {
-        return new Game(
-                title,
-                introduction,
-                path,
-                gamePublishDate,
-                developer,
-                editorScore,
-                genres,
-                platforms,
-                distributions);
+        Game game = new Game();
+        update(game);
+        game.setPath(path);
+        return game;
     }
 
     public void update(Game game) {
-        update(game);
+        game.setTitle(title);
+        game.setIntroduction(introduction);
         game.setGamePublishDate(gamePublishDate);
         game.setDeveloper(developer);
         game.setEditorScore(editorScore);
+        game.setGenres(genres);
+        game.setPlatforms(platforms);
+        game.setDistributions(distributions);
     }
 }
