@@ -4,11 +4,10 @@ import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
-import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
+import com.gamebroadcast.forum.user.models.UserRoleUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(path = "api/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping(path = "/{id}")
     public UserVM getById(@PathVariable("id") Long id) {
@@ -55,6 +56,12 @@ public class UserController {
         }
     }
 
+    @GetMapping(path = "/session")
+    @PreAuthorize("hasRole('USER')")
+    public UserVM getSessionUser() {
+        return userService.getSessionUser();
+    }
+
     @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public void add(@RequestBody UserAdd userAdd) {
@@ -80,11 +87,11 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}/credentials")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void UpdateCredentials(@PathVariable("id") Long id, @RequestBody UserCredentialsUpdate userUpdate) {
         try {
-            if (!sessionUserCanUpdateUser(id)) {
+            if (!sessionUserCanUpdateUserCredentials(id)) {
                 throw new NoEditRightsException("User");
             }
             userService.updateCredentials(id, userUpdate);
@@ -94,14 +101,11 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}/editrole")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void UpdateRole(@PathVariable("id") Long id, @RequestBody UserPersonalUpdate userUpdate) {
+    public void UpdateRole(@PathVariable("id") Long id, @RequestBody UserRoleUpdate userUpdate) {
         try {
-            if (!SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {
-                throw new NoEditRightsException("User");
-            }
-            userService.updatePersonal(id, userUpdate);
+            userService.updateRole(id, userUpdate);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -133,7 +137,7 @@ public class UserController {
         return userService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 
-    private boolean sessionUserCanUpdateUser(Long id) {
+    private boolean sessionUserCanUpdateUserCredentials(Long id) {
         return userService.sessionUserIsOwner(id) || SessionUtils.getUserFromSession().getRole().equals("ADMIN");
     }
 }

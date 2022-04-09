@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamebroadcast.forum.user.models.UserLogin;
-import com.gamebroadcast.forum.user.models.UserVM;
-import com.gamebroadcast.forum.user.schemas.AppUser;
-import com.gamebroadcast.forum.utils.ResponseUtils;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,9 +57,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-        AppUser appUser = (AppUser) authResult.getPrincipal();
-        UserVM resUser = new UserVM(appUser);
-        ResponseUtils.setResponseFields(response, 200, new ObjectMapper().writeValueAsString(resUser));
+        // AppUser appUser = (AppUser) authResult.getPrincipal();
+        // UserVM resUser = new UserVM(appUser);
+        // ResponseUtils.setResponseFields(response, 200, new
+        // ObjectMapper().writeValueAsString(resUser));
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
         if (fromBody.isRememberMe()) {
