@@ -21,7 +21,7 @@ public class UserCredentialsUpdate {
                 user.setEmail(this.email);
             }
         }
-        if (password != null && password !="") {
+        if (password != null && password != "") {
             if (UserValidators.checkPassword(password)) {
                 String passwordHash = passwordEncoder.encode(password);
                 user.setPassword(passwordHash);
@@ -32,7 +32,7 @@ public class UserCredentialsUpdate {
                 user.setShortDescription(shortDescription);
             }
         }
-        
+
     }
 
     public String getUsername() {

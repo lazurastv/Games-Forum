@@ -5,7 +5,7 @@ import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
-import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
+import com.gamebroadcast.forum.user.models.UserRoleUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
@@ -30,20 +30,20 @@ public class UserService {
                 .orElseThrow(() -> new ItemNotFoundException("User", "id", Long.toString(id))));
         return userVM;
     }
-    
+
     public UserVM getByEmail(String email) throws IllegalStateException {
         UserVM userVM = new UserVM(userRepository.findByEmail(email)
                 .orElseThrow(() -> new ItemNotFoundException("User", "email", email)));
         return userVM;
     }
- 
+
     public UserVM getByUsername(String username) throws IllegalStateException {
         UserVM userVM = new UserVM(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ItemNotFoundException("User", "username", username)));
         return userVM;
     }
 
-    public void add(UserAdd userAdd) throws IllegalStateException { 
+    public void add(UserAdd userAdd) throws IllegalStateException {
         try {
             if (usernameExists(userAdd.getUsername()) || emailExists(userAdd.getEmail())) {
                 throw new ItemAlreadyExistsException("user");
@@ -53,7 +53,7 @@ public class UserService {
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());
         }
-        
+
     }
 
     public void delete(Long id) throws IllegalStateException {
@@ -64,7 +64,7 @@ public class UserService {
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
         try {
             if ((usernameExists(userUpdate.getUsername()) && !isCurrentUsername(userUpdate.getUsername(), id))
-            || (emailExists(userUpdate.getEmail()) && !isCurrentEmail(userUpdate.getEmail(), id))) { 
+                    || (emailExists(userUpdate.getEmail()) && !isCurrentEmail(userUpdate.getEmail(), id))) {
                 throw new ItemAlreadyExistsException("user");
             }
             AppUser user = getUser(id);
@@ -75,10 +75,10 @@ public class UserService {
         }
     }
 
-    public void updatePersonal(Long id, UserPersonalUpdate userUpdate) throws IllegalStateException {
+    public void updateRole(Long id, UserRoleUpdate userUpdate) throws IllegalStateException {
         try {
             AppUser user = getUser(id);
-            userUpdate.updatePersonal(user, passwordEncoder);
+            userUpdate.updateRole(user);
             userRepository.save(user);
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());

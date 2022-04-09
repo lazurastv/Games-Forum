@@ -4,7 +4,7 @@ import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
-import com.gamebroadcast.forum.user.models.UserPersonalUpdate;
+import com.gamebroadcast.forum.user.models.UserRoleUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
@@ -96,12 +96,12 @@ public class UserController {
     @PutMapping(path = "/{id}/editrole")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void UpdateRole(@PathVariable("id") Long id, @RequestBody UserPersonalUpdate userUpdate) {
+    public void UpdateRole(@PathVariable("id") Long id, @RequestBody UserRoleUpdate userUpdate) {
         try {
             if (!SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {
                 throw new NoEditRightsException("User");
             }
-            userService.updatePersonal(id, userUpdate);
+            userService.updateRole(id, userUpdate);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
