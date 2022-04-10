@@ -1,14 +1,13 @@
-package com.gamebroadcast.forum.game.models;
+package com.gamebroadcast.forum.content.game.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleVM;
+import com.gamebroadcast.forum.content.content.ContentVM;
 
-public class GameVM extends ArticleVM {
+public class GameVM extends ContentVM {
     public GameVM(Game game) {
         super(game);
-        id = game.getId();
     }
 
     public static List<GameVM> toGameVMList(List<Game> games) {

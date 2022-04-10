@@ -1,20 +1,22 @@
-package com.gamebroadcast.forum.review.models;
+package com.gamebroadcast.forum.content.review.models;
 
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleAddUpdate;
+import com.gamebroadcast.forum.content.content.ContentAddUpdate;
 
-public class ReviewAddUpdate extends ArticleAddUpdate {
+public class ReviewAddUpdate extends ContentAddUpdate {
     public int score;
     public List<String> pluses;
     public List<String> minuses;
 
     public Review toReview(String path) {
-        return new Review(title, introduction, path, score, pluses, minuses);
+        Review review = new Review(path);
+        update(review);
+        return review;
     }
 
     public void update(Review review) {
-        update(review);
+        super.update(review);
         review.setScore(score);
         review.setPluses(pluses);
         review.setMinuses(minuses);

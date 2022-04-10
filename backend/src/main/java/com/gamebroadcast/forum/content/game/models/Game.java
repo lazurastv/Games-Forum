@@ -1,43 +1,33 @@
-package com.gamebroadcast.forum.game.models;
+package com.gamebroadcast.forum.content.game.models;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.exceptions.InvalidTagException;
+import com.gamebroadcast.forum.interaction.rating.models.Rating;
+import com.gamebroadcast.forum.tag.TagRepositories;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import com.gamebroadcast.forum.article.models.Article;
-import com.gamebroadcast.forum.exceptions.InvalidTagException;
-import com.gamebroadcast.forum.interaction.rating.models.Rating;
-import com.gamebroadcast.forum.tag.TagRepositories;
-
-import java.util.Date;
-import java.util.List;
-
 @Entity
-@Table(name = "game")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("G")
 @NoArgsConstructor
-public class Game extends Article {
-    @Id
-    @SequenceGenerator(name = "game_sequence", sequenceName = "game_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_sequence")
-    @Column(updatable = false)
-    private Long id;
-
-    @Column(nullable = false)
+public class Game extends Content {
+    @Column
     private Date gamePublishDate;
 
-    @Column(nullable = false)
+    @Column
     private String developer;
 
     @Column
@@ -55,15 +45,8 @@ public class Game extends Article {
     @ElementCollection
     private List<String> distributions;
 
-    public Game(String title, String introduction, String path, Date gamePublishDate, String developer,
-            Double editorScore, List<String> genres, List<String> platforms, List<String> distributions) {
-        super(title, introduction, path);
-        this.gamePublishDate = gamePublishDate;
-        this.developer = developer;
-        this.editorScore = editorScore;
-        this.setGenres(genres);
-        this.setPlatforms(platforms);
-        this.setDistributions(distributions);
+    public Game(String path) {
+        super(path);
     }
 
     public void setGenres(List<String> genres) {

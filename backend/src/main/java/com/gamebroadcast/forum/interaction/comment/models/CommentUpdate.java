@@ -1,9 +1,9 @@
 package com.gamebroadcast.forum.interaction.comment.models;
 
 public class CommentUpdate {
-    public String content;
+    public String comment;
 
     public void update(Comment comment) {
-        comment.setContent(this.content);
+        comment.setComment(this.comment);
     }
 }

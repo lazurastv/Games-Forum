@@ -2,14 +2,19 @@ package com.gamebroadcast.forum.interaction.like.models;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.content.content.Content;
 import com.gamebroadcast.forum.user.schemas.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "likes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Like {
     @Id
     @SequenceGenerator(name = "like_sequence", sequenceName = "like_sequence", allocationSize = 1)
@@ -18,23 +23,18 @@ public class Like {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @JoinColumn(name = "content_id")
+    private Content content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
+    @JoinColumn(name = "author_id")
+    private AppUser author;
 
     @Column
     private boolean isLike;
 
-    public Like() {
-    }
-
-    public Like(Article article, AppUser user, boolean isLike) {
-        this.article = article;
-        this.user = user;
-        this.isLike = isLike;
+    public void publish() {
+        author = SessionUtils.getUserFromSession();
     }
 
     public boolean isLike() {
@@ -46,6 +46,6 @@ public class Like {
     }
 
     public boolean ownedBy(AppUser user) {
-        return this.user.getId().equals(user.getId());
+        return this.author.getId().equals(user.getId());
     }
 }

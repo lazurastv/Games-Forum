@@ -5,14 +5,14 @@ import java.util.List;
 
 public class LikeVM {
     public Long id;
-    public Long articleId;
-    public Long userId;
+    public Long contentId;
+    public String authorName;
     public boolean isLike;
 
     public LikeVM(Like like) {
         this.id = like.getId();
-        this.articleId = like.getArticle().getId();
-        this.userId = like.getUser().getId();
+        this.contentId = like.getContent().getId();
+        this.authorName = like.getAuthor().getUsername();
         this.isLike = like.isLike();
     }
 

@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.gamebroadcast.forum.content.article.models.Article;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
@@ -64,13 +65,16 @@ public class AppUser implements UserDetails {
     @Column(name = "role", nullable = false, length = 6)
     private String role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<Article> articles;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
 
     @Column(name = "enabled", nullable = false)

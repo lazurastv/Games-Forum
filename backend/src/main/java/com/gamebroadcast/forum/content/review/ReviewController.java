@@ -1,10 +1,10 @@
-package com.gamebroadcast.forum.review;
+package com.gamebroadcast.forum.content.review;
 
+import com.gamebroadcast.forum.content.review.models.ReviewAddUpdate;
+import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
+import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
-import com.gamebroadcast.forum.review.models.ReviewAddUpdate;
-import com.gamebroadcast.forum.review.models.ReviewFullInfoVM;
-import com.gamebroadcast.forum.review.models.ReviewVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;

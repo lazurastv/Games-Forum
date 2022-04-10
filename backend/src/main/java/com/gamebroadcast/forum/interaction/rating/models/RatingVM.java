@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RatingVM {
-	public Long id;
+    public Long id;
     public Long gameId;
-    public Long userId;
+    public String authorName;
     public int value;
 
     public RatingVM(Rating rating) {
         this.id = rating.getId();
         this.gameId = rating.getGame().getId();
-        this.userId = rating.getUser().getId();
+        this.authorName = rating.getAuthor().getUsername();
         this.value = rating.getValue();
     }
 

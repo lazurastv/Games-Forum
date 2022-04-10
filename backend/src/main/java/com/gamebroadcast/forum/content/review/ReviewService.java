@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.review;
+package com.gamebroadcast.forum.content.review;
 
 import org.springframework.stereotype.Service;
 
@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 
+import com.gamebroadcast.forum.content.review.models.Review;
+import com.gamebroadcast.forum.content.review.models.ReviewAddUpdate;
+import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
+import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
-import com.gamebroadcast.forum.review.models.Review;
-import com.gamebroadcast.forum.review.models.ReviewAddUpdate;
-import com.gamebroadcast.forum.review.models.ReviewFullInfoVM;
-import com.gamebroadcast.forum.review.models.ReviewVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import java.util.List;
@@ -48,6 +48,7 @@ public class ReviewService {
     public void addReview(ReviewAddUpdate reviewAdd, String path) {
         checkIfTitleIsUnique(reviewAdd.title);
         Review review = reviewAdd.toReview(path);
+        review.publish();
         reviewRepository.save(review);
     }
 
