@@ -1,14 +1,15 @@
 package com.gamebroadcast.forum.interaction.like;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.content.article.ArticleService;
 import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.content.ContentService;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.like.models.LikeAdd;
@@ -16,12 +17,10 @@ import com.gamebroadcast.forum.interaction.like.models.LikeVM;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 @Service
+@RequiredArgsConstructor
 public class LikeService {
-    @Autowired
-    private LikeRepository likeRepository;
-
-    @Autowired
-    private ArticleService articleService;
+    private final LikeRepository likeRepository;
+    private final ContentService contentService;
 
     public List<LikeVM> getAll() {
         List<Like> likes = likeRepository.findAll();
@@ -44,7 +43,7 @@ public class LikeService {
     }
 
     public void add(LikeAdd likeAdd) throws IllegalStateException {
-        Content content = articleService.getArticle(likeAdd.contentId);
+        Content content = contentService.get(likeAdd.contentId);
         Like like = likeAdd.toLike(content);
         like.publish();
         likeRepository.save(like);

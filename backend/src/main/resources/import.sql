@@ -9,6 +9,8 @@ INSERT INTO content (id, title, introduction, path, author_id, publish_date, dty
 INSERT INTO content (id, title, introduction, path, author_id, publish_date, dtype) VALUES (nextval('content_sequence'), 'Kiedy Wiedźmin 4?', 'iiiiiiiiiiiiiiiii', '/blah/blah', 2, '2014-07-02 06:14:00.742000000', 'A')
 INSERT INTO content (id, title, introduction, path, author_id, publish_date, dtype) VALUES (nextval('content_sequence'), 'Dlaczego GTA 6 nigdy nie powstanie', 'iiiiiiiiiiiiiiiii', '/blah/blah', 4, '2014-07-02 06:14:00.742000000', 'A')
 
+INSERT INTO content (id, title, introduction, path, author_id, publish_date, game_publish_date, developer, editor_score, dtype) VALUES (nextval('content_sequence'), 'GTA V', 'Taka gra, że się strzela i jeździ i parodiuje ameryke', '/blah/blah', '1', '2013-09-17', '2013-09-17', 'Rockstar', 4.5, 'G')
+
 INSERT INTO likes (id, content_id, author_id, is_like) VALUES (nextval('like_sequence'), 1, 2, TRUE)
 INSERT INTO likes (id, content_id, author_id, is_like) VALUES (nextval('like_sequence'), 1, 1, TRUE)
 INSERT INTO likes (id, content_id, author_id, is_like) VALUES (nextval('like_sequence'), 1, 3, FALSE)
@@ -22,7 +24,5 @@ INSERT INTO comments (id, content_id, author_id, comment) VALUES (nextval('comme
 INSERT INTO comments (id, content_id, author_id, comment) VALUES (nextval('comment_sequence'), 2, 1, 'I''ll have 2 Number 9s, a number 9 large, number 6 with extra dip, number 7, 2 number 45s, one with cheese, and a large soda.')
 INSERT INTO comments (id, content_id, author_id, comment) VALUES (nextval('comment_sequence'), 2, 3, 'Od san andreas to już nie to samo')
 INSERT INTO comments (id, content_id, author_id, comment) VALUES (nextval('comment_sequence'), 3, 1, 'Kiedyś krab złamał mi palec')
-
--- INSERT INTO game (id, title, introduction, path, game_publish_date, developer, editor_score) VALUES (nextval('content_sequence'), 'GTA V', 'Taka gra, że się strzela i jeździ i parodiuje ameryke', '/blah/blah', '2013-09-17', 'Rockstar', 4.5)
 
 -- INSERT INTO comments (id, content_id, author_id, content) VALUES (nextval('comment_sequence'), 6, 1, 'Kiedyś krab złamał mi palec')

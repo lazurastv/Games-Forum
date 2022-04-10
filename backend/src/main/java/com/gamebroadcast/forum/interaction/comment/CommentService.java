@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.content.article.ArticleService;
 import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.content.ContentService;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
@@ -21,7 +21,7 @@ import com.gamebroadcast.forum.utils.SessionUtils;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ArticleService articleService;
+    private final ContentService contentService;
 
     public List<CommentVM> getAll() {
         List<Comment> comments = commentRepository.findAll();
@@ -44,7 +44,7 @@ public class CommentService {
     }
 
     public void add(CommentAdd commentAdd) throws IllegalStateException {
-        Content content = articleService.getArticle(commentAdd.contentId);
+        Content content = contentService.get(commentAdd.contentId);
         Comment comment = commentAdd.toComment(content);
         comment.publish();
         commentRepository.save(comment);

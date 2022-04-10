@@ -21,9 +21,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RatingService {
-    private RatingRepository ratingRepository;
-
-    private GameService gameService;
+    private final RatingRepository ratingRepository;
+    private final GameService gameService;
 
     public List<RatingVM> getAll() {
         List<Rating> ratings = ratingRepository.findAll();
@@ -49,7 +48,7 @@ public class RatingService {
         Game game = gameService.getGame(ratingAdd.gameId);
         Rating rating = ratingAdd.toRating(game);
 
-        if (!ratingDoesNotExist(rating)) {
+        if (ratingExists(rating)) {
             throw new ItemAlreadyExistsException("rating");
         }
 
@@ -77,8 +76,9 @@ public class RatingService {
                 .orElseThrow(() -> new ItemNotFoundException("Rating", id));
     }
 
-    public boolean ratingDoesNotExist(Rating rating) {
-        List<Rating> v = ratingRepository.findByAuthorIdAndGameId(rating.getAuthor().getId(), rating.getGame().getId());
-        return (v == null || v.isEmpty());
+    public boolean ratingExists(Rating rating) {
+        return ratingRepository
+                .findByAuthorIdAndGameId(SessionUtils.getUserFromSession().getId(), rating.getGame().getId())
+                .isPresent();
     }
 }
