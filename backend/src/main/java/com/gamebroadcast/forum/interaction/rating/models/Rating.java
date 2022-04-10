@@ -2,17 +2,19 @@ package com.gamebroadcast.forum.interaction.rating.models;
 
 import javax.persistence.*;
 
+import com.gamebroadcast.forum.content.game.models.Game;
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
-import com.gamebroadcast.forum.game.models.Game;
 import com.gamebroadcast.forum.utils.SessionUtils;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "rating", uniqueConstraints = @UniqueConstraint(name = "rating_unique_game_and_user", columnNames = {
-		"game_id", "user_id" }))
+		"game_id", "author_id" }))
+@NoArgsConstructor
 public class Rating {
 	@Id
 	@SequenceGenerator(name = "rating_sequence", sequenceName = "rating_sequence", allocationSize = 1)
@@ -25,19 +27,14 @@ public class Rating {
 	private Game game;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private AppUser user;
+	@JoinColumn(name = "author_id")
+	private AppUser author;
 
 	@Column
 	private int value;
 
-	public Rating() {
-	}
-
-	public Rating(Game game, int value) {
-		this.game = game;
-		this.user = SessionUtils.getUserFromSession();
-		this.setValue(value);
+	public void publish() {
+		author = SessionUtils.getUserFromSession();
 	}
 
 	public void setValue(int value) {
@@ -48,11 +45,11 @@ public class Rating {
 	}
 
 	public boolean ownedBy(AppUser user) {
-		return this.user.getId().equals(user.getId());
+		return this.author.getId().equals(user.getId());
 	}
 
 	public boolean ownedBy(Long id) {
-		return this.user.getId().equals(id);
+		return this.author.getId().equals(id);
 	}
 
 	public boolean checkValue(int value) {

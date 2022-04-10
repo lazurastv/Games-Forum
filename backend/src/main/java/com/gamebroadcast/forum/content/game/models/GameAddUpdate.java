@@ -1,11 +1,11 @@
-package com.gamebroadcast.forum.game.models;
+package com.gamebroadcast.forum.content.game.models;
 
 import java.util.Date;
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleAddUpdate;
+import com.gamebroadcast.forum.content.content.ContentAddUpdate;
 
-public class GameAddUpdate extends ArticleAddUpdate {
+public class GameAddUpdate extends ContentAddUpdate {
     public Date gamePublishDate;
     public String developer;
     public Double editorScore;
@@ -14,15 +14,13 @@ public class GameAddUpdate extends ArticleAddUpdate {
     public List<String> distributions;
 
     public Game toGame(String path) {
-        Game game = new Game();
+        Game game = new Game(path);
         update(game);
-        game.setPath(path);
         return game;
     }
 
     public void update(Game game) {
-        game.setTitle(title);
-        game.setIntroduction(introduction);
+        super.update(game);
         game.setGamePublishDate(gamePublishDate);
         game.setDeveloper(developer);
         game.setEditorScore(editorScore);

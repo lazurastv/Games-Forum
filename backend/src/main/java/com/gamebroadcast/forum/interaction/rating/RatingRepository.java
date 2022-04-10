@@ -10,7 +10,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
 	public List<Rating> findByGameId(Long id);
 
-	public List<Rating> findByUserId(Long id);
+	public List<Rating> findByAuthorId(Long id);
 
-	public List<Rating> findByUserIdAndGameId(Long userId, Long gameId);
+	public List<Rating> findByAuthorIdAndGameId(Long userId, Long gameId);
 }

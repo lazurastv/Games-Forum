@@ -1,13 +1,11 @@
-package com.gamebroadcast.forum.article;
+package com.gamebroadcast.forum.content.content;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.gamebroadcast.forum.article.models.ArticleType;
-
-public interface ArticleTypeRepository<T extends ArticleType> extends JpaRepository<T, Long> {
+public interface ContentRepository<T extends Content> extends JpaRepository<T, Long> {
 
     Optional<T> findByTitle(String title);
 

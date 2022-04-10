@@ -7,7 +7,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.article.ArticleService;
+import com.gamebroadcast.forum.content.article.ArticleService;
+import com.gamebroadcast.forum.content.content.Content;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.like.models.LikeAdd;
@@ -28,12 +29,12 @@ public class LikeService {
     }
 
     public List<LikeVM> getByArticleId(Long id) {
-        List<Like> likes = likeRepository.findByArticleId(id);
+        List<Like> likes = likeRepository.findByContentId(id);
         return LikeVM.toLikeVMList(likes);
     }
 
     public List<LikeVM> getByUserId(Long id) {
-        List<Like> likes = likeRepository.findByUserId(id);
+        List<Like> likes = likeRepository.findByAuthorId(id);
         return LikeVM.toLikeVMList(likes);
     }
 
@@ -43,7 +44,9 @@ public class LikeService {
     }
 
     public void add(LikeAdd likeAdd) throws IllegalStateException {
-        Like like = likeAdd.toLike(articleService);
+        Content content = articleService.getArticle(likeAdd.contentId);
+        Like like = likeAdd.toLike(content);
+        like.publish();
         likeRepository.save(like);
     }
 

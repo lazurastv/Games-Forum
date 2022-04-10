@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.review.models;
+package com.gamebroadcast.forum.content.review.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,20 +8,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.article.models.ArticleType;
+import com.gamebroadcast.forum.content.content.Content;
 
 @Entity
-@Table(name = "review")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("R")
 @NoArgsConstructor
-public class Review extends ArticleType {
-    @Id
-    @SequenceGenerator(name = "review_sequence", sequenceName = "review_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_sequence")
-    @Column(updatable = false)
-    private Long id;
-
+public class Review extends Content {
     @Column
     private int score;
 
@@ -30,6 +24,10 @@ public class Review extends ArticleType {
 
     @ElementCollection
     private List<String> minuses;
+
+    public Review(String path) {
+        super(path);
+    }
 
     public void setScore(int score) {
         if (score < 1 || score > 10) {

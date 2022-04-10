@@ -2,14 +2,19 @@ package com.gamebroadcast.forum.interaction.comment.models;
 
 import javax.persistence.*;
 
-import com.gamebroadcast.forum.article.models.Article;
+import com.gamebroadcast.forum.content.content.Content;
 import com.gamebroadcast.forum.user.schemas.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "comments")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
     @Id
     @SequenceGenerator(name = "comment_sequence", sequenceName = "comment_sequence", allocationSize = 1)
@@ -18,30 +23,25 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @JoinColumn(name = "content_id")
+    private Content content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
+    @JoinColumn(name = "author_id")
+    private AppUser author;
 
     @Column(length = 2048)
-    private String content;
+    private String comment;
 
-    public Comment() {
-    }
-
-    public Comment(Article article, AppUser user, String content) {
-        this.article = article;
-        this.user = user;
-        this.content = content;
+    public void publish() {
+        author = SessionUtils.getUserFromSession();
     }
 
     public boolean ownedBy(AppUser user) {
-        return this.user.getId().equals(user.getId());
+        return this.author.getId().equals(user.getId());
     }
 
     public boolean ownedBy(Long id) {
-        return this.user.getId().equals(id);
+        return this.author.getId().equals(id);
     }
 }
