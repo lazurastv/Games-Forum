@@ -1,14 +1,14 @@
-package com.gamebroadcast.forum.review.models;
+package com.gamebroadcast.forum.content.review.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gamebroadcast.forum.article.models.ArticleSearchInfoVM;
 
-public class ReviewSearchInfoVM extends ArticleSearchInfoVM {
+public class ReviewSearchInfoVM {
     public ReviewSearchInfoVM(Review review) {
-        super(review);
-        id = review.getId();
+        //super(review);
+       // id = review.getId();
     }
 
     public static List<ReviewSearchInfoVM> toReviewVMList(List<Review> reviews) {

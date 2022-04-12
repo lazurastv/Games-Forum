@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.gamebroadcast.forum.content.game.GameService;
+import com.gamebroadcast.forum.content.game.models.Game;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
-import com.gamebroadcast.forum.game.GameService;
-import com.gamebroadcast.forum.game.models.Game;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
 import com.gamebroadcast.forum.interaction.rating.models.RatingUpdate;
@@ -21,9 +21,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RatingService {
-    private RatingRepository ratingRepository;
-
-    private GameService gameService;
+    private final RatingRepository ratingRepository;
+    private final GameService gameService;
 
     public List<RatingVM> getAll() {
         List<Rating> ratings = ratingRepository.findAll();
@@ -41,7 +40,7 @@ public class RatingService {
     }
 
     public List<RatingVM> getByUserId(Long id) {
-        List<Rating> ratings = ratingRepository.findByUserId(id);
+        List<Rating> ratings = ratingRepository.findByAuthorId(id);
         return RatingVM.toRatingVMList(ratings);
     }
 
@@ -49,10 +48,11 @@ public class RatingService {
         Game game = gameService.getGame(ratingAdd.gameId);
         Rating rating = ratingAdd.toRating(game);
 
-        if (!ratingDoesNotExsist(rating)) {
+        if (ratingExists(rating)) {
             throw new ItemAlreadyExistsException("rating");
         }
 
+        rating.publish();
         ratingRepository.save(rating);
     }
 
@@ -76,8 +76,9 @@ public class RatingService {
                 .orElseThrow(() -> new ItemNotFoundException("Rating", id));
     }
 
-    public boolean ratingDoesNotExsist(Rating rating) {
-        List<Rating> v = ratingRepository.findByUserIdAndGameId(rating.getUser().getId(), rating.getGame().getId());
-        return (v == null || v.isEmpty());
+    public boolean ratingExists(Rating rating) {
+        return ratingRepository
+                .findByAuthorIdAndGameId(SessionUtils.getUserFromSession().getId(), rating.getGame().getId())
+                .isPresent();
     }
 }

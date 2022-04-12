@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.gamebroadcast.forum.content.article.models.Article;
+
 public class ArticleSearchInfoVM {
     public Long id;
     public String title;

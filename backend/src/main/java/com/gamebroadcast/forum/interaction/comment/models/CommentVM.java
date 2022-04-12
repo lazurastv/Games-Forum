@@ -5,15 +5,15 @@ import java.util.List;
 
 public class CommentVM {
     public Long id;
-    public Long articleId;
-    public Long userId;
-    public String content;
+    public Long contentId;
+    public String authorName;
+    public String comment;
 
     public CommentVM(Comment comment) {
         this.id = comment.getId();
-        this.articleId = comment.getArticle().getId();
-        this.userId = comment.getUser().getId();
-        this.content = comment.getContent();
+        this.contentId = comment.getContent().getId();
+        this.authorName = comment.getAuthor().getUsername();
+        this.comment = comment.getComment();
     }
 
     public static List<CommentVM> toCommentVMList(List<Comment> comments) {

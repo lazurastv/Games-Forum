@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.article;
+package com.gamebroadcast.forum.content.article;
 
 import org.springframework.stereotype.Service;
 
@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.article.models.Article;
-import com.gamebroadcast.forum.article.models.ArticleAddUpdate;
-import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
-import com.gamebroadcast.forum.article.models.ArticleSearchInfoVM;
-import com.gamebroadcast.forum.article.models.ArticleVM;
+import com.gamebroadcast.forum.content.article.models.Article;
+import com.gamebroadcast.forum.content.article.models.ArticleAddUpdate;
+import com.gamebroadcast.forum.content.article.models.ArticleFullInfoVM;
+import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
@@ -22,16 +21,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleRepository<Article> articleRepository;
+    private final ArticleRepository articleRepository;
 
     public List<ArticleVM> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
         return ArticleVM.toArticleVMList(articles);
-    }
-
-    public List<ArticleSearchInfoVM> getAllArticleSearchInfos() {
-        List<Article> articles = articleRepository.findAll();
-        return ArticleSearchInfoVM.toArticleSearchInfoVMList(articles);
     }
 
     public List<ArticleVM> getSimilarArticles(Long articleId) {
@@ -54,6 +48,7 @@ public class ArticleService {
     public void addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
         Article article = articleAdd.toArticle(path);
+        article.publish();
         articleRepository.save(article);
     }
 

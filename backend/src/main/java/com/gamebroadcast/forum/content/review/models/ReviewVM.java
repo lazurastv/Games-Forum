@@ -1,14 +1,13 @@
-package com.gamebroadcast.forum.review.models;
+package com.gamebroadcast.forum.content.review.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleVM;
+import com.gamebroadcast.forum.content.content.ContentVM;
 
-public class ReviewVM extends ArticleVM {
+public class ReviewVM extends ContentVM {
     public ReviewVM(Review review) {
         super(review);
-        id = review.getId();
     }
 
     public static List<ReviewVM> toReviewVMList(List<Review> reviews) {

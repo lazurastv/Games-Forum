@@ -8,7 +8,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.gamebroadcast.forum.article.ArticleService;
+import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.content.ContentService;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.comment.models.CommentAdd;
@@ -20,7 +21,7 @@ import com.gamebroadcast.forum.utils.SessionUtils;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ArticleService articleService;
+    private final ContentService contentService;
 
     public List<CommentVM> getAll() {
         List<Comment> comments = commentRepository.findAll();
@@ -28,12 +29,12 @@ public class CommentService {
     }
 
     public List<CommentVM> getByArticleId(Long id) {
-        List<Comment> comments = commentRepository.findByArticleId(id);
+        List<Comment> comments = commentRepository.findByContentId(id);
         return CommentVM.toCommentVMList(comments);
     }
 
     public List<CommentVM> getByUserId(Long id) {
-        List<Comment> comments = commentRepository.findByUserId(id);
+        List<Comment> comments = commentRepository.findByAuthorId(id);
         return CommentVM.toCommentVMList(comments);
     }
 
@@ -43,7 +44,9 @@ public class CommentService {
     }
 
     public void add(CommentAdd commentAdd) throws IllegalStateException {
-        Comment comment = commentAdd.toComment(articleService);
+        Content content = contentService.get(commentAdd.contentId);
+        Comment comment = commentAdd.toComment(content);
+        comment.publish();
         commentRepository.save(comment);
     }
 

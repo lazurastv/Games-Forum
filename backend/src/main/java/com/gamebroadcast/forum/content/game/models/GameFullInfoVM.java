@@ -1,11 +1,11 @@
-package com.gamebroadcast.forum.game.models;
+package com.gamebroadcast.forum.content.game.models;
 
 import java.util.Date;
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleFullInfoVM;
+import com.gamebroadcast.forum.content.content.ContentFullInfoVM;
 
-public class GameFullInfoVM extends ArticleFullInfoVM {
+public class GameFullInfoVM extends ContentFullInfoVM {
     public Date gamePublishDate;
     public String developer;
     public Double editorScore;
@@ -16,7 +16,6 @@ public class GameFullInfoVM extends ArticleFullInfoVM {
 
     public GameFullInfoVM(Game game) {
         super(game);
-        id = game.getId();
         gamePublishDate = game.getGamePublishDate();
         developer = game.getDeveloper();
         editorScore = game.getEditorScore();
