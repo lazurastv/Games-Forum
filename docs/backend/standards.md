@@ -1,14 +1,26 @@
 # Przyjęte standardy
-Ten plik to miejsce na wszystkie standardy jakie przyjęliśmy (rzeczy, które zostały zdecydowane, ale mogłyby być inaczej)
+Ten plik to miejsce na wszystkie standardy jakie przyjęliśmy
+(rzeczy, które zostały zdecydowane, ale mogłyby być inaczej)
 
-## Wymiary zdjęć w pikselach
-- Zdjęcie profilowe użytkownika: 180x180
-- Kwadratowe zdjęcie artykułu (np. na stronie głównej): ?
-- Poziome zdjęcie artykułu: ?
-- Pionowe zdjęcie gry / recenzji: ?
+## Zdjęcia
+- Zdjęcie profilowe użytkownika
+	- Wymiary: 180x180
+	- Ścieżka: user/{path}/profile.png
+- Kwadratowe zdjęcie artykułu (np. na stronie głównej)
+	- Wymiary: ?
+	- Ścieżka: content/{path}/square.png
+- Poziome zdjęcie artykułu
+	- Wymiary: ?
+	- Ścieżka: content/{path}/horizontal.png
+- Pionowe zdjęcie gry / recenzji
+	- Wymiary: ?
+	- Ścieżka: content/{path}/vertical.png
+
+## Zawartość artykułu
+Ścieżka: content/{path}/main.html
 
 ## Nazwa folderu (path)
-8 znaków base64
+8 znaków base64, slash / zamieniony na podłogę _
 
 ## Hasło:
 - brak pustych znaków
