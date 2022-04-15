@@ -18,7 +18,7 @@ import com.gamebroadcast.forum.content.game.models.Game;
 @NoArgsConstructor
 public class Review extends Content {
     @Column
-    private int score;
+    private Double score;
 
     @ManyToOne
     @JoinColumn(name = "game_id")
@@ -35,7 +35,7 @@ public class Review extends Content {
         this.game = game;
     }
 
-    public void setScore(int score) {
+    public void setScore(Double score) {
         if (score < 1 || score > 10) {
             throw new IllegalArgumentException("Score must be between 1 and 10.");
         }

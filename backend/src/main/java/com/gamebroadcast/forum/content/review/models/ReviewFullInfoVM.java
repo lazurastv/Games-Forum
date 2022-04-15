@@ -6,7 +6,7 @@ import com.gamebroadcast.forum.content.content.ContentFullInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameVM;
 
 public class ReviewFullInfoVM extends ContentFullInfoVM {
-    public int score;
+    public Double score;
     public GameVM game;
     public List<String> pluses;
     public List<String> minuses;
