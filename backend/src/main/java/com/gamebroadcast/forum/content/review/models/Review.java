@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.game.models.Game;
 
 @Entity
 @Data
@@ -19,14 +20,19 @@ public class Review extends Content {
     @Column
     private int score;
 
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
     @ElementCollection
     private List<String> pluses;
 
     @ElementCollection
     private List<String> minuses;
 
-    public Review(String path) {
+    public Review(String path, Game game) {
         super(path);
+        this.game = game;
     }
 
     public void setScore(int score) {
