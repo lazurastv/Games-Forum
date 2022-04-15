@@ -5,7 +5,7 @@ import java.util.List;
 import com.gamebroadcast.forum.content.content.ContentAddUpdate;
 
 public class ReviewUpdate extends ContentAddUpdate {
-    public int score;
+    public Double score;
     public List<String> pluses;
     public List<String> minuses;
 
