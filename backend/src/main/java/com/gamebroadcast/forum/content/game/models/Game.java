@@ -33,7 +33,7 @@ public class Game extends Content {
     @Column
     private Double editorScore;
 
-    @OneToMany
+    @OneToMany(mappedBy = "game")
     private List<Rating> ratings;
 
     @ElementCollection
