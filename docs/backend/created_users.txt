@@ -1,0 +1,25 @@
+Lista wszystkich użytkowników których mamy od zera w bazie,
+w formacie:
+
+ROLA
+nazwa hasło
+
+ADMIN
+a a
+
+EDITOR
+b a
+c a
+d a
+
+USER
+Cebullanka y Grzanka dGC?39a<)Ne{;P2
+mateomateowy         HZjPh+)p2cqQB,,)
+ksiunszka            Xy.V%mDF_fNA32d@
+barbarara            D*e#6=v6GbEnttQ=
+tomorrow             g&!bd=Zh6Jk+uyFH
+mAjKeL               12345
+dramione             lubieMarchewki123
+Darkboy64            passwordpassword
+theguiltyone         kocham#Parowki1
+AjgorPL              r=*RQ^yB3^^+
