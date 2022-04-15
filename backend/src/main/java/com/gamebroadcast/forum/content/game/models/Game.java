@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.review.models.Review;
 import com.gamebroadcast.forum.exceptions.InvalidTagException;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.tag.TagRepositories;
@@ -32,6 +33,9 @@ public class Game extends Content {
 
     @Column
     private Double editorScore;
+
+    @OneToMany(mappedBy = "game")
+    private List<Review> reviews;
 
     @OneToMany(mappedBy = "game")
     private List<Rating> ratings;
