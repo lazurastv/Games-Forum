@@ -22,9 +22,9 @@ const Reviews = () => {
           key={idx}
           date={(r.publishDate as Date).toLocaleString().replace('/', '.').split(',')[0]}
           title={r.title as string}
-          content={"xd"}
+          content={"opis"}
           author={r.authorName as string}
-          rate={6}
+          rate={2}
           image={
             "https://cdn.mos.cms.futurecdn.net/3ZbPC5LNRVccsePfX2PbM7-1200-80.jpg"
           }

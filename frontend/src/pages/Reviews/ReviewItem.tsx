@@ -58,6 +58,7 @@ export default function ReviewItem(props:IReview) {
         alignItems="center"
       /> 
       <Box
+        flex={1}
         sx={{
           display: "flex",
           flexDirection: "column",
