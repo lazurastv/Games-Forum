@@ -23,6 +23,7 @@ import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication
 import { useSessionContext } from "./components/Authentication/SessionContext";
 import ScrollToTop from "./components/ScrollToTop";
 import DraftEditor from "./components/DraftEditor";
+import CreateArticle from "./pages/CreateContent/CreateArticle/CreateArticle";
 
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
@@ -61,7 +62,7 @@ function App() {
             <ScrollToTop/>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="mockEditor" element={<DraftEditor />} />
+              <Route path="dodaj-artykul" element={<CreateArticle />} />
               <Route path="artykuly" element={<Articles />} />
               <Route path="artykuly/:title" element={<Article />} />
               <Route path="recenzje" element={<Reviews />} />

@@ -6,13 +6,14 @@ import { StyledEngineProvider } from '@mui/material';
 import { SessionContextProvider } from "./components/Authentication/SessionContext";
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <SessionContextProvider>
       <StyledEngineProvider injectFirst>
         <App />
       </StyledEngineProvider>
     </SessionContextProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>
+  ,
   document.getElementById('root')
 );
 
