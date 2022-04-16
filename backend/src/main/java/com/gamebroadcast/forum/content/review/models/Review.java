@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.content.content.Content;
+import com.gamebroadcast.forum.content.game.models.Game;
 
 @Entity
 @Data
@@ -17,7 +18,11 @@ import com.gamebroadcast.forum.content.content.Content;
 @NoArgsConstructor
 public class Review extends Content {
     @Column
-    private int score;
+    private Double score;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
 
     @ElementCollection
     private List<String> pluses;
@@ -25,11 +30,12 @@ public class Review extends Content {
     @ElementCollection
     private List<String> minuses;
 
-    public Review(String path) {
+    public Review(String path, Game game) {
         super(path);
+        this.game = game;
     }
 
-    public void setScore(int score) {
+    public void setScore(Double score) {
         if (score < 1 || score > 10) {
             throw new IllegalArgumentException("Score must be between 1 and 10.");
         }

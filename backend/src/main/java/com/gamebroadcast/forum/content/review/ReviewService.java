@@ -6,8 +6,11 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 
+import com.gamebroadcast.forum.content.game.GameService;
+import com.gamebroadcast.forum.content.game.models.Game;
 import com.gamebroadcast.forum.content.review.models.Review;
-import com.gamebroadcast.forum.content.review.models.ReviewAddUpdate;
+import com.gamebroadcast.forum.content.review.models.ReviewAdd;
+import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
@@ -21,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final GameService gameService;
     private final ReviewRepository reviewRepository;
 
     public List<ReviewVM> getAllReviews() {
@@ -45,15 +49,16 @@ public class ReviewService {
         return new ReviewFullInfoVM(review);
     }
 
-    public void addReview(ReviewAddUpdate reviewAdd, String path) {
+    public void addReview(ReviewAdd reviewAdd, String path) {
         checkIfTitleIsUnique(reviewAdd.title);
-        Review review = reviewAdd.toReview(path);
+        Game game = gameService.getGame(reviewAdd.gameId);
+        Review review = reviewAdd.toReview(path, game);
         review.publish();
         reviewRepository.save(review);
     }
 
     @Transactional
-    public void updateReview(Long id, ReviewAddUpdate reviewUpdate) {
+    public void updateReview(Long id, ReviewUpdate reviewUpdate) {
         Review review = getReview(id);
         if (!review.getTitle().equals(reviewUpdate.title)) {
             checkIfTitleIsUnique(reviewUpdate.title);

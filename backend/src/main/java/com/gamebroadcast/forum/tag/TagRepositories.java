@@ -7,13 +7,19 @@ public class TagRepositories {
     public static final List<String> genres = Arrays.asList(new String[] {
             "Action",
             "RPG",
-            "Strategy"
+            "Strategy",
+            "Survival",
+            "Sandbox",
+            "FPS",
+            "Adventure"
     });
 
     public static final List<String> platforms = Arrays.asList(new String[] {
             "PC",
             "Xbox 360",
-            "PlayStation 4"
+            "PlayStation 4",
+            "Xbox One",
+            "PlayStation 3"
     });
 
     public static final List<String> distributions = Arrays.asList(new String[] {
