@@ -23,6 +23,7 @@ import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication
 import { useSessionContext } from "./components/Authentication/SessionContext";
 import ScrollToTop from "./components/ScrollToTop";
 import CreateArticle from "./pages/CreateContent/CreateArticle/CreateArticle";
+import CreateReview from "./pages/CreateContent/CreateReview/CreateReview";
 
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
@@ -62,6 +63,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="dodaj-artykul" element={<CreateArticle />} />
+              <Route path="dodaj-recenzje" element={<CreateReview />} />
+              {/* <Route path="dodaj-gre" element={<CreateGame/>} /> */}
               <Route path="artykuly" element={<Articles />} />
               <Route path="artykuly/:title" element={<Article />} />
               <Route path="recenzje" element={<Reviews />} />

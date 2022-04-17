@@ -53,7 +53,7 @@ export default function Filter(props: any) {
     }
   };
   const handleSort = (event: { target: { value: string } }) => {
-    if (event.target.value != sortValue) {
+    if (event.target.value !== sortValue) {
       onSearch();
       setSortValue(event.target.value);
     }

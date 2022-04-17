@@ -39,7 +39,7 @@ export default function DraftEditor(props: IDraftEditor) {
   return (
     <Box
       sx={{
-        my: 2,
+        mb: 2,
         // p: 2,
         // border: "1px solid grey",
         ".rdw-editor-toolbar img": {
