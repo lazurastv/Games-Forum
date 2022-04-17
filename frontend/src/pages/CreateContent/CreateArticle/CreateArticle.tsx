@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import SectionHeader from "../../../components/SectionHeader";
-import DraftEditor from "../../../components/DraftEditor";
-import { UploadArticle, uploadArticle } from "./uploadArticle";
+import { loadArticle, uploadArticle, UploadArticle } from "./uploadArticle";
+import DraftEditor from "../../../components/Editor/DraftEditor";
 
 const Title = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
@@ -27,19 +27,20 @@ export default function CreateArticle() {
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
-  const handleSave = () => {
+  const handleSave = async () => {
     const article: UploadArticle = {
       title: title,
       //
       // TODO introduction
       //
       introduction: "Hello",
-      content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+      editorState: editorState,
     };
     //
     // TODO obsługa błędów
     //
     uploadArticle(article);
+
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>

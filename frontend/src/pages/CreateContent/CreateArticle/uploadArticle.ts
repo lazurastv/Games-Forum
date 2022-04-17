@@ -4,58 +4,55 @@ import {
   ArticleControllerApi,
   ArticleFullInfoVM,
 } from "../../../api/api";
-import draftToHtml from "draftjs-to-html";
+import {
+  editorToString,
+  stringToHtml,
+} from "../../../components/Editor/dataConversion";
+import { EditorState } from "draft-js";
 export interface UploadArticle {
   title: string;
   introduction: string;
-  content: string;
+  editorState: EditorState;
 }
-// <div dangerouslySetInnerHTML={{ __html: art.content }}/>
-function loadArticle(id: number): ArticleFullInfoVM | null {
+
+async function loadArticle(id: number) {
   const auth = new AuthApi();
   const articles = new ArticleControllerApi();
-  auth
+  return auth
     .login()
-    .then((result) => {
-      articles
-        .getArticleFullInfo({ articleId: id })
-        .then((result) => {
-          if (result.path) {
-            let art = {
-              ...result,
-              content: draftToHtml(JSON.parse(result.path)),
-            } as ArticleFullInfoVM;
-            console.log(art);
-            return art;
-          }
-          return null;
-        })
-        .catch((error) => console.error("Read" + error));
-    })
+    .then((result) => articles.getArticleFullInfo({ articleId: id }))
+    .catch((error) => console.error("Read" + error))
+    .then((result) => ({
+      ...result,
+      content: result?.path ? stringToHtml(result?.path) : "Loading error",
+    }))
     .catch((error) => console.error("Login " + error));
-  return null;
 }
-function uploadArticle(art: UploadArticle) {
+async function uploadArticle(art: UploadArticle) {
   const auth = new AuthApi();
   const articles = new ArticleControllerApi();
-  auth
+  return auth
     .login()
+    .catch((error) => console.error("Login " + error))
     .then((result) => {
-      const article = art as ArticleAddUpdate;
-      articles
-        .addArticle({ articleAddUpdate: article }, { credentials: "include" })
-        /*  
-		 .then((result) => {
-		  articles
-			.getAllArticles()
-			.then((result) => {
-			  result.forEach((x) => console.log(x));
-			})
-			.catch((error) => console.error("Read" + error));
-		}) 
-		*/
-        .catch((error) => console.error("Add " + error));
+      const article = {
+        title: art.title,
+        //
+        // TODO introduction
+        //
+        introduction: art.introduction,
+        content: editorToString(art.editorState),
+      } as ArticleAddUpdate;
+      return articles.addArticle(
+        { articleAddUpdate: article },
+        { credentials: "include" }
+      );
     })
-    .catch((error) => console.error("Login " + error));
+    .catch((error) => console.error("Add " + error))
+    .then((result) => articles.getAllArticles())
+    .then((result) => {
+      result.forEach((x) => console.log(x));
+    })
+    .catch((error) => console.error("Read" + error));
 }
 export { uploadArticle, loadArticle };

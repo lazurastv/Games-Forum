@@ -34,6 +34,7 @@ function uploadImageCallBack(file: File) {
     resolve({ data: { link: imageObject.localSrc } });
   });
 }
+
 export default function DraftEditor(props: IDraftEditor) {
   return (
     <Box

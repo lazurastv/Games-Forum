@@ -22,7 +22,6 @@ import Profile from "./pages/Profile/Profile";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
 import ScrollToTop from "./components/ScrollToTop";
-import DraftEditor from "./components/DraftEditor";
 import CreateArticle from "./pages/CreateContent/CreateArticle/CreateArticle";
 
 
