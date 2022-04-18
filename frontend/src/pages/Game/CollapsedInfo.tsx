@@ -84,7 +84,7 @@ export default function CollapsedInfo(props: any) {
         <InfoIcon src="/images/CollapsedInfoIcons/Distributions/origin.jpg">Origin</InfoIcon>
         <InfoIcon src="/images/CollapsedInfoIcons/Distributions/uplay.jpg">Uplay</InfoIcon>
       </CollapseButton>
-      <CollapseButton name="Wymagania">
+      {/* <CollapseButton name="Wymagania">
         <Grid container spacing={2} sx={{ pt: 2 }}>
           <Grid item xs={12} md={6}>
             <Typography>
@@ -145,7 +145,7 @@ export default function CollapsedInfo(props: any) {
             </Typography>
           </Grid>
         </Grid>
-      </CollapseButton>
+      </CollapseButton> */}
     </Box>
   );
 }
