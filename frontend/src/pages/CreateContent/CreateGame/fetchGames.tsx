@@ -11,17 +11,6 @@ async function loadGame(id: number): Promise<GameFullInfoVM> {
 async function uploadGame(game: GameAddUpdate) {
   const auth = new AuthApi();
   const games = new GameControllerApi();
-  const g = {
-    title:"ab",
-    introduction: "asdasd",
-    content: "<html></html>",
-    gamePublishDate: new Date(),
-    developer: "sdfsfsfs",
-    editorScore: 2 ?? 0,
-    genres: ["RPG"],
-    platforms: ["PC"],
-    distributions: ["Steam"],
-  } as GameAddUpdate;
   return auth
     .login()
     .catch((error) => console.error("Login " + error))

@@ -36,7 +36,7 @@ export default function CreateArticle() {
           e.preventDefault();
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
+        <Box sx={{ mb: 4 }}>
           <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
           <OneLineInput
             label="Wprowadzenie"

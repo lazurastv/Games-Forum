@@ -14,18 +14,19 @@ import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
 import { sliderConf } from "../../../components/Filters/filterConf";
 import { gameDataToDB } from "../../../dictionary/mapData";
+import { game } from "../../../dictionary/gameDataDictionary";
 const checkboxGroup = [
   {
     name: "Gatunek",
-    checkboxLabels: ["Akcji", "RPG", "Strategiczne", "Sportowe", "Przygodowe", "MMO", "Zręcznościowe", "Symulacje"],
+    checkboxLabels: game.genre,
   },
   {
     name: "Platforma",
-    checkboxLabels: ["PC", "XBOX 360", "PS4", "XBOX ONE", "Switch"],
+    checkboxLabels: game.platform,
   },
   {
-    name: "Dystrybucja cyfrowa",
-    checkboxLabels: ["Steam", "Epic Games", "Origin", "Uplay"],
+    name: "Dystrybucja",
+    checkboxLabels: game.dystribution,
   },
 ];
 const today = new Date();
@@ -43,6 +44,10 @@ export default function CreateGame() {
   const [score, setScore] = useState<number | null>(null);
   const [gamePublishDate, setGamePublishDate] = useState<string>(date);
   const [developer, setDeveloper] = useState<string>("");
+  const [genres, setGenres] = useState<string[]>([checkboxGroup[0].checkboxLabels[0]]);
+  const [platforms, setPlatforms] = useState<string[]>([checkboxGroup[1].checkboxLabels[0]]);
+  const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
+
   const handleSave = async () => {
     const game: GameAddUpdate = {
       title: title,
@@ -51,9 +56,9 @@ export default function CreateGame() {
       gamePublishDate: new Date(gamePublishDate),
       developer: developer,
       editorScore: score ?? 0,
-      genres: (gameDataToDB(["RPG"]) ?? ["RPG"]) as Array<string>,
-      platforms: (gameDataToDB(["PC"]) ?? ["PC"]) as Array<string>,
-      distributions: (gameDataToDB(["Steam"]) ?? ["Steam"]) as Array<string>
+      genres: (gameDataToDB(genres) ?? [checkboxGroup[0].checkboxLabels[0]]) as Array<string>,
+      platforms: (gameDataToDB(platforms) ?? [checkboxGroup[1].checkboxLabels[0]]) as Array<string>,
+      distributions: (gameDataToDB(distributions) ?? [checkboxGroup[2].checkboxLabels[0]]) as Array<string>,
     };
     //
     // TODO obsługa błędów
@@ -71,7 +76,7 @@ export default function CreateGame() {
           e.preventDefault();
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 3, mb: 4 }}>
           <Box>
             <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
             <OneLineInput
@@ -83,18 +88,25 @@ export default function CreateGame() {
           <Box
             sx={{
               display: "flex",
-              columnGap: 2,
+              gap: 2,
               flexDirection: { xs: "column", md: "row" },
             }}
           >
-            {checkboxGroup.map((val) => (
-              <MultipleSelect key={val.name} names={val.checkboxLabels} label={val.name} />
+            {checkboxGroup.map((val, idx) => (
+              <MultipleSelect
+                key={val.name}
+                names={val.checkboxLabels}
+                label={val.name}
+                values={idx === 0 ? genres : idx === 1 ? platforms : distributions}
+                setValues={idx === 0 ? setGenres : idx === 1 ? setPlatforms : setDistributions}
+              />
             ))}
           </Box>
           <Box
             sx={{
               display: "flex",
-              columnGap: 2,
+              gap: 1,
+              columnGap:2,
               flexDirection: { xs: "column", md: "row" },
             }}
           >
@@ -102,7 +114,9 @@ export default function CreateGame() {
               <OneLineInput label="Producent" value={developer} onChange={(e: any) => setDeveloper(e.target.value)} />
             </Box>
             <DatePicker
-              sx={{ flex: 1 }}
+              sx={{
+                flex: 1,
+              }}
               label="Data premiery"
               color="secondary"
               type="date"
@@ -110,7 +124,7 @@ export default function CreateGame() {
               onChange={(e) => setGamePublishDate(e.target.value)}
               inputProps={{ min: sliderConf.yearRange[0] + "-01-01", max: sliderConf.yearRange[1] + "-12-31" }}
             />
-            <Box sx={{ flex: 1 }}></Box>
+            <Box sx={{ flex: 1 }} />
           </Box>
         </Box>
         <DraftEditor editorState={editorState} setEditorState={setEditorState} />
