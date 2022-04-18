@@ -5,18 +5,16 @@ import SectionHeader from "../../components/SectionHeader";
 import GamesFilter from "../../components/Filters/GamesFilter";
 import PaginationFilter from "../../components/Filters/PaginationFilter";
 import { useState } from "react";
+import { paginationConf } from "../../components/Filters/filterConf";
 export default function Games() {
-  const [paginationConf, setPaginationConf] = useState({
-    totalPages: 50,
-    page: 1,
-  });
+  const [paginationConfig, setpaginationConfig] = useState(paginationConf);
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    setPaginationConf({ ...paginationConf, page: newPage });
+    setpaginationConfig({ ...paginationConfig, page: newPage });
   };
   return (
     <Container maxWidth="xl" sx={{ my: 4 }}>
       <SectionHeader>Gry</SectionHeader>
-      <GamesFilter page={paginationConf.page} />
+      <GamesFilter page={paginationConfig.page} />
       <Grid container spacing={2}>
         {[...Array(2)].map((x, i) =>
           games.map((game, idx) => (
@@ -26,7 +24,7 @@ export default function Games() {
           ))
         )}
       </Grid>
-      <PaginationFilter paginationConf={paginationConf} onPageChange={handlePageChange} />
+      <PaginationFilter paginationConf={paginationConfig} onPageChange={handlePageChange} />
     </Container>
   );
 }

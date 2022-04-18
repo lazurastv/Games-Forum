@@ -16,6 +16,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
+import { sliderConf } from "./filterConf";
 const FilterInput = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
@@ -29,10 +30,9 @@ const FilterInput = styled(TextField)(({ theme }) => ({
     },
   },
 }));
-const [minYear, maxYear] = [1990, 2022];
 export default function Filter(props: any) {
   const [searchValue, setSearchValue] = useState("");
-  const [year, setYear] = useState<number[]>([1990, 2022]);
+  const [year, setYear] = useState<number[]>(sliderConf.yearRange);
   const [filterInCollapse, setFilterInCollapse] = useState<boolean>(false);
   const [sortValue, setSortValue] = useState<string>("Popularność");
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -47,7 +47,7 @@ export default function Filter(props: any) {
   };
   const handleClearFilters = () => {
     setSearchValue("");
-    setYear([minYear, maxYear]);
+    setYear(sliderConf.yearRange);
     if (props.clearOtherFilters) {
       props.clearOtherFilters();
     }
@@ -146,8 +146,8 @@ export default function Filter(props: any) {
               sx={{ display: "block", width: "calc(100% - 20px)", mx: "auto" }}
               color="secondary"
               value={year}
-              min={minYear}
-              max={maxYear}
+              min={sliderConf.yearRange[0]}
+              max={sliderConf.yearRange[1]}
               onChange={handleSliderChange}
               disableSwap
             />

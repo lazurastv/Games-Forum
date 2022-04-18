@@ -14,9 +14,7 @@ import OneLineInput from "../OneLineInput";
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const handleSave = async () => {
     const article: ArticleAddUpdate = {
       title: title,
@@ -31,26 +29,23 @@ export default function CreateArticle() {
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj artykuł</SectionHeader>
-      <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
-        >
-          <OneLineInput
-            label="Tytuł"
-            value={title}
-            onChange={(e: any) => setTitle(e.target.value)}
-          />
+      <Box
+        component="form"
+        onSubmit={(e: any) => {
+          handleSave();
+          e.preventDefault();
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
+          <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
           <OneLineInput
             label="Wprowadzenie"
             value={introduction}
             onChange={(e: any) => setIntroduction(e.target.value)}
           />
         </Box>
-        <DraftEditor
-          editorState={editorState}
-          setEditorState={setEditorState}
-        />
-        <Box sx={{ textAlign: "right" }}>
+        <DraftEditor editorState={editorState} setEditorState={setEditorState} />
+        <Box sx={{ textAlign: "right", mt: 4 }}>
           <Button
             sx={{
               width: {
@@ -62,7 +57,6 @@ export default function CreateArticle() {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={handleSave}
           >
             Zapisz
           </Button>

@@ -123,7 +123,13 @@ export default function Game() {
         <SectionHeader>Podobne gry</SectionHeader>
         <Carousel>
           {gamesCarousel.map((gameTile) => (
-            <GameTile key={gameTile.title} title={gameTile.title} src={gameTile.src} author={gameTile.author} date={gameTile.date} />
+            <GameTile
+              key={gameTile.title}
+              title={gameTile.title}
+              src={gameTile.src}
+              author={gameTile.author}
+              date={gameTile.date}
+            />
           ))}
         </Carousel>
         <SectionHeader>Najnowsze recenzje</SectionHeader>

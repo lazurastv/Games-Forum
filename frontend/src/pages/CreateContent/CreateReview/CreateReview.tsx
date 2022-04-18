@@ -19,9 +19,7 @@ export default function CreateReview() {
   const [score, setScore] = useState<number | null>(null);
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const handleSave = async () => {
     //
     // TODO obsługa błędów
@@ -43,33 +41,25 @@ export default function CreateReview() {
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
-      <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
-        >
+      <Box
+        component="form"
+        onSubmit={(e: any) => {
+          handleSave();
+          e.preventDefault();
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
           <Box>
-            <OneLineInput
-              label="Tytuł"
-              value={title}
-              onChange={(e: any) => setTitle(e.target.value)}
-            />
+            <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
             <OneLineInput
               label="Wprowadzenie"
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
           </Box>
-          <PlusMinus
-            pluses={pluses}
-            setPluses={setPluses}
-            minuses={minuses}
-            setMinuses={setMinuses}
-          />
+          <PlusMinus pluses={pluses} setPluses={setPluses} minuses={minuses} setMinuses={setMinuses} />
         </Box>
-        <DraftEditor
-          editorState={editorState}
-          setEditorState={setEditorState}
-        />
+        <DraftEditor editorState={editorState} setEditorState={setEditorState} />
         <CRRating
           sx={{
             mt: 3,
@@ -91,7 +81,6 @@ export default function CreateReview() {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={handleSave}
           >
             Zapisz
           </Button>

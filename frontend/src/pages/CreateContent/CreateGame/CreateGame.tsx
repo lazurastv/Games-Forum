@@ -12,19 +12,12 @@ import OneLineInput from "../OneLineInput";
 import MultipleSelect from "../MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
+import { sliderConf } from "../../../components/Filters/filterConf";
+import { gameDataToDB } from "../../../dictionary/mapData";
 const checkboxGroup = [
   {
     name: "Gatunek",
-    checkboxLabels: [
-      "Akcji",
-      "RPG",
-      "Strategiczne",
-      "Sportowe",
-      "Przygodowe",
-      "MMO",
-      "Zręcznościowe",
-      "Symulacje",
-    ],
+    checkboxLabels: ["Akcji", "RPG", "Strategiczne", "Sportowe", "Przygodowe", "MMO", "Zręcznościowe", "Symulacje"],
   },
   {
     name: "Platforma",
@@ -46,9 +39,7 @@ const date =
 export default function CreateGame() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const [score, setScore] = useState<number | null>(null);
   const [gamePublishDate, setGamePublishDate] = useState<string>(date);
   const [developer, setDeveloper] = useState<string>("");
@@ -58,31 +49,31 @@ export default function CreateGame() {
       introduction: introduction,
       content: editorToString(editorState),
       gamePublishDate: new Date(gamePublishDate),
-      developer: "Chief",
-      editorScore: score === null ? 0 : score,
-      genres: ["RPG"],
-      platforms: ["PC"],
-      distributions: ["Steam"],
+      developer: developer,
+      editorScore: score ?? 0,
+      genres: (gameDataToDB(["RPG"]) ?? ["RPG"]) as Array<string>,
+      platforms: (gameDataToDB(["PC"]) ?? ["PC"]) as Array<string>,
+      distributions: (gameDataToDB(["Steam"]) ?? ["Steam"]) as Array<string>
     };
     //
     // TODO obsługa błędów
     //
     console.log(game);
-    // uploadGame(game);
+    uploadGame(game);
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj grę</SectionHeader>
-      <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
-        >
+      <Box
+        component="form"
+        onSubmit={(e: any) => {
+          handleSave();
+          e.preventDefault();
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
           <Box>
-            <OneLineInput
-              label="Tytuł"
-              value={title}
-              onChange={(e: any) => setTitle(e.target.value)}
-            />
+            <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
             <OneLineInput
               label="Wprowadzenie"
               value={introduction}
@@ -97,11 +88,7 @@ export default function CreateGame() {
             }}
           >
             {checkboxGroup.map((val) => (
-              <MultipleSelect
-                key={val.name}
-                names={val.checkboxLabels}
-                label={val.name}
-              />
+              <MultipleSelect key={val.name} names={val.checkboxLabels} label={val.name} />
             ))}
           </Box>
           <Box
@@ -112,11 +99,7 @@ export default function CreateGame() {
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <OneLineInput
-                label="Producent"
-                value={developer}
-                onChange={(e: any) => setDeveloper(e.target.value)}
-              />
+              <OneLineInput label="Producent" value={developer} onChange={(e: any) => setDeveloper(e.target.value)} />
             </Box>
             <DatePicker
               sx={{ flex: 1 }}
@@ -125,15 +108,12 @@ export default function CreateGame() {
               type="date"
               value={gamePublishDate}
               onChange={(e) => setGamePublishDate(e.target.value)}
-              inputProps={{ min: "1970-01-01", max: "2040-12-31" }}
+              inputProps={{ min: sliderConf.yearRange[0] + "-01-01", max: sliderConf.yearRange[1] + "-12-31" }}
             />
             <Box sx={{ flex: 1 }}></Box>
           </Box>
         </Box>
-        <DraftEditor
-          editorState={editorState}
-          setEditorState={setEditorState}
-        />
+        <DraftEditor editorState={editorState} setEditorState={setEditorState} />
         <CRRating
           sx={{
             mt: 3,
@@ -155,7 +135,6 @@ export default function CreateGame() {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={handleSave}
           >
             Zapisz
           </Button>

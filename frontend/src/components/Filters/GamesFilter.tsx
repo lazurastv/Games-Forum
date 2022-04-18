@@ -2,18 +2,19 @@ import { Box, Checkbox, FormControlLabel, FormGroup, FormControl } from "@mui/ma
 import { useState } from "react";
 import Filter from "./Filter";
 import CollapseButton from "../CollapseButton";
+import { game } from "../../dictionary/gameDataDictionary";
 const checkboxGroup = [
   {
     name: "Gatunek",
-    checkboxLabels: ["Akcji", "RPG", "Strategiczne", "Sportowe", "Przygodowe", "MMO", "Zręcznościowe", "Symulacje"],
+    checkboxLabels: game.genre,
   },
   {
     name: "Platforma",
-    checkboxLabels: ["PC", "XBOX 360", "PS4", "XBOX ONE", "Switch"],
+    checkboxLabels: game.platform,
   },
   {
     name: "Dystrybucja cyfrowa",
-    checkboxLabels: ["Steam", "Epic Games", "Origin", "Uplay"],
+    checkboxLabels: game.dystribution,
   },
 ];
 const checkedStateInitial = checkboxGroup.reduce(
