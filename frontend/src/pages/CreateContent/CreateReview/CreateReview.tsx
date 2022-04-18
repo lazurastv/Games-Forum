@@ -12,7 +12,6 @@ import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
 import CRPlusMinus from "./CRPlusMinus";
 import OneLineInput from "../OneLineInput";
-import { error } from "console";
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -43,7 +42,7 @@ export default function CreateReview() {
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
-      <SectionHeader>Napisz recenzję</SectionHeader>
+      <SectionHeader>Dodaj recenzję</SectionHeader>
       <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
         <Box sx={{ mb: 4 }}>
           <OneLineInput

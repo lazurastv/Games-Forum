@@ -30,7 +30,7 @@ export default function CreateArticle() {
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
-      <SectionHeader>Napisz artykuł</SectionHeader>
+      <SectionHeader>Dodaj artykuł</SectionHeader>
       <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
         <Box sx={{ mb: 4 }}>
           <OneLineInput
