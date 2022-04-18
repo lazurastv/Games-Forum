@@ -9,7 +9,7 @@ import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { GameAddUpdate } from "../../../api/api";
 import OneLineInput from "../OneLineInput";
-import MultipleSelect from "./MultipleSelect";
+import MultipleSelect from "../MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
 const checkboxGroup = [
@@ -51,6 +51,7 @@ export default function CreateGame() {
   );
   const [score, setScore] = useState<number | null>(null);
   const [gamePublishDate, setGamePublishDate] = useState<string>(date);
+  const [developer, setDeveloper] = useState<string>("");
   const handleSave = async () => {
     const game: GameAddUpdate = {
       title: title,
@@ -58,7 +59,7 @@ export default function CreateGame() {
       content: editorToString(editorState),
       gamePublishDate: new Date(gamePublishDate),
       developer: "Chief",
-      editorScore: 6,
+      editorScore: score === null ? 0 : score,
       genres: ["RPG"],
       platforms: ["PC"],
       distributions: ["Steam"],
@@ -103,24 +104,31 @@ export default function CreateGame() {
               />
             ))}
           </Box>
-          <DatePicker
+          <Box
             sx={{
-              width: {
-                xs: "100%",
-                md: "33.3%",
-              },
-              pr: {
-                xs: 0,
-                md: 1.5,
-              },
+              display: "flex",
+              columnGap: 2,
+              flexDirection: { xs: "column", md: "row" },
             }}
-            label="Data premiery"
-            color="secondary"
-            type="date"
-            value={gamePublishDate}
-            onChange={(e) => setGamePublishDate(e.target.value)}
-            inputProps={{ min: "1970-01-01", max: "2040-12-31" }}
-          />
+          >
+            <Box sx={{ flex: 1 }}>
+              <OneLineInput
+                label="Producent"
+                value={developer}
+                onChange={(e: any) => setDeveloper(e.target.value)}
+              />
+            </Box>
+            <DatePicker
+              sx={{ flex: 1 }}
+              label="Data premiery"
+              color="secondary"
+              type="date"
+              value={gamePublishDate}
+              onChange={(e) => setGamePublishDate(e.target.value)}
+              inputProps={{ min: "1970-01-01", max: "2040-12-31" }}
+            />
+            <Box sx={{ flex: 1 }}></Box>
+          </Box>
         </Box>
         <DraftEditor
           editorState={editorState}

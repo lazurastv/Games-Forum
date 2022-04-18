@@ -42,7 +42,19 @@ export default function MultipleSelect({ names, label }: MultipleSelectProps) {
         multiple
         value={selectValues}
         onChange={handleChange}
-        input={<OutlinedInput label={label} />}
+        input={
+          <OutlinedInput
+            sx={{
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "secondary.dark",
+              },
+              ".MuiOutlinedInput-root.Mui-focused": {
+                borderColor: "secondary.main"
+              },
+            }}
+            label={label}
+          />
+        }
         renderValue={(selected) => selected.join(", ")}
         MenuProps={MenuProps}
       >
