@@ -39,9 +39,6 @@ export default function DraftEditor(props: IDraftEditor) {
   return (
     <Box
       sx={{
-        mb: 2,
-        // p: 2,
-        // border: "1px solid grey",
         ".rdw-editor-toolbar img": {
           filter:
             "invert(60%) sepia(33%) saturate(5275%) hue-rotate(12deg) brightness(94%) contrast(83%)",

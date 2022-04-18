@@ -1,16 +1,13 @@
-import { FormControl, OutlinedInput, Typography } from "@mui/material";
+import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { Box } from "@mui/system";
 
 export default function OneLineInput(props: any) {
   return (
     <FormControl
       sx={{
-        mb: props.noMargin ? 1 : 2,
+        mb: 1,
         display: "block",
         "& .MuiOutlinedInput-root": {
-          // "& fieldset": {
-          //   borderColor: "primary.light",
-          // },
           "&:hover fieldset": {
             borderColor: "secondary.dark",
           },
@@ -20,20 +17,14 @@ export default function OneLineInput(props: any) {
         },
       }}
     >
-      <Typography
-        sx={{
-          fontSize: "20px",
-          color: "text.secondary",
-          textAlign: "left",
-          mb: 0.5,
-        }}
-      >
-        {props.formLabel}
-      </Typography>
+      <InputLabel color="secondary" id={props.label}>
+        {props.label}
+      </InputLabel>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <OutlinedInput
           required
-          placeholder={props.placeholder}
+          placeholder={props.placeholder ? props.placeholder : undefined}
+          label={props.label}
           color="secondary"
           fullWidth
           inputProps={{ minLength: 2, maxLength: 128 }}

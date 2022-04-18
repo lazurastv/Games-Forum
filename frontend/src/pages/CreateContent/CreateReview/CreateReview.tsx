@@ -10,7 +10,7 @@ import DraftEditor from "../../../components/Editor/DraftEditor";
 import { ReviewAddUpdate } from "../../../api/api";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
-import CRPlusMinus from "./CRPlusMinus";
+import PlusMinus from "./PlusMinus";
 import OneLineInput from "../OneLineInput";
 
 export default function CreateReview() {
@@ -34,9 +34,9 @@ export default function CreateReview() {
       pluses: pluses,
       minuses: minuses,
     };
-    uploadReview(review)
+    uploadReview(review);
     // .catch(
-    //   (e) => console.error(e) 
+    //   (e) => console.error(e)
     // );
     // const rev:any = await loadReview(12);
   };
@@ -44,20 +44,22 @@ export default function CreateReview() {
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
       <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box sx={{ mb: 4 }}>
-          <OneLineInput
-            formLabel="Tytuł"
-            placeholder="Napisz tytuł..."
-            value={title}
-            onChange={(e: any) => setTitle(e.target.value)}
-          />
-          <OneLineInput
-            formLabel="Wprowadzenie"
-            placeholder="Napisz wprowadzenie..."
-            value={introduction}
-            onChange={(e: any) => setIntroduction(e.target.value)}
-          />
-          <CRPlusMinus
+        <Box
+          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
+        >
+          <Box>
+            <OneLineInput
+              label="Tytuł"
+              value={title}
+              onChange={(e: any) => setTitle(e.target.value)}
+            />
+            <OneLineInput
+              label="Wprowadzenie"
+              value={introduction}
+              onChange={(e: any) => setIntroduction(e.target.value)}
+            />
+          </Box>
+          <PlusMinus
             pluses={pluses}
             setPluses={setPluses}
             minuses={minuses}

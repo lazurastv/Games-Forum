@@ -2,15 +2,39 @@ import { useState } from "react";
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Container from "@mui/material/Container";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadGame, uploadGame } from "./fetchGames";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { GameAddUpdate } from "../../../api/api";
 import OneLineInput from "../OneLineInput";
-import { styled } from "@mui/system";
-
+import MultipleSelect from "./MultipleSelect";
+import CRRating from "../CreateReview/CRRating";
+import DatePicker from "../DatePicker";
+const checkboxGroup = [
+  {
+    name: "Gatunek",
+    checkboxLabels: [
+      "Akcji",
+      "RPG",
+      "Strategiczne",
+      "Sportowe",
+      "Przygodowe",
+      "MMO",
+      "Zręcznościowe",
+      "Symulacje",
+    ],
+  },
+  {
+    name: "Platforma",
+    checkboxLabels: ["PC", "XBOX 360", "PS4", "XBOX ONE", "Switch"],
+  },
+  {
+    name: "Dystrybucja cyfrowa",
+    checkboxLabels: ["Steam", "Epic Games", "Origin", "Uplay"],
+  },
+];
 const today = new Date();
 const date =
   today.getFullYear() +
@@ -19,31 +43,13 @@ const date =
   "-" +
   String(today.getDate()).padStart(2, "0");
 
-const DatePicker = styled(TextField)(({ theme }) => ({
-  "& .MuiOutlinedInput-root": {
-    // "& fieldset": {
-    //   borderColor: "primary.light",
-    // },
-    "& input::-webkit-calendar-picker-indicator": {
-      // color: theme.palette.secondary.main,
-      filter:
-        "invert(60%) sepia(33%) saturate(5275%) hue-rotate(12deg) brightness(94%) contrast(83%)",
-    },
-    "&:hover fieldset": {
-      borderColor: theme.palette.secondary.dark,
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: theme.palette.secondary.main,
-    },
-  },
-}));
-
 export default function CreateGame() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [score, setScore] = useState<number | null>(null);
   const [gamePublishDate, setGamePublishDate] = useState<string>(date);
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -67,30 +73,48 @@ export default function CreateGame() {
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj grę</SectionHeader>
       <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box sx={{ mb: 4 }}>
-          <OneLineInput
-            formLabel="Tytuł"
-            placeholder="Napisz tytuł..."
-            value={title}
-            onChange={(e: any) => setTitle(e.target.value)}
-          />
-          <OneLineInput
-            formLabel="Wprowadzenie"
-            placeholder="Napisz wprowadzenie..."
-            value={introduction}
-            onChange={(e: any) => setIntroduction(e.target.value)}
-          />
-          <Typography
+        <Box
+          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
+        >
+          <Box>
+            <OneLineInput
+              label="Tytuł"
+              value={title}
+              onChange={(e: any) => setTitle(e.target.value)}
+            />
+            <OneLineInput
+              label="Wprowadzenie"
+              value={introduction}
+              onChange={(e: any) => setIntroduction(e.target.value)}
+            />
+          </Box>
+          <Box
             sx={{
-              fontSize: "20px",
-              color: "text.secondary",
-              textAlign: "left",
-              mb: 0.5,
+              display: "flex",
+              columnGap: 2,
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
-            Data premiery
-          </Typography>
+            {checkboxGroup.map((val) => (
+              <MultipleSelect
+                key={val.name}
+                names={val.checkboxLabels}
+                label={val.name}
+              />
+            ))}
+          </Box>
           <DatePicker
+            sx={{
+              width: {
+                xs: "100%",
+                md: "33.3%",
+              },
+              pr: {
+                xs: 0,
+                md: 1.5,
+              },
+            }}
+            label="Data premiery"
             color="secondary"
             type="date"
             value={gamePublishDate}
@@ -98,10 +122,18 @@ export default function CreateGame() {
             inputProps={{ min: "1970-01-01", max: "2040-12-31" }}
           />
         </Box>
-
         <DraftEditor
           editorState={editorState}
           setEditorState={setEditorState}
+        />
+        <CRRating
+          sx={{
+            mt: 3,
+            mb: 4,
+            textAlign: "center",
+          }}
+          rating={score}
+          setRating={setScore}
         />
         <Box sx={{ textAlign: "right" }}>
           <Button

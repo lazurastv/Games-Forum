@@ -32,16 +32,16 @@ export default function CreateArticle() {
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj artykuł</SectionHeader>
       <Box component="form" onSubmit={(e: any) => e.preventDefault()}>
-        <Box sx={{ mb: 4 }}>
+        <Box
+          sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}
+        >
           <OneLineInput
-            formLabel="Tytuł"
-            placeholder="Napisz tytuł..."
+            label="Tytuł"
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
           />
           <OneLineInput
-            formLabel="Wprowadzenie"
-            placeholder="Napisz wprowadzenie..."
+            label="Wprowadzenie"
             value={introduction}
             onChange={(e: any) => setIntroduction(e.target.value)}
           />
