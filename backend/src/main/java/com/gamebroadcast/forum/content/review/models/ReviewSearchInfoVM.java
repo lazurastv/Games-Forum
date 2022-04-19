@@ -6,7 +6,7 @@ import java.util.List;
 public class ReviewSearchInfoVM extends ReviewVM{
 
     public int popularity;
-    public int score;
+    public double score;
     public String introduction;
 
     public ReviewSearchInfoVM(Review review) {

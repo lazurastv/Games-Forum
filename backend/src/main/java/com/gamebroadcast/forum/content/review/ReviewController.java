@@ -1,6 +1,7 @@
 package com.gamebroadcast.forum.content.review;
 
-import com.gamebroadcast.forum.content.review.models.ReviewAddUpdate;
+import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
+import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
@@ -34,7 +35,7 @@ public class ReviewController {
     }
 
     @GetMapping(path = "/Similar/{reviewId}")
-    public List<ReviewVM> getAllReviews(@PathVariable("reviewId") Long reviewId) {
+    public List<ReviewVM> getSimilarReviews(@PathVariable("reviewId") Long reviewId) {
         return reviewService.getSimilarReviews(reviewId);
     }
 
@@ -59,7 +60,7 @@ public class ReviewController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addReview(@RequestBody ReviewAddUpdate newReview) {
+    public void addReview(@RequestBody ReviewAdd newReview) {
         try {
             reviewService.addReview(newReview, newReview.content);
         } catch (RuntimeException e) {
@@ -70,7 +71,7 @@ public class ReviewController {
     @PutMapping(path = "/{reviewId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public void updateReview(@PathVariable("reviewId") Long reviewId, @RequestBody ReviewAddUpdate reviewUpdate) {
+    public void updateReview(@PathVariable("reviewId") Long reviewId, @RequestBody ReviewUpdate reviewUpdate) {
         try {
             if (!sessionUserCanEditReview(reviewId)) {
                 throw new NoEditRightsException("review");

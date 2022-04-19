@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameSearchInfoVM extends GameVM{
 
-    public Double meanScore;
+    public Double meanUserScore;
     public String developer;
     public List<String> genres;
     public Double editorScore;
@@ -13,7 +13,7 @@ public class GameSearchInfoVM extends GameVM{
 
     public GameSearchInfoVM(Game game) {
         super(game);
-        meanScore = game.calculateUserScore();
+        meanUserScore = game.calculateUserScore();
         developer = game.getDeveloper();
         genres = game.getGenres();
         editorScore = game.getEditorScore();
