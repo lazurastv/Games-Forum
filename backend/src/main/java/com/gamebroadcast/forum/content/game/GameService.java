@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import com.gamebroadcast.forum.content.game.models.Game;
 import com.gamebroadcast.forum.content.game.models.GameAddUpdate;
 import com.gamebroadcast.forum.content.game.models.GameFullInfoVM;
+import com.gamebroadcast.forum.content.game.models.GameSearchInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
@@ -26,6 +27,11 @@ public class GameService {
     public List<GameVM> getAllGames() {
         List<Game> games = gameRepository.findAll();
         return GameVM.toGameVMList(games);
+    }
+
+    public List<GameSearchInfoVM> getAllGameSearchInfos() {
+        List<Game> games = gameRepository.findAll();
+        return GameSearchInfoVM.toGameSearchInfoVMList(games);
     }
 
     public List<GameVM> getSimilarGames(Long gameId) {

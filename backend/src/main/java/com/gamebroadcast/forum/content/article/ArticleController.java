@@ -2,6 +2,7 @@ package com.gamebroadcast.forum.content.article;
 
 import com.gamebroadcast.forum.content.article.models.ArticleAddUpdate;
 import com.gamebroadcast.forum.content.article.models.ArticleFullInfoVM;
+import com.gamebroadcast.forum.content.article.models.ArticleSearchInfoVM;
 import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
@@ -25,6 +26,11 @@ public class ArticleController {
     @GetMapping
     public List<ArticleVM> getAllArticles() {
         return articleService.getAllArticles();
+    }
+
+    @GetMapping(path = "/SearchInfos")
+    public List<ArticleSearchInfoVM> getAllArticlesSearchInfos() {
+        return articleService.getAllArticleSearchInfos();
     }
 
     @GetMapping(path = "/Similar/{articleId}")

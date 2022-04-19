@@ -3,15 +3,20 @@ package com.gamebroadcast.forum.content.review.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gamebroadcast.forum.article.models.ArticleSearchInfoVM;
+public class ReviewSearchInfoVM extends ReviewVM{
 
-public class ReviewSearchInfoVM {
+    public int popularity;
+    public int score;
+    public String introduction;
+
     public ReviewSearchInfoVM(Review review) {
-        //super(review);
-       // id = review.getId();
+        super(review);
+        this.popularity = review.getLikeCount() + review.getDislikeCount();
+        this.score = review.getScore();
+        this.introduction = review.getIntroduction();
     }
 
-    public static List<ReviewSearchInfoVM> toReviewVMList(List<Review> reviews) {
+    public static List<ReviewSearchInfoVM> toReviewSearchInfoVMList(List<Review> reviews) {
         List<ReviewSearchInfoVM> reviewSearchInfoVM = new ArrayList<>();
         reviews.forEach(review -> reviewSearchInfoVM.add(new ReviewSearchInfoVM(review)));
         return reviewSearchInfoVM;
