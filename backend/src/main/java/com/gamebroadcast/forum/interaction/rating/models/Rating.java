@@ -23,14 +23,14 @@ public class Rating {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "game_id")
+	@JoinColumn(name = "game_id", nullable = false)
 	private Game game;
 
 	@ManyToOne
-	@JoinColumn(name = "author_id")
+	@JoinColumn(name = "author_id", nullable = false)
 	private AppUser author;
 
-	@Column
+	@Column(nullable = false)
 	private int value;
 
 	public void publish() {
