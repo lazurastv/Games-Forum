@@ -49,10 +49,6 @@ public class Game extends Content {
     @ElementCollection
     private List<String> distributions;
 
-    public Game(String path) {
-        super(path);
-    }
-
     public void setGenres(List<String> genres) {
         if (!TagRepositories.genresExist(genres)) {
             throw new InvalidTagException("genres");

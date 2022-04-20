@@ -56,7 +56,7 @@ public class ReviewController {
     @PreAuthorize("hasRole('EDITOR')")
     public void addReview(@RequestBody ReviewAdd newReview) {
         try {
-            reviewService.addReview(newReview, newReview.content);
+            reviewService.addReview(newReview);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

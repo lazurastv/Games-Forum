@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.gamebroadcast.forum.content.content.ContentAddUpdate;
+import com.gamebroadcast.forum.exceptions.RequiredValueException;
 
 public class GameAddUpdate extends ContentAddUpdate {
     public Date gamePublishDate;
@@ -13,13 +14,14 @@ public class GameAddUpdate extends ContentAddUpdate {
     public List<String> platforms;
     public List<String> distributions;
 
-    public Game toGame(String path) {
-        Game game = new Game(path);
+    public Game toGame() {
+        Game game = new Game();
         update(game);
         return game;
     }
 
     public void update(Game game) {
+        verify();
         super.update(game);
         game.setGamePublishDate(gamePublishDate);
         game.setDeveloper(developer);
@@ -27,5 +29,19 @@ public class GameAddUpdate extends ContentAddUpdate {
         game.setGenres(genres);
         game.setPlatforms(platforms);
         game.setDistributions(distributions);
+    }
+
+    public void verify() {
+        String field = "";
+        if (gamePublishDate == null) {
+            field = "gamePublishDate";
+        } else if (developer == null) {
+            field = "developer";
+        } else if (editorScore == null) {
+            field = "editorScore";
+        }
+        if (field != "") {
+            throw new RequiredValueException(field);
+        }
     }
 }
