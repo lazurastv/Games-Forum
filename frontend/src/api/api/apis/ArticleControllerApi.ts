@@ -60,7 +60,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
-            throw new runtime.RequiredError('articleAddUpdate', 'Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
+            throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
         }
 
         const queryParameters: any = {};
@@ -90,7 +90,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async deleteArticleRaw(requestParameters: DeleteArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId', 'Required parameter requestParameters.articleId was null or undefined when calling deleteArticle.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling deleteArticle.');
         }
 
         const queryParameters: any = {};
@@ -141,7 +141,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async getArticleRaw(requestParameters: GetArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ArticleVM>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId', 'Required parameter requestParameters.articleId was null or undefined when calling getArticle.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling getArticle.');
         }
 
         const queryParameters: any = {};
@@ -169,7 +169,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async getArticleFullInfoRaw(requestParameters: GetArticleFullInfoRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ArticleFullInfoVM>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId', 'Required parameter requestParameters.articleId was null or undefined when calling getArticleFullInfo.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling getArticleFullInfo.');
         }
 
         const queryParameters: any = {};
@@ -197,7 +197,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async getSimilarArticlesRaw(requestParameters: GetSimilarArticlesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ArticleVM>>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId', 'Required parameter requestParameters.articleId was null or undefined when calling getSimilarArticles.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling getSimilarArticles.');
         }
 
         const queryParameters: any = {};
@@ -225,11 +225,11 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async updateArticleRaw(requestParameters: UpdateArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId', 'Required parameter requestParameters.articleId was null or undefined when calling updateArticle.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling updateArticle.');
         }
 
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
-            throw new runtime.RequiredError('articleAddUpdate', 'Required parameter requestParameters.articleAddUpdate was null or undefined when calling updateArticle.');
+            throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling updateArticle.');
         }
 
         const queryParameters: any = {};
