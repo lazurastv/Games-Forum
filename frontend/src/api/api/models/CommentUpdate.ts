@@ -24,7 +24,7 @@ export interface CommentUpdate {
      * @type {string}
      * @memberof CommentUpdate
      */
-    content?: string;
+    comment?: string;
 }
 
 export function CommentUpdateFromJSON(json: any): CommentUpdate {
@@ -37,7 +37,7 @@ export function CommentUpdateFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
     };
 }
 
@@ -50,7 +50,7 @@ export function CommentUpdateToJSON(value?: CommentUpdate | null): any {
     }
     return {
         
-        'content': value.content,
+        'comment': value.comment,
     };
 }
 
