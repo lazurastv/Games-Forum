@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadArticle, uploadArticle } from "./fetchArticles";
+import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";

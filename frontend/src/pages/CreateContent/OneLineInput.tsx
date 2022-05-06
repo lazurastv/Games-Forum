@@ -5,7 +5,7 @@ export default function OneLineInput(props: any) {
   return (
     <FormControl
       sx={{
-        mb: 1,
+        mb: 2,
         display: "block",
         "& .MuiOutlinedInput-root": {
           "&:hover fieldset": {

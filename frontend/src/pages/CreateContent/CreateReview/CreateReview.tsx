@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadReview, uploadReview } from "./fetchReviews";
+import { loadReview, uploadReview } from "../../../fetchData/fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";

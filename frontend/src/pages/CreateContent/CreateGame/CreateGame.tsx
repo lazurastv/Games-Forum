@@ -4,7 +4,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Container from "@mui/material/Container";
 import { Box, Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadGame, uploadGame } from "./fetchGames";
+import { loadGame, uploadGame } from "../../../fetchData/fetchGames";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { GameAddUpdate } from "../../../api/api";
