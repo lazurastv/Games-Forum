@@ -1,20 +1,9 @@
 import Container from "@mui/material/Container";
 import ReviewItem from "./ReviewItem";
-import { useEffect, useState } from "react";
-import { ReviewControllerApi } from "../../api/api/apis/ReviewControllerApi";
-import { ReviewVM } from "../../api/api/models/ReviewVM";
+import withLoading from "../../fetchData/withLoading";
+import { loadAllReviews } from "../../fetchData/fetchReviews";
 
-const Reviews = () => {
-  const [reviewsArray, setReviewsArray] = useState<ReviewVM[]>([]);
-  const reviews = new ReviewControllerApi();
-  useEffect(() => {
-    reviews
-      .getAllReviews()
-      .then((result) => {
-        setReviewsArray(result);
-      })
-      .catch((error) => console.error("Read" + error));
-  }, []);
+const Reviews = ({ data: reviewsArray }) => {
   return (
     <Container maxWidth="xl">
       {reviewsArray.map((r, idx) => (
@@ -31,4 +20,4 @@ const Reviews = () => {
     </Container>
   );
 };
-export default Reviews;
+export default withLoading(Reviews, async () => await loadAllReviews());

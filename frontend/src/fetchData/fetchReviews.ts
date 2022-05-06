@@ -1,12 +1,11 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
 import { ReviewAdd, ReviewControllerApi } from "../api/api";
-async function loadReviews() {
+async function loadAllReviews() {
   const auth = new AuthApi();
   const reviews = new ReviewControllerApi();
   return auth
     .login()
     .then((result) => reviews.getAllReviews())
-    .catch((error) => console.error(error))
 }
 async function loadReview(id: number) {
   const auth = new AuthApi();
@@ -18,7 +17,6 @@ async function loadReview(id: number) {
       ...result,
       //   content: result?.path ? stringToHtml(result?.path) : "Loading error",
     }))
-    .catch((error) => console.error(error));
 }
 async function uploadReview(review: ReviewAdd) {
   const auth = new AuthApi();
@@ -33,4 +31,4 @@ async function uploadReview(review: ReviewAdd) {
     })
     .catch((error) => console.error("Read" + error));
 }
-export { uploadReview, loadReview,loadReviews};
+export { uploadReview, loadReview, loadAllReviews };
