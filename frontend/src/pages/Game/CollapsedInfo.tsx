@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CollapseButton from "../../components/CollapseButton";
 import { game } from "../../dictionary/gameDataDictionary";
+import { gameDatafromDB } from "../../dictionary/mapData";
 const Label = (props: any) => (
   <Typography
     component="span"
@@ -69,22 +70,40 @@ const InfoIcon = (props: any) => (
     </Typography>
   </Box>
 );
-export default function CollapsedInfo(props: any) {
+export default function CollapsedInfo({ platforms, distributions }) {
   return (
     <Box sx={{ mb: 4 }}>
       <CollapseButton name="Platformy">
-        {game.platform.map((p) => (
-          <InfoIcon key={p} src={"/images/CollapsedInfoIcons/Platforms/" + p.split(" ").join("").toLowerCase() + ".jpg"}>
-            {p}
-          </InfoIcon>
-        ))}
+        {platforms.map((p, idx) => {
+          let plat = gameDatafromDB(p);
+          if (plat && !Array.isArray(plat)) {
+            return (
+              <InfoIcon
+                key={idx}
+                src={"/images/CollapsedInfoIcons/Platforms/" + plat.split(" ").join("").toLowerCase() + ".jpg"}
+              >
+                {p}
+              </InfoIcon>
+            );
+          }
+          return <></>;
+        })}
       </CollapseButton>
       <CollapseButton name="Dystrybucje">
-        {game.dystribution.map((d) => (
-          <InfoIcon key={d} src={"/images/CollapsedInfoIcons/Distributions/" + d.split(" ").join("").toLowerCase() + ".jpg"}>
-            {d}
-          </InfoIcon>
-        ))}
+        {distributions.map((d) => {
+          let dist = gameDatafromDB(d);
+          if (dist && !Array.isArray(dist)) {
+            return (
+              <InfoIcon
+                key={d}
+                src={"/images/CollapsedInfoIcons/Distributions/" + dist.split(" ").join("").toLowerCase() + ".jpg"}
+              >
+                {d}
+              </InfoIcon>
+            );
+          }
+          return <></>;
+        })}
       </CollapseButton>
       {/* <CollapseButton name="Wymagania">
         <Grid container spacing={2} sx={{ pt: 2 }}>

@@ -16,11 +16,11 @@ function Games({ data: gamesArray }) {
       <Grid container spacing={2}>
         {gamesArray.map((x, i) => (
           <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-            <GameTile title={x.title} src="./images/Games/cp2077.jpg" />
+            <GameTile gameId={x.id} title={x.title} src="./images/Games/cp2077.jpg" />
           </Grid>
         ))}
       </Grid>
-      <PaginationFilter maxPage={50} page={page} onPageChange={handlePageChange} />
+      {/* <PaginationFilter maxPage={50} page={page} onPageChange={handlePageChange} /> */}
     </Container>
   );
 }

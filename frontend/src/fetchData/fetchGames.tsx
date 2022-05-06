@@ -1,5 +1,10 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
 import { GameAddUpdate, GameControllerApi, GameFullInfoVM, GameVM } from "../api/api";
+async function loadSimilarGames(id: number): Promise<GameVM[]> {
+  const auth = new AuthApi();
+  const games = new GameControllerApi();
+  return auth.login().then((result) => games.getSimilarGames({ gameId: id }));
+}
 async function loadAllGames(): Promise<GameVM[]> {
   const auth = new AuthApi();
   const games = new GameControllerApi();
@@ -24,4 +29,4 @@ async function uploadGame(game: GameAddUpdate) {
     })
     .catch((error) => console.error("Read" + error));
 }
-export { uploadGame, loadGame, loadAllGames };
+export { uploadGame, loadGame, loadAllGames, loadSimilarGames };

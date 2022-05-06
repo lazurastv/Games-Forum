@@ -1,20 +1,21 @@
 import React from "react";
 import Carousel from "../../components/Carousel/Carousel";
-import ReviewTile from "../../components/Tile/ReviewTile";
-import { loadSimilarReviews } from "../../fetchData/fetchReviews";
+import GameTile from "../../components/Tile/GameTile";
+import { loadSimilarGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 
-function SimilarArticles({ data: reviews }) {
+function SimilarGames({ data: games }) {
+  console.log(games);
   return (
     <Carousel>
       {Array(10)
-        .fill(reviews)
+        .fill(games)
         .flat()
         .map((a, idx) => (
-          <ReviewTile
+          <GameTile
+            gameId={a.id}
             key={idx}
-            articleId={a.id}
             title={a.title}
             src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg"
             author={a.authorName}
@@ -24,4 +25,4 @@ function SimilarArticles({ data: reviews }) {
     </Carousel>
   );
 }
-export default withLoading(SimilarArticles, async (fetchId: number) => loadSimilarReviews(fetchId));
+export default withLoading(SimilarGames, async (fetchId: number) => loadSimilarGames(fetchId));

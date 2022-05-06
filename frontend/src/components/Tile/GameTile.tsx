@@ -24,7 +24,7 @@ const Rating = (props: any) => (
 );
 export default function GameTile(props: any) {
   return (
-    <Link to={`/gry/${props.title}`}>
+    <Link to={`/gry/${props.gameId}`}>
       <Tile
         small
         src={props.src}
