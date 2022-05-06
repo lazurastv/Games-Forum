@@ -5,6 +5,8 @@ import { loadAllReviews } from "../../fetchData/fetchReviews";
 import Filter from "../../components/Filters/Filter";
 
 const Reviews = ({ data: reviewsArray }) => {
+  console.log(reviewsArray);
+  
   return (
     <Container maxWidth="xl">
       <Filter />

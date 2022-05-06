@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { editorToString } from "../../../components/Editor/dataConversion";
+import { editorToString } from "../../../utils/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../OneLineInput";
 
