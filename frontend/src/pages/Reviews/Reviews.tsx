@@ -2,10 +2,12 @@ import Container from "@mui/material/Container";
 import ReviewItem from "./ReviewItem";
 import withLoading from "../../fetchData/withLoading";
 import { loadAllReviews } from "../../fetchData/fetchReviews";
+import Filter from "../../components/Filters/Filter";
 
 const Reviews = ({ data: reviewsArray }) => {
   return (
     <Container maxWidth="xl">
+      <Filter />
       {reviewsArray.map((r, idx) => (
         <ReviewItem
           key={idx}

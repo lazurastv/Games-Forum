@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function withLoading(WrappedComponent: any, fetchFun: any) {
-  const WithLoading = () => {
+  const WithLoading = (props: any) => {
+    let { id } = useParams();
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     useEffect(() => {
       setIsLoading(true);
       setIsError(false);
-      fetchFun()
+      fetchFun(id)
         .then((res: any) => {
           setData(res);
           setIsLoading(false);
@@ -19,7 +21,7 @@ function withLoading(WrappedComponent: any, fetchFun: any) {
           setIsError(err);
         });
     }, []);
-    return isLoading ? <div>Loading...</div> : <WrappedComponent data={data} />;
+    return isLoading ? <div>Loading...</div> : <WrappedComponent {...props} data={data} />;
   };
   return WithLoading;
 }

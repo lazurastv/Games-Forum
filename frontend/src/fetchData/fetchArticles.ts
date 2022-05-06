@@ -1,5 +1,10 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
 import { ArticleAddUpdate, ArticleControllerApi, ArticleFullInfoVM, ArticleVM } from "../api/api";
+async function loadSimilarArticles(id: number): Promise<ArticleVM[]> {
+  const auth = new AuthApi();
+  const articles = new ArticleControllerApi();
+  return auth.login().then((result) => articles.getSimilarArticles({ articleId: id }));
+}
 async function loadAllArticles(): Promise<void | ArticleVM[]> {
   const auth = new AuthApi();
   const articles = new ArticleControllerApi();
@@ -24,4 +29,4 @@ async function uploadArticle(article: ArticleAddUpdate) {
     })
     .catch((error) => console.error("Read" + error));
 }
-export { uploadArticle, loadArticle, loadAllArticles };
+export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles };

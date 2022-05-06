@@ -61,11 +61,11 @@ function App() {
             <Route path="dodaj-recenzje" element={<CreateReview />} />
             <Route path="dodaj-gre" element={<CreateGame />} />
             <Route path="artykuly" element={<Articles />} />
-            <Route path="artykuly/:title" element={<Article />} />
+            <Route path="artykuly/:id" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />
-            <Route path="recenzje/:title" element={<Review />} />
+            <Route path="recenzje/:id" element={<Review />} />
             <Route path="gry" element={<Games />} />
-            <Route path="gry/:title" element={<Game />} />
+            <Route path="gry/:id" element={<Game />} />
             <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
             <Route
               path="mojprofil"

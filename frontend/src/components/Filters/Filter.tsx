@@ -68,7 +68,7 @@ export default function Filter(props: any) {
     );
   };
   return (
-    <Box sx={{ mb: 6, textAlign: "left" }}>
+    <Box sx={{ mt: 6, mb: 2, textAlign: "left" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3, height: "43px" }}>
         <Button
           size="large"

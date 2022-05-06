@@ -6,7 +6,7 @@ export default function PaginationFilter(props: any) {
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Pagination
-      count={props.paginationConf.totalPages}
+      count={props.maxPage}
       page={props.page}
       color="secondary"
       size={matches ? "large" : "medium"}
