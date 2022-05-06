@@ -7,11 +7,11 @@ import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadReview, uploadReview } from "./fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { ReviewAddUpdate } from "../../../api/api";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
 import OneLineInput from "../OneLineInput";
+import { ReviewAdd } from "../../../api/api";
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -24,7 +24,8 @@ export default function CreateReview() {
     //
     // TODO obsługa błędów
     // //
-    const review: ReviewAddUpdate = {
+    const review: ReviewAdd = {
+      gameId: 7,
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
