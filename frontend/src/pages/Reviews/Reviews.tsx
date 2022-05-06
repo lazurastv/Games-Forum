@@ -3,17 +3,17 @@ import ReviewItem from "./ReviewItem";
 import withLoading from "../../fetchData/withLoading";
 import { loadAllReviews } from "../../fetchData/fetchReviews";
 import Filter from "../../components/Filters/Filter";
+import { convertDate } from "../../utils/convertDate";
 
 const Reviews = ({ data: reviewsArray }) => {
-  console.log(reviewsArray);
-  
   return (
     <Container maxWidth="xl">
       <Filter />
       {reviewsArray.map((r, idx) => (
         <ReviewItem
           key={idx}
-          date={(r.publishDate as Date).toLocaleString().replace("/", ".").split(",")[0]}
+          reviewId={r.id}
+          date={convertDate(r.publishDate)}
           title={r.title as string}
           content={"opis"}
           author={r.authorName as string}

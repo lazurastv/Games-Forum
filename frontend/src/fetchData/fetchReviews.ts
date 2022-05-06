@@ -1,11 +1,14 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
 import { ReviewAdd, ReviewControllerApi } from "../api/api";
+async function loadSimilarReviews(id: number) {
+  const auth = new AuthApi();
+  const reviews = new ReviewControllerApi();
+  return auth.login().then((result) => reviews.getSimilarReviews({ reviewId: id }));
+}
 async function loadAllReviews() {
   const auth = new AuthApi();
   const reviews = new ReviewControllerApi();
-  return auth
-    .login()
-    .then((result) => reviews.getAllReviews())
+  return auth.login().then((result) => reviews.getAllReviews());
 }
 async function loadReview(id: number) {
   const auth = new AuthApi();
@@ -16,7 +19,7 @@ async function loadReview(id: number) {
     .then((result) => ({
       ...result,
       //   content: result?.path ? stringToHtml(result?.path) : "Loading error",
-    }))
+    }));
 }
 async function uploadReview(review: ReviewAdd) {
   const auth = new AuthApi();
@@ -31,4 +34,4 @@ async function uploadReview(review: ReviewAdd) {
     })
     .catch((error) => console.error("Read" + error));
 }
-export { uploadReview, loadReview, loadAllReviews };
+export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews };

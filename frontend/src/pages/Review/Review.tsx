@@ -1,20 +1,20 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import Carousel from "../../components/Carousel/Carousel";
+import Author from "../../components/Author";
 import SectionHeader from "../../components/SectionHeader";
 import HeaderTile from "../../components/Tile/HeaderTile";
-import ReviewTile from "../../components/Tile/ReviewTile";
-import { reviewsCarousel } from "../../data-mock/carousels";
-import Author from "./Author";
+import { loadReview } from "../../fetchData/fetchReviews";
+import withLoading from "../../fetchData/withLoading";
+import { convertDate } from "../../utils/convertDate";
+import { stringToHtml } from "../../utils/dataConversion";
 import ReviewRating from "./ReviewRating";
-export default function Review() {
+import SimilarReviews from "./SimilarReviews";
+function Review({ data: review }) {
   return (
     <Box>
       <HeaderTile
-        title="Recenzja gry Cyberpunk 2077 - czy to najlepsza gra roku?"
+        title={review.title}
         imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
-        caption={
-          <Typography sx={{ textAlign: "right" }}>01.01.2022</Typography>
-        }
+        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
       <Container maxWidth="xl">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
@@ -29,45 +29,18 @@ export default function Review() {
               },
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
-              Cyberpunk 2077 to najbardziej oczekiwana gra ostatnich lat.
-              Stworzony przez rodzime studio CD Projekt RED erpeg akcji wzbudził
-              ogromne zainteresowanie na długo przed premierą. Tym większe było
-              rozczarowanie, gdy okazało się, że produkcja trafiła na rynek
-              niedokończona, z wybrakowanymi mechanikami (opisywanymi w
-              zapowiedziach), licznymi błędami i rażąco niską liczbą klatek na
-              sekundę na konsolach starej generacji. Z racji tego, że historia
-              V, osadzona w tętniącym życiem Night City, naszym zdaniem w ogóle
-              nie powinna trafić na PlayStation 4 i Xboksy One (jest po prostu
-              zbyt wymagająca technicznie, jak na możliwości tych sprzętów),
-              zebraliśmy oceny dotyczące wyłącznie wersji pecetowej. O wydaniu
-              next genowym nie wspominamy ani słowem, gdyż czekamy na wydanie
-              zapowiadanej przez CD Projekt RED aktualizacji, która przede
-              wszystkim ma wprowadzić oprawę graficzną na nowy poziom.
-            </Typography>
+            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{review.introduction}</Typography>
+            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{/* {stringToHtml(review.path)} */}</Typography>
           </Grid>
           <Grid item xs={12} md={4}>
-            <ReviewRating sx={{ mb: 5 }}></ReviewRating>
-            <Author
-              sx={{ mb: 5 }}
-              producer="CD Project"
-              publisher="CD Project RED"
-              date="20 marca 2021"
-            />
+            <ReviewRating sx={{ mb: 5 }} score={review.score} pluses={review.pluses} minuses={review.minuses} />
+            <Author sx={{ mb: 5 }} authorData={review.author} />
           </Grid>
         </Grid>
         <SectionHeader>Podobne recenzje</SectionHeader>
-        <Carousel>
-          {reviewsCarousel.map((reviewTile) => (
-            <ReviewTile
-              title={reviewTile.title}
-              src={reviewTile.src}
-              author={reviewTile.author}
-              date={reviewTile.date}
-            />
-          ))}
-        </Carousel>
+        <SimilarReviews />
       </Container>
     </Box>
   );
 }
+export default withLoading(Review, async (fetchId: number) => await loadReview(fetchId));

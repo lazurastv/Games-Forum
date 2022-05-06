@@ -17,7 +17,7 @@ const Articles = ({ data: articlesArray }) => {
           date={convertDate(a.publishDate)}
           title={a.title as string}
           author={a.authorName as string}
-          image={"https://cdn.mos.cms.futurecdn.net/3ZbPC5LNRVccsePfX2PbM7-1200-80.jpg"}
+          image="https://cdn.mos.cms.futurecdn.net/3ZbPC5LNRVccsePfX2PbM7-1200-80.jpg"
         />
       ))}
     </Container>
