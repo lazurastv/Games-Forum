@@ -34,15 +34,15 @@ export interface DeleteGameRequest {
     gameId: number;
 }
 
-export interface GetAllGames1Request {
-    gameId: number;
-}
-
 export interface GetGameRequest {
     gameId: number;
 }
 
 export interface GetGameFullInfoRequest {
+    gameId: number;
+}
+
+export interface GetSimilarGamesRequest {
     gameId: number;
 }
 
@@ -139,34 +139,6 @@ export class GameControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async getAllGames1Raw(requestParameters: GetAllGames1Request, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<GameVM>>> {
-        if (requestParameters.gameId === null || requestParameters.gameId === undefined) {
-            throw new runtime.RequiredError('gameId','Required parameter requestParameters.gameId was null or undefined when calling getAllGames1.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/game/Similar/{gameId}`.replace(`{${"gameId"}}`, encodeURIComponent(String(requestParameters.gameId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GameVMFromJSON));
-    }
-
-    /**
-     */
-    async getAllGames1(requestParameters: GetAllGames1Request, initOverrides?: RequestInit): Promise<Array<GameVM>> {
-        const response = await this.getAllGames1Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
     async getGameRaw(requestParameters: GetGameRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<GameVM>> {
         if (requestParameters.gameId === null || requestParameters.gameId === undefined) {
             throw new runtime.RequiredError('gameId','Required parameter requestParameters.gameId was null or undefined when calling getGame.');
@@ -218,6 +190,34 @@ export class GameControllerApi extends runtime.BaseAPI {
      */
     async getGameFullInfo(requestParameters: GetGameFullInfoRequest, initOverrides?: RequestInit): Promise<GameFullInfoVM> {
         const response = await this.getGameFullInfoRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getSimilarGamesRaw(requestParameters: GetSimilarGamesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<GameVM>>> {
+        if (requestParameters.gameId === null || requestParameters.gameId === undefined) {
+            throw new runtime.RequiredError('gameId','Required parameter requestParameters.gameId was null or undefined when calling getSimilarGames.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/game/Similar/{gameId}`.replace(`{${"gameId"}}`, encodeURIComponent(String(requestParameters.gameId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GameVMFromJSON));
+    }
+
+    /**
+     */
+    async getSimilarGames(requestParameters: GetSimilarGamesRequest, initOverrides?: RequestInit): Promise<Array<GameVM>> {
+        const response = await this.getSimilarGamesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

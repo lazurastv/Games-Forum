@@ -7,3 +7,4 @@ export * from './LikeControllerApi';
 export * from './RatingControllerApi';
 export * from './ReviewControllerApi';
 export * from './TagControllerApi';
+export * from './UserControllerApi';

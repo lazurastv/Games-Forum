@@ -11,7 +11,4 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue(value = "A")
 @NoArgsConstructor
 public class Article extends Content {
-    public Article(String path) {
-        super(path);
-    }
 }

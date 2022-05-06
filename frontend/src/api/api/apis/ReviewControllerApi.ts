@@ -15,26 +15,25 @@
 
 import * as runtime from '../runtime';
 import {
-    ReviewAddUpdate,
-    ReviewAddUpdateFromJSON,
-    ReviewAddUpdateToJSON,
+    ReviewAdd,
+    ReviewAddFromJSON,
+    ReviewAddToJSON,
     ReviewFullInfoVM,
     ReviewFullInfoVMFromJSON,
     ReviewFullInfoVMToJSON,
+    ReviewUpdate,
+    ReviewUpdateFromJSON,
+    ReviewUpdateToJSON,
     ReviewVM,
     ReviewVMFromJSON,
     ReviewVMToJSON,
 } from '../models';
 
 export interface AddReviewRequest {
-    reviewAddUpdate: ReviewAddUpdate;
+    reviewAdd: ReviewAdd;
 }
 
 export interface DeleteReviewRequest {
-    reviewId: number;
-}
-
-export interface GetAllReviews1Request {
     reviewId: number;
 }
 
@@ -46,9 +45,13 @@ export interface GetReviewFullInfoRequest {
     reviewId: number;
 }
 
+export interface GetSimilarReviewsRequest {
+    reviewId: number;
+}
+
 export interface UpdateReviewRequest {
     reviewId: number;
-    reviewAddUpdate: ReviewAddUpdate;
+    reviewUpdate: ReviewUpdate;
 }
 
 /**
@@ -59,8 +62,8 @@ export class ReviewControllerApi extends runtime.BaseAPI {
     /**
      */
     async addReviewRaw(requestParameters: AddReviewRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.reviewAddUpdate === null || requestParameters.reviewAddUpdate === undefined) {
-            throw new runtime.RequiredError('reviewAddUpdate','Required parameter requestParameters.reviewAddUpdate was null or undefined when calling addReview.');
+        if (requestParameters.reviewAdd === null || requestParameters.reviewAdd === undefined) {
+            throw new runtime.RequiredError('reviewAdd','Required parameter requestParameters.reviewAdd was null or undefined when calling addReview.');
         }
 
         const queryParameters: any = {};
@@ -74,7 +77,7 @@ export class ReviewControllerApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ReviewAddUpdateToJSON(requestParameters.reviewAddUpdate),
+            body: ReviewAddToJSON(requestParameters.reviewAdd),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -139,34 +142,6 @@ export class ReviewControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async getAllReviews1Raw(requestParameters: GetAllReviews1Request, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ReviewVM>>> {
-        if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
-            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling getAllReviews1.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/review/Similar/{reviewId}`.replace(`{${"reviewId"}}`, encodeURIComponent(String(requestParameters.reviewId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewVMFromJSON));
-    }
-
-    /**
-     */
-    async getAllReviews1(requestParameters: GetAllReviews1Request, initOverrides?: RequestInit): Promise<Array<ReviewVM>> {
-        const response = await this.getAllReviews1Raw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
     async getReviewRaw(requestParameters: GetReviewRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ReviewVM>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling getReview.');
@@ -223,13 +198,41 @@ export class ReviewControllerApi extends runtime.BaseAPI {
 
     /**
      */
+    async getSimilarReviewsRaw(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ReviewVM>>> {
+        if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
+            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling getSimilarReviews.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/review/Similar/{reviewId}`.replace(`{${"reviewId"}}`, encodeURIComponent(String(requestParameters.reviewId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewVMFromJSON));
+    }
+
+    /**
+     */
+    async getSimilarReviews(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<Array<ReviewVM>> {
+        const response = await this.getSimilarReviewsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async updateReviewRaw(requestParameters: UpdateReviewRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling updateReview.');
         }
 
-        if (requestParameters.reviewAddUpdate === null || requestParameters.reviewAddUpdate === undefined) {
-            throw new runtime.RequiredError('reviewAddUpdate','Required parameter requestParameters.reviewAddUpdate was null or undefined when calling updateReview.');
+        if (requestParameters.reviewUpdate === null || requestParameters.reviewUpdate === undefined) {
+            throw new runtime.RequiredError('reviewUpdate','Required parameter requestParameters.reviewUpdate was null or undefined when calling updateReview.');
         }
 
         const queryParameters: any = {};
@@ -243,7 +246,7 @@ export class ReviewControllerApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ReviewAddUpdateToJSON(requestParameters.reviewAddUpdate),
+            body: ReviewUpdateToJSON(requestParameters.reviewUpdate),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

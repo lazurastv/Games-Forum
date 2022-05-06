@@ -24,13 +24,13 @@ export interface CommentAdd {
      * @type {number}
      * @memberof CommentAdd
      */
-    articleId?: number;
+    contentId?: number;
     /**
      * 
      * @type {string}
      * @memberof CommentAdd
      */
-    content?: string;
+    comment?: string;
 }
 
 export function CommentAddFromJSON(json: any): CommentAdd {
@@ -43,8 +43,8 @@ export function CommentAddFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'articleId': !exists(json, 'articleId') ? undefined : json['articleId'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
     };
 }
 
@@ -57,8 +57,8 @@ export function CommentAddToJSON(value?: CommentAdd | null): any {
     }
     return {
         
-        'articleId': value.articleId,
-        'content': value.content,
+        'contentId': value.contentId,
+        'comment': value.comment,
     };
 }
 

@@ -55,7 +55,7 @@ public class ArticleController {
     @PreAuthorize("hasRole('EDITOR')")
     public void addArticle(@RequestBody ArticleAddUpdate newArticle) {
         try {
-            articleService.addArticle(newArticle, newArticle.content);
+            articleService.addArticle(newArticle);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

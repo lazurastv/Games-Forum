@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface LikeAdd
+ * @interface UserRoleUpdate
  */
-export interface LikeAdd {
+export interface UserRoleUpdate {
     /**
      * 
-     * @type {number}
-     * @memberof LikeAdd
+     * @type {string}
+     * @memberof UserRoleUpdate
      */
-    contentId?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LikeAdd
-     */
-    isLike?: boolean;
+    role?: string;
 }
 
-export function LikeAddFromJSON(json: any): LikeAdd {
-    return LikeAddFromJSONTyped(json, false);
+export function UserRoleUpdateFromJSON(json: any): UserRoleUpdate {
+    return UserRoleUpdateFromJSONTyped(json, false);
 }
 
-export function LikeAddFromJSONTyped(json: any, ignoreDiscriminator: boolean): LikeAdd {
+export function UserRoleUpdateFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserRoleUpdate {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
-        'isLike': !exists(json, 'isLike') ? undefined : json['isLike'],
+        'role': !exists(json, 'role') ? undefined : json['role'],
     };
 }
 
-export function LikeAddToJSON(value?: LikeAdd | null): any {
+export function UserRoleUpdateToJSON(value?: UserRoleUpdate | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function LikeAddToJSON(value?: LikeAdd | null): any {
     }
     return {
         
-        'contentId': value.contentId,
-        'isLike': value.isLike,
+        'role': value.role,
     };
 }
 

@@ -33,10 +33,10 @@ export interface RatingVM {
     gameId?: number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof RatingVM
      */
-    userId?: number;
+    authorName?: string;
     /**
      * 
      * @type {number}
@@ -57,7 +57,7 @@ export function RatingVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'gameId': !exists(json, 'gameId') ? undefined : json['gameId'],
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
         'value': !exists(json, 'value') ? undefined : json['value'],
     };
 }
@@ -73,7 +73,7 @@ export function RatingVMToJSON(value?: RatingVM | null): any {
         
         'id': value.id,
         'gameId': value.gameId,
-        'userId': value.userId,
+        'authorName': value.authorName,
         'value': value.value,
     };
 }

@@ -24,7 +24,6 @@ import com.gamebroadcast.forum.utils.SessionUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -32,7 +31,6 @@ import lombok.NoArgsConstructor;
         @UniqueConstraint(name = "content_unique_title", columnNames = "title") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
-@NoArgsConstructor
 public class Content {
     @Id
     @SequenceGenerator(name = "content_sequence", sequenceName = "content_sequence", allocationSize = 1)
@@ -40,20 +38,20 @@ public class Content {
     @Column(updatable = false)
     protected Long id;
 
-    @Column
+    @Column(nullable = false)
     protected String title;
 
     @Column(length = 2048)
     protected String introduction;
 
-    @Column
+    @Column(nullable = false)
     protected String path;
 
-    @Column
+    @Column(nullable = false)
     protected Date publishDate;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     protected AppUser author;
 
     @OneToMany(mappedBy = "content")
@@ -62,8 +60,8 @@ public class Content {
     @OneToMany(mappedBy = "content")
     protected List<Comment> comments;
 
-    public Content(String path) {
-        this.path = path;
+    public Content() {
+        this.path = "FileService.nextPath()";
     }
 
     public void publish() {

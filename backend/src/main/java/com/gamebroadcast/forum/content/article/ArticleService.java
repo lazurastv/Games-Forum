@@ -45,9 +45,9 @@ public class ArticleService {
         return new ArticleFullInfoVM(article);
     }
 
-    public void addArticle(ArticleAddUpdate articleAdd, String path) {
+    public void addArticle(ArticleAddUpdate articleAdd) {
         checkIfTitleIsUnique(articleAdd.title);
-        Article article = articleAdd.toArticle(path);
+        Article article = articleAdd.toArticle();
         article.publish();
         articleRepository.save(article);
     }

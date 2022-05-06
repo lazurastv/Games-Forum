@@ -25,6 +25,12 @@ import {
     CommentVMFromJSONTyped,
     CommentVMToJSON,
 } from './CommentVM';
+import {
+    GameVM,
+    GameVMFromJSON,
+    GameVMFromJSONTyped,
+    GameVMToJSON,
+} from './GameVM';
 
 /**
  * 
@@ -94,6 +100,12 @@ export interface ReviewFullInfoVM {
     score?: number;
     /**
      * 
+     * @type {GameVM}
+     * @memberof ReviewFullInfoVM
+     */
+    game?: GameVM;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof ReviewFullInfoVM
      */
@@ -126,6 +138,7 @@ export function ReviewFullInfoVMFromJSONTyped(json: any, ignoreDiscriminator: bo
         'dislikes': !exists(json, 'dislikes') ? undefined : json['dislikes'],
         'comments': !exists(json, 'comments') ? undefined : ((json['comments'] as Array<any>).map(CommentVMFromJSON)),
         'score': !exists(json, 'score') ? undefined : json['score'],
+        'game': !exists(json, 'game') ? undefined : GameVMFromJSON(json['game']),
         'pluses': !exists(json, 'pluses') ? undefined : json['pluses'],
         'minuses': !exists(json, 'minuses') ? undefined : json['minuses'],
     };
@@ -150,6 +163,7 @@ export function ReviewFullInfoVMToJSON(value?: ReviewFullInfoVM | null): any {
         'dislikes': value.dislikes,
         'comments': value.comments === undefined ? undefined : ((value.comments as Array<any>).map(CommentVMToJSON)),
         'score': value.score,
+        'game': GameVMToJSON(value.game),
         'pluses': value.pluses,
         'minuses': value.minuses,
     };

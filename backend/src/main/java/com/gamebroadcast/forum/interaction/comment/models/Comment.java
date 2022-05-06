@@ -23,14 +23,14 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "content_id")
+    @JoinColumn(name = "content_id", nullable = false)
     private Content content;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private AppUser author;
 
-    @Column(length = 2048)
+    @Column(length = 2048, nullable = false)
     private String comment;
 
     public void publish() {

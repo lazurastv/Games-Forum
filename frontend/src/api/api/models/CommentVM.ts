@@ -30,19 +30,19 @@ export interface CommentVM {
      * @type {number}
      * @memberof CommentVM
      */
-    articleId?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CommentVM
-     */
-    userId?: number;
+    contentId?: number;
     /**
      * 
      * @type {string}
      * @memberof CommentVM
      */
-    content?: string;
+    authorName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CommentVM
+     */
+    comment?: string;
 }
 
 export function CommentVMFromJSON(json: any): CommentVM {
@@ -56,9 +56,9 @@ export function CommentVMFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'articleId': !exists(json, 'articleId') ? undefined : json['articleId'],
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
+        'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
+        'comment': !exists(json, 'comment') ? undefined : json['comment'],
     };
 }
 
@@ -72,9 +72,9 @@ export function CommentVMToJSON(value?: CommentVM | null): any {
     return {
         
         'id': value.id,
-        'articleId': value.articleId,
-        'userId': value.userId,
-        'content': value.content,
+        'contentId': value.contentId,
+        'authorName': value.authorName,
+        'comment': value.comment,
     };
 }
 
