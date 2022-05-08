@@ -53,7 +53,7 @@ public class ArticleService {
 
     public void addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
-        Article article = articleAdd.toArticle(path);
+        Article article = articleAdd.toArticle();
         article.publish();
         articleRepository.save(article);
     }
