@@ -55,10 +55,10 @@ public class ReviewService {
         return new ReviewFullInfoVM(review);
     }
 
-    public void addReview(ReviewAdd reviewAdd, String path) {
+    public void addReview(ReviewAdd reviewAdd) {
         checkIfTitleIsUnique(reviewAdd.title);
         Game game = gameService.getGame(reviewAdd.gameId);
-        Review review = reviewAdd.toReview(path, game);
+        Review review = reviewAdd.toReview(game);
         review.publish();
         reviewRepository.save(review);
     }

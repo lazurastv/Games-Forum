@@ -25,6 +25,12 @@ import {
     CommentVMFromJSONTyped,
     CommentVMToJSON,
 } from './CommentVM';
+import {
+    ReviewVM,
+    ReviewVMFromJSON,
+    ReviewVMFromJSONTyped,
+    ReviewVMToJSON,
+} from './ReviewVM';
 
 /**
  * 
@@ -112,6 +118,12 @@ export interface GameFullInfoVM {
     userScore?: number;
     /**
      * 
+     * @type {Array<ReviewVM>}
+     * @memberof GameFullInfoVM
+     */
+    reviews?: Array<ReviewVM>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof GameFullInfoVM
      */
@@ -153,6 +165,7 @@ export function GameFullInfoVMFromJSONTyped(json: any, ignoreDiscriminator: bool
         'developer': !exists(json, 'developer') ? undefined : json['developer'],
         'editorScore': !exists(json, 'editorScore') ? undefined : json['editorScore'],
         'userScore': !exists(json, 'userScore') ? undefined : json['userScore'],
+        'reviews': !exists(json, 'reviews') ? undefined : ((json['reviews'] as Array<any>).map(ReviewVMFromJSON)),
         'genres': !exists(json, 'genres') ? undefined : json['genres'],
         'platforms': !exists(json, 'platforms') ? undefined : json['platforms'],
         'distributions': !exists(json, 'distributions') ? undefined : json['distributions'],
@@ -181,6 +194,7 @@ export function GameFullInfoVMToJSON(value?: GameFullInfoVM | null): any {
         'developer': value.developer,
         'editorScore': value.editorScore,
         'userScore': value.userScore,
+        'reviews': value.reviews === undefined ? undefined : ((value.reviews as Array<any>).map(ReviewVMToJSON)),
         'genres': value.genres,
         'platforms': value.platforms,
         'distributions': value.distributions,

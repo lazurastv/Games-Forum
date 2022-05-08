@@ -30,13 +30,13 @@ export interface LikeVM {
      * @type {number}
      * @memberof LikeVM
      */
-    articleId?: number;
+    contentId?: number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof LikeVM
      */
-    userId?: number;
+    authorName?: string;
     /**
      * 
      * @type {boolean}
@@ -56,8 +56,8 @@ export function LikeVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): Li
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'articleId': !exists(json, 'articleId') ? undefined : json['articleId'],
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
+        'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
         'isLike': !exists(json, 'isLike') ? undefined : json['isLike'],
     };
 }
@@ -72,8 +72,8 @@ export function LikeVMToJSON(value?: LikeVM | null): any {
     return {
         
         'id': value.id,
-        'articleId': value.articleId,
-        'userId': value.userId,
+        'contentId': value.contentId,
+        'authorName': value.authorName,
         'isLike': value.isLike,
     };
 }

@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/ArticleControllerApi.ts
 apis/CommentControllerApi.ts
 apis/GameControllerApi.ts
@@ -6,6 +5,7 @@ apis/LikeControllerApi.ts
 apis/RatingControllerApi.ts
 apis/ReviewControllerApi.ts
 apis/TagControllerApi.ts
+apis/UserControllerApi.ts
 apis/index.ts
 index.ts
 models/ArticleAddUpdate.ts
@@ -23,8 +23,13 @@ models/LikeVM.ts
 models/RatingAdd.ts
 models/RatingUpdate.ts
 models/RatingVM.ts
-models/ReviewAddUpdate.ts
+models/ReviewAdd.ts
 models/ReviewFullInfoVM.ts
+models/ReviewUpdate.ts
 models/ReviewVM.ts
+models/UserAdd.ts
+models/UserCredentialsUpdate.ts
+models/UserRoleUpdate.ts
+models/UserVM.ts
 models/index.ts
 runtime.ts

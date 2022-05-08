@@ -23,14 +23,14 @@ public class Like {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "content_id")
+    @JoinColumn(name = "content_id", nullable = false)
     private Content content;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private AppUser author;
 
-    @Column
+    @Column(nullable = false)
     private boolean isLike;
 
     public void publish() {

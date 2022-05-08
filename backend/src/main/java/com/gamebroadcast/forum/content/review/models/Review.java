@@ -30,8 +30,8 @@ public class Review extends Content {
     @ElementCollection
     private List<String> minuses;
 
-    public Review(String path, Game game) {
-        super(path);
+    public Review(Game game) {
+        super();
         this.game = game;
     }
 

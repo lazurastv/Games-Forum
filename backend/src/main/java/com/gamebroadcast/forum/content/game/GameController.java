@@ -61,7 +61,7 @@ public class GameController {
     @PreAuthorize("hasRole('EDITOR')")
     public void addGame(@RequestBody GameAddUpdate newGame) {
         try {
-            gameService.addGame(newGame, newGame.content);
+            gameService.addGame(newGame);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

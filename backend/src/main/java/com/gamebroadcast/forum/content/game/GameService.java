@@ -51,9 +51,9 @@ public class GameService {
         return new GameFullInfoVM(game);
     }
 
-    public void addGame(GameAddUpdate gameAdd, String path) {
+    public void addGame(GameAddUpdate gameAdd) {
         checkIfTitleIsUnique(gameAdd.title);
-        Game game = gameAdd.toGame(path);
+        Game game = gameAdd.toGame();
         game.publish();
         gameRepository.save(game);
     }
