@@ -21,6 +21,9 @@ import {
     GameFullInfoVM,
     GameFullInfoVMFromJSON,
     GameFullInfoVMToJSON,
+    GameSearchInfoVM,
+    GameSearchInfoVMFromJSON,
+    GameSearchInfoVMToJSON,
     GameVM,
     GameVMFromJSON,
     GameVMToJSON,
@@ -111,6 +114,30 @@ export class GameControllerApi extends runtime.BaseAPI {
      */
     async deleteGame(requestParameters: DeleteGameRequest, initOverrides?: RequestInit): Promise<void> {
         await this.deleteGameRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async getAllGameSearchInfosRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<GameSearchInfoVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/game/SearchInfos`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GameSearchInfoVMFromJSON));
+    }
+
+    /**
+     */
+    async getAllGameSearchInfos(initOverrides?: RequestInit): Promise<Array<GameSearchInfoVM>> {
+        const response = await this.getAllGameSearchInfosRaw(initOverrides);
+        return await response.value();
     }
 
     /**

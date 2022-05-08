@@ -21,6 +21,9 @@ import {
     ReviewFullInfoVM,
     ReviewFullInfoVMFromJSON,
     ReviewFullInfoVMToJSON,
+    ReviewSearchInfoVM,
+    ReviewSearchInfoVMFromJSON,
+    ReviewSearchInfoVMToJSON,
     ReviewUpdate,
     ReviewUpdateFromJSON,
     ReviewUpdateToJSON,
@@ -114,6 +117,30 @@ export class ReviewControllerApi extends runtime.BaseAPI {
      */
     async deleteReview(requestParameters: DeleteReviewRequest, initOverrides?: RequestInit): Promise<void> {
         await this.deleteReviewRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async getAllReviewSearchInfosRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ReviewSearchInfoVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/review/SearchInfos`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewSearchInfoVMFromJSON));
+    }
+
+    /**
+     */
+    async getAllReviewSearchInfos(initOverrides?: RequestInit): Promise<Array<ReviewSearchInfoVM>> {
+        const response = await this.getAllReviewSearchInfosRaw(initOverrides);
+        return await response.value();
     }
 
     /**

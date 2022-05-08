@@ -43,6 +43,12 @@ export interface UserCredentialsUpdate {
      * @memberof UserCredentialsUpdate
      */
     shortDescription?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCredentialsUpdate
+     */
+    currentPassword?: string;
 }
 
 export function UserCredentialsUpdateFromJSON(json: any): UserCredentialsUpdate {
@@ -59,6 +65,7 @@ export function UserCredentialsUpdateFromJSONTyped(json: any, ignoreDiscriminato
         'email': !exists(json, 'email') ? undefined : json['email'],
         'password': !exists(json, 'password') ? undefined : json['password'],
         'shortDescription': !exists(json, 'shortDescription') ? undefined : json['shortDescription'],
+        'currentPassword': !exists(json, 'currentPassword') ? undefined : json['currentPassword'],
     };
 }
 
@@ -75,6 +82,7 @@ export function UserCredentialsUpdateToJSON(value?: UserCredentialsUpdate | null
         'email': value.email,
         'password': value.password,
         'shortDescription': value.shortDescription,
+        'currentPassword': value.currentPassword,
     };
 }
 
