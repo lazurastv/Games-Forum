@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleSearchInfoVM extends ArticleVM {
-
+    public String introduction;
     public int popularity;
 
     public ArticleSearchInfoVM(Article article) {
         super(article);
-        this.popularity = article.getLikeCount() + article.getDislikeCount();
+        introduction = article.getIntroduction();
+        popularity = article.getLikeCount() + article.getDislikeCount();
     }
 
     public static List<ArticleSearchInfoVM> toArticleSearchInfoVMList(List<Article> articles) {
