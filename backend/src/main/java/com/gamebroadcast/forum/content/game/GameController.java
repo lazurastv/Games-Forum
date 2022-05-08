@@ -29,7 +29,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/SearchInfos")
-    public List<GameSearchInfoVM> getAllArticlesSearchInfos() {
+    public List<GameSearchInfoVM> getAllGameSearchInfos() {
         return gameService.getAllGameSearchInfos();
     }
 

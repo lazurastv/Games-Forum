@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @GetMapping(path = "/SearchInfos")
-    public List<ReviewSearchInfoVM> getAllArticlesSearchInfos() {
+    public List<ReviewSearchInfoVM> getAllReviewSearchInfos() {
         return reviewService.getAllReviewSearchInfos();
     }
 
