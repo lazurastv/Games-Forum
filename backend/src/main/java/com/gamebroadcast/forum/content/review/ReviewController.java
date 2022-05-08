@@ -3,6 +3,7 @@ package com.gamebroadcast.forum.content.review;
 import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
+import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
@@ -26,6 +27,11 @@ public class ReviewController {
     @GetMapping
     public List<ReviewVM> getAllReviews() {
         return reviewService.getAllReviews();
+    }
+
+    @GetMapping(path = "/SearchInfos")
+    public List<ReviewSearchInfoVM> getAllReviewSearchInfos() {
+        return reviewService.getAllReviewSearchInfos();
     }
 
     @GetMapping(path = "/Similar/{reviewId}")

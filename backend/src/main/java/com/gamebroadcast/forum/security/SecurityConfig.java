@@ -81,6 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers("/h2-console/**");
+        web
+                .ignoring()
+                .antMatchers("/api/user/register");
     }
 
     @Override

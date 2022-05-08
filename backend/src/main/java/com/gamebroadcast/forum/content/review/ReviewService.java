@@ -12,6 +12,7 @@ import com.gamebroadcast.forum.content.review.models.Review;
 import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
+import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
@@ -30,6 +31,11 @@ public class ReviewService {
     public List<ReviewVM> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
         return ReviewVM.toReviewVMList(reviews);
+    }
+
+    public List<ReviewSearchInfoVM> getAllReviewSearchInfos() {
+        List<Review> reviews = reviewRepository.findAll();
+        return ReviewSearchInfoVM.toReviewSearchInfoVMList(reviews);
     }
 
     public List<ReviewVM> getSimilarReviews(Long reviewId) {

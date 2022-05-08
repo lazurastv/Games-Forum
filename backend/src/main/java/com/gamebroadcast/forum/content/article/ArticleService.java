@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import com.gamebroadcast.forum.content.article.models.Article;
 import com.gamebroadcast.forum.content.article.models.ArticleAddUpdate;
 import com.gamebroadcast.forum.content.article.models.ArticleFullInfoVM;
+import com.gamebroadcast.forum.content.article.models.ArticleSearchInfoVM;
 import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
@@ -28,6 +29,11 @@ public class ArticleService {
         return ArticleVM.toArticleVMList(articles);
     }
 
+    public List<ArticleSearchInfoVM> getAllArticleSearchInfos() {
+        List<Article> articles = articleRepository.findAll();
+        return ArticleSearchInfoVM.toArticleSearchInfoVMList(articles);
+    }
+
     public List<ArticleVM> getSimilarArticles(Long articleId) {
         Article article = getArticle(articleId);
         List<Article> articles = articleRepository.findByAuthorId(article.getAuthor().getId());
@@ -45,7 +51,7 @@ public class ArticleService {
         return new ArticleFullInfoVM(article);
     }
 
-    public void addArticle(ArticleAddUpdate articleAdd) {
+    public void addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
         Article article = articleAdd.toArticle();
         article.publish();

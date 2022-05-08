@@ -7,11 +7,18 @@ public class UserCredentialsUpdate {
     public String email;
     public String password;
     public String shortDescription;
+    public String currentPassword;
 
     public void updateCredentials(AppUser user) {
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(password);
+        if (username != "") {
+            user.setUsername(username);
+        }
+        if (email != "") {
+            user.setEmail(email);
+        }
+        if (password != "") {
+            user.setPassword(password);
+        }
         user.setShortDescription(shortDescription);
     }
 }

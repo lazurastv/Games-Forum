@@ -2,6 +2,7 @@ package com.gamebroadcast.forum.content.game;
 
 import com.gamebroadcast.forum.content.game.models.GameAddUpdate;
 import com.gamebroadcast.forum.content.game.models.GameFullInfoVM;
+import com.gamebroadcast.forum.content.game.models.GameSearchInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
@@ -25,6 +26,11 @@ public class GameController {
     @GetMapping
     public List<GameVM> getAllGames() {
         return gameService.getAllGames();
+    }
+
+    @GetMapping(path = "/SearchInfos")
+    public List<GameSearchInfoVM> getAllGameSearchInfos() {
+        return gameService.getAllGameSearchInfos();
     }
 
     @GetMapping(path = "/Similar/{gameId}")
