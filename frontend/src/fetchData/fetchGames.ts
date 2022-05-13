@@ -1,14 +1,14 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
-import { GameAddUpdate, GameControllerApi, GameFullInfoVM, GameVM } from "../api/api";
+import { GameAddUpdate, GameControllerApi, GameFullInfoVM, GameSearchInfoVM, GameVM } from "../api/api";
 async function loadSimilarGames(id: number): Promise<GameVM[]> {
   const auth = new AuthApi();
   const games = new GameControllerApi();
   return auth.login().then((result) => games.getSimilarGames({ gameId: id }));
 }
-async function loadAllGames(): Promise<GameVM[]> {
+async function loadAllGames(): Promise<GameSearchInfoVM[]> {
   const auth = new AuthApi();
   const games = new GameControllerApi();
-  return auth.login().then((result) => games.getAllGames());
+  return auth.login().then((result) => games.getAllGameSearchInfos());
 }
 async function loadGame(id: number): Promise<GameFullInfoVM> {
   const auth = new AuthApi();
