@@ -49,9 +49,7 @@ export default function Rate(props: any) {
             xl: "1.9rem",
           },
         }}
-        onChange={(e, newValue) => {
-          props.setRating(newValue);
-        }}
+        onChange={(e, newValue) => props.setRating(newValue)}
         size="large"
         max={10}
         icon={<StarIcon color="secondary" fontSize="inherit" />}

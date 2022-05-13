@@ -14,7 +14,7 @@ function SimilarGames({ data: games }: { data: GameSearchInfoVM }) {
         .fill(games)
         .flat()
         .map((a, idx) => (
-          <GameTile game={a} src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg" />
+          <GameTile key={idx} game={a} src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg" />
         ))}
     </Carousel>
   );

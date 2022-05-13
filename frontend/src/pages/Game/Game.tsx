@@ -14,8 +14,9 @@ import { loadGame } from "../../fetchData/fetchGames";
 import { stringToHtml } from "../../utils/dataConversion";
 import { gameDatafromDB } from "../../dictionary/mapData";
 import SimilarGames from "./SimilarGames";
-import { GameFullInfoVM } from "../../api/api";
+import { RatingControllerApi, GameFullInfoVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
+import { AuthApi } from "../../api/api/apis/AuthApi";
 const styles = {
   score: {
     fontSize: "24px",
@@ -30,6 +31,17 @@ const styles = {
 };
 function Game({ data: game }: { data: GameFullInfoVM }) {
   const [rating, setRating] = useState<number | null>(null);
+  const handleRateGame = (rate) => {
+    const auth = new AuthApi();
+    const ratingApi = new RatingControllerApi();
+    setRating(rate);
+    auth
+      .login()
+      .then((res) =>
+        ratingApi.updateRating({ id: game.id as number, ratingUpdate: { value: rating as number } })
+      )
+      .catch((err) => console.error(err));
+  };
   return (
     <Box>
       <HeaderTile
@@ -118,7 +130,7 @@ function Game({ data: game }: { data: GameFullInfoVM }) {
             {/* <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{stringToHtml(game.path)}</Typography> */}
           </Grid>
           <Grid item xs={12} md={4}>
-            <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={setRating} />
+            <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={handleRateGame} />
             <Details
               sx={{ mb: 5 }}
               developer={game.developer}
