@@ -1,14 +1,14 @@
 import { AuthApi } from "../api/api/apis/AuthApi";
-import { ReviewAdd, ReviewControllerApi } from "../api/api";
+import { ReviewAdd, ReviewControllerApi, ReviewSearchInfoVM } from "../api/api";
 async function loadSimilarReviews(id: number) {
   const auth = new AuthApi();
   const reviews = new ReviewControllerApi();
   return auth.login().then((result) => reviews.getSimilarReviews({ reviewId: id }));
 }
-async function loadAllReviews() {
+async function loadAllReviews(): Promise<ReviewSearchInfoVM[]> {
   const auth = new AuthApi();
   const reviews = new ReviewControllerApi();
-  return auth.login().then((result) => reviews.getAllReviews());
+  return auth.login().then((result) => reviews.getAllReviewSearchInfos());
 }
 async function loadReview(id: number) {
   const auth = new AuthApi();
