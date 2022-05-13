@@ -21,6 +21,9 @@ import {
     ArticleFullInfoVM,
     ArticleFullInfoVMFromJSON,
     ArticleFullInfoVMToJSON,
+    ArticleSearchInfoVM,
+    ArticleSearchInfoVMFromJSON,
+    ArticleSearchInfoVMToJSON,
     ArticleVM,
     ArticleVMFromJSON,
     ArticleVMToJSON,
@@ -134,6 +137,30 @@ export class ArticleControllerApi extends runtime.BaseAPI {
      */
     async getAllArticles(initOverrides?: RequestInit): Promise<Array<ArticleVM>> {
         const response = await this.getAllArticlesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getAllArticlesSearchInfosRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ArticleSearchInfoVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/article/SearchInfos`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ArticleSearchInfoVMFromJSON));
+    }
+
+    /**
+     */
+    async getAllArticlesSearchInfos(initOverrides?: RequestInit): Promise<Array<ArticleSearchInfoVM>> {
+        const response = await this.getAllArticlesSearchInfosRaw(initOverrides);
         return await response.value();
     }
 

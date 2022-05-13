@@ -12,6 +12,8 @@ public class UserAdd {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
+        user.setShortDescription("");
+        user.setProfilePicturePath("");
         return user;
     }
 }
