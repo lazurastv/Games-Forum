@@ -22,18 +22,21 @@ export default function ReviewRating({ sx, score, pluses, minuses }) {
     <Widget sx={{ ...sx, fontSize: "16px", textAlign: "left" }}>
       <Typography sx={{ fontSize: "24px", textAlign: "center" }}>
         Moja ocena:
-        <Typography component="span" sx={{ fontSize: "30px", color: "secondary.main", fontWeight: 500 }}>
+        <Typography
+          component="span"
+          sx={{ fontSize: "30px", color: "secondary.main", fontWeight: 500 }}
+        >
           {" "}
           {score}/10
         </Typography>
       </Typography>
       <Typography sx={{ mb: 1 }}>Zalety:</Typography>
-      {pluses.map((v) => (
-        <Plus>{v}</Plus>
+      {pluses.map((v, idx) => (
+        <Plus key={idx}>{v}</Plus>
       ))}
       <Typography sx={{ mb: 1 }}>Wady:</Typography>
-      {minuses.map((v) => (
-        <Minus>{v}</Minus>
+      {minuses.map((v, idx) => (
+        <Minus key={idx}>{v}</Minus>
       ))}
     </Widget>
   );

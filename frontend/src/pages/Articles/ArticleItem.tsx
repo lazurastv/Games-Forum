@@ -11,6 +11,7 @@ interface IArticle {
   articleId: number;
   date: string;
   title: string;
+  content:string;
   author: string;
   image: string;
 }
@@ -18,7 +19,8 @@ interface IArticle {
 export default function ArticleItem(props: IArticle) {
   const theme = useTheme();
   //const isMobile = useMediaQuery(theme.breakpoints.down(900));
-  const isMD = useMediaQuery(theme.breakpoints.up(900));
+  const isMD = useMediaQuery(theme.breakpoints.up("md"));
+  const isXS = useMediaQuery(theme.breakpoints.down("sm"));
   const height = { xs: 160, sm: 180, md: 200 };
   const imgWidth = { xs: 120, sm: 180, md: 200 };
   const textBoxSize = {
@@ -28,6 +30,7 @@ export default function ArticleItem(props: IArticle) {
   };
   const titleFontSize = { xs: 20, sm: 24, md: 36 };
   const maxTitleHeight = { xs: 4.5 * 20, sm: 4.5 * 24, md: 80 };
+  const contentFontSize = { xs: 12, sm: 14, md: 16 };
   const secondFontSize = { xs: 12, sm: 14, md: 16 };
   const iconSize = { xs: 20, sm: 20, md: 24 };
   const maxLine = { xs: "3", sm: "3", md: "2" };
@@ -85,6 +88,9 @@ export default function ArticleItem(props: IArticle) {
             </Box>
             <Box component="div" sx={{ mb: 0.1, wordWrap: "break-word", fontSize: { ...titleFontSize } }}>
               <MultilineTruncatedText text={props.title} maxLine={isMD ? "2" : "3"} />
+            </Box>
+            <Box sx={{ my: 0.5, fontSize: { ...contentFontSize } }}>
+              <MultilineTruncatedText text={props.content} maxLine={isXS ? "4" : "3"} />
             </Box>
           </Box>
           <Box component="div" color="text.secondary" sx={{ mb: 1.5, fontSize: { ...secondFontSize } }}>
