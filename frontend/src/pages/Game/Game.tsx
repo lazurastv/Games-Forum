@@ -14,6 +14,8 @@ import { loadGame } from "../../fetchData/fetchGames";
 import { stringToHtml } from "../../utils/dataConversion";
 import { gameDatafromDB } from "../../dictionary/mapData";
 import SimilarGames from "./SimilarGames";
+import { GameFullInfoVM } from "../../api/api";
+import { convertDate } from "../../utils/convertDate";
 const styles = {
   score: {
     fontSize: "24px",
@@ -26,7 +28,7 @@ const styles = {
     borderRadius: "10px",
   },
 };
-function Game({ data: game }) {
+function Game({ data: game }: { data: GameFullInfoVM }) {
   const [rating, setRating] = useState<number | null>(null);
   return (
     <Box>
@@ -50,12 +52,13 @@ function Game({ data: game }) {
                 marginTop: "auto",
               }}
             >
-              {game.genres.map((v, idx) => (
-                <span key={idx}>
-                  {gameDatafromDB(v)}
-                  {idx < game.genres.length - 1 ? ", " : ""}
-                </span>
-              ))}
+              {game.genres &&
+                game.genres.map((v, idx) => (
+                  <span key={idx}>
+                    {gameDatafromDB(v)}
+                    {game.genres && idx < game.genres.length - 1 ? ", " : ""}
+                  </span>
+                ))}
             </Grid>
             <Grid
               item
@@ -109,12 +112,18 @@ function Game({ data: game }) {
               },
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{game.introduction}</Typography>
+            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
+              {game.introduction}
+            </Typography>
             {/* <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{stringToHtml(game.path)}</Typography> */}
           </Grid>
           <Grid item xs={12} md={4}>
             <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={setRating} />
-            <Details sx={{ mb: 5 }} producer="CD Project" publisher="CD Project RED" date="20 marca 2021" />
+            <Details
+              sx={{ mb: 5 }}
+              developer={game.developer}
+              date={convertDate(game.gamePublishDate)}
+            />
           </Grid>
         </Grid>
         <CollapsedInfo platforms={game.platforms} distributions={game.distributions} />

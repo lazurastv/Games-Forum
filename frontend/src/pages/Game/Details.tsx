@@ -31,11 +31,11 @@ export default function Details(props: any) {
         Szczegóły
       </Typography>
       <Detail label="Producent:">
-        {props.producer}
+        {props.developer}
       </Detail>
-      <Detail label="Wydawca:">
+      {/* <Detail label="Wydawca:">
         {props.publisher}
-      </Detail>
+      </Detail> */}
       <Detail label="Data premiery:">
         {props.date}
       </Detail>
