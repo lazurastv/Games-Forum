@@ -26,7 +26,6 @@ function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
           })
           .catch((err: any) => {
             console.error(err);
-            setIsLoading(false);
             setIsError(true);
           });
       }

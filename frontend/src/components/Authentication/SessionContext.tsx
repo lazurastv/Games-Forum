@@ -2,25 +2,29 @@ import { createContext, useContext, useState } from "react";
 import { UserVM } from "../../api/api";
 
 export type Session = {
-  user?:UserVM;
+  user?: UserVM;
   isAuthenticated?: boolean;
   redirectPath: string;
-}
-
-export const initialSession: Session = {
-  redirectPath: ''
 };
 
-export const SessionContext = createContext<[Session, (session: Session) => void]>([initialSession, () => {}]);
-export const useSessionContext = () => useContext(SessionContext);
+const initialSession: Session = {
+  redirectPath: "",
+};
 
-export const SessionContextProvider: React.FC = (props) => {
+const SessionContext = createContext<[Session, (session: Session) => void]>([
+  initialSession,
+  () => {},
+]);
+const useSessionContext = () => useContext(SessionContext);
+
+const SessionContextProvider: React.FC = (props) => {
   const [sessionState, setSessionState] = useState(initialSession);
-  const defaultSessionContext: [Session, typeof setSessionState]  = [sessionState, setSessionState];
+  const defaultSessionContext: [Session, typeof setSessionState] = [sessionState, setSessionState];
 
   return (
     <SessionContext.Provider value={defaultSessionContext}>
       {props.children}
     </SessionContext.Provider>
   );
-}
+};
+export { SessionContext, useSessionContext, SessionContextProvider, initialSession };

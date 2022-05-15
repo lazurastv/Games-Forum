@@ -1,22 +1,21 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Rate from "./Rate";
 import Details from "./Details";
 import CollapsedInfo from "./CollapsedInfo";
 import HeaderTile from "../../components/Tile/HeaderTile";
 import SectionHeader from "../../components/SectionHeader";
 import Carousel from "../../components/Carousel/Carousel";
-import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
-import GameTile from "../../components/Tile/GameTile";
+import { reviewsCarousel } from "../../data-mock/carousels";
 import ReviewTile from "../../components/Tile/ReviewTile";
 import withLoading from "../../fetchData/withLoading";
 import { loadGame } from "../../fetchData/fetchGames";
 import { stringToHtml } from "../../utils/dataConversion";
 import { gameDatafromDB } from "../../dictionary/mapData";
 import SimilarGames from "./SimilarGames";
-import { RatingControllerApi, GameFullInfoVM } from "../../api/api";
+import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
-import { AuthApi } from "../../api/api/apis/AuthApi";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
 const styles = {
   score: {
     fontSize: "24px",
@@ -30,33 +29,46 @@ const styles = {
   },
 };
 function Game({ game }: { game: GameFullInfoVM }) {
+  const [session] = useSessionContext();
   const [rating, setRating] = useState<number | null>(null);
-  const auth = new AuthApi();
-  const ratingApi = new RatingControllerApi();
-  const handleRateGame = (rate: number | null) => {
-    setRating(rate);
-    if (rate === null) {
-      auth
-        .login()
-        .then((res) =>
-          ratingApi.deleteRating({ id: game.id as number }, { credentials: "include" })
-        )
-        .catch((err) => console.error(err));
-    } else {
-      auth
-        .login()
-        .then((res) =>
-          ratingApi.addRating(
-            { ratingAdd: { gameId: game.id, value: 10 } },
-            { credentials: "include" }
-          )
-        )
-        .catch((err) => console.error(err));
+  // fetch rating on component load
+  useEffect(() => {
+    const ratingApi = new RatingControllerApi();
+    if (session.user?.id) {
+      ratingApi.getRatingByUserId({ id: session.user?.id }).then((res) => {
+        if (res.length) {
+          let r = res.find((v) => v.gameId === game.id)?.value;
+          Number.isInteger(r) && r ? setRating(r) : setRating(null);
+        }
+      });
     }
-    auth
-      .login()
-      .then((res) => ratingApi.getAllRatings())
-      .then((res) => console.log(res));
+  }, [session.user?.id, game.id]);
+
+  // update rating in database
+  const handleRateGame = (rate: number | null) => {
+    const ratingApi = new RatingControllerApi();
+    setRating(rate);
+    if (session.user?.id) {
+      ratingApi.getRatingByUserId({ id: session.user?.id }).then((res) => {
+        let r = res.find((v) => v.gameId === game.id);
+        let isInDb = res.length && r;
+        if (!isInDb && rate !== null) {
+          return ratingApi.addRating(
+            { ratingAdd: { gameId: game.id, value: rate } },
+            { credentials: "include" }
+          );
+        }
+        if (isInDb && rate !== null) {
+          return ratingApi.updateRating(
+            { id: r?.id as number, ratingUpdate: { value: rate } },
+            { credentials: "include" }
+          );
+        }
+        if (isInDb && rate === null) {
+          return ratingApi.deleteRating({ id: r?.id as number }, { credentials: "include" });
+        }
+      });
+    }
   };
   return (
     <Box>
@@ -101,26 +113,26 @@ function Game({ game }: { game: GameFullInfoVM }) {
                 marginTop: "auto",
               }}
             >
-              <Box>
-                Ocena redakcji:
+              <Box sx={{ mb: 1 }}>
+                <p style={{ display: "inline-block", minWidth: 175 }}>Ocena redakcji:</p>
                 <Typography
                   sx={{
                     color: "secondary.main",
                     ...styles.score,
                   }}
                 >
-                  {game.editorScore}/10
+                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(0)}/10
                 </Typography>
               </Box>
               <Box>
-                Ocena użytkowników:
+              <p style={{ display: "inline-block", minWidth: 175 }}>Ocena użytkowników:</p>
                 <Typography
                   sx={{
                     color: "staticText.primary",
                     ...styles.score,
                   }}
                 >
-                  {game.userScore}
+                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(2)}
                 </Typography>
               </Box>
             </Grid>

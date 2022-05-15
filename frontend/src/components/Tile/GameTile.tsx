@@ -9,7 +9,7 @@ const Rating = (props: any) => (
       ...props.sx,
       position: "absolute",
       right: "15px",
-      width: "60px",
+      width: "65px",
       height: "50px",
       backgroundColor: "rgba(0,0,0,0.8)",
       borderRadius: "10px",
@@ -59,14 +59,19 @@ export default function GameTile({ game, src }: GameTileProps) {
             color: "secondary.main",
           }}
         >
-          {game.editorScore}/10
+          {game.editorScore?.toFixed(0)}/10
         </Rating>
         <Rating
           sx={{
             top: "70px",
           }}
         >
-          {game.meanUserScore ? (isNaN(game.meanUserScore) ? "?" : game.meanUserScore) : "?"}/10
+          {game.meanUserScore
+            ? isNaN(game.meanUserScore)
+              ? "?"
+              : game.meanUserScore.toFixed(1)
+            : "?"}
+          /10
         </Rating>
       </Tile>
     </Link>
