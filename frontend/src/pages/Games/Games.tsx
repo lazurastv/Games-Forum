@@ -6,8 +6,7 @@ import { useState } from "react";
 import withLoading from "../../fetchData/withLoading";
 import { loadAllGames } from "../../fetchData/fetchGames";
 import { GameSearchInfoVM } from "../../api/api";
-function Games({ data }: { data: { games: GameSearchInfoVM[] } }) {
-  const { games } = data;
+function Games({ games }: { games: GameSearchInfoVM[] }) {
   const [page, setPage] = useState(1);
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
@@ -26,4 +25,4 @@ function Games({ data }: { data: { games: GameSearchInfoVM[] } }) {
     </Container>
   );
 }
-export default withLoading(Games, { games: async () => await loadAllGames() });
+export default withLoading(Games, { games: loadAllGames });

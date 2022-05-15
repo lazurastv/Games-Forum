@@ -5,7 +5,7 @@ import GameTile from "../../components/Tile/GameTile";
 import { loadSimilarGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
 
-function SimilarGames({ data: games }: { data: { games: GameSearchInfoVM } }) {
+function SimilarGames({ games }: { games: GameSearchInfoVM }) {
   return (
     <Carousel>
       {Array(10)

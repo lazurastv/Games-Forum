@@ -9,8 +9,7 @@ import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../utils/dataConversion";
 import SimilarArticles from "./SimilarArticles";
-function Article({ data }: { data: { article: ArticleFullInfoVM } }) {
-  const { article } = data;
+function Article({ article }: { article: ArticleFullInfoVM }) {
   return (
     <Box>
       <HeaderTile
@@ -51,5 +50,5 @@ function Article({ data }: { data: { article: ArticleFullInfoVM } }) {
   );
 }
 export default withLoading(Article, {
-  article: async (fetchId: number) => await loadArticle(fetchId),
+  article: loadArticle,
 });

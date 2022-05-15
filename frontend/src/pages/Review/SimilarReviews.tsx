@@ -6,8 +6,7 @@ import { loadSimilarReviews } from "../../fetchData/fetchReviews";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 
-function SimilarReviews({ data }: { data: { reviews: ReviewSearchInfoVM } }) {
-  const { reviews } = data;
+function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
   return (
     <Carousel>
       {Array(10)

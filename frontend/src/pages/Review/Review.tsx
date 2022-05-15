@@ -9,8 +9,7 @@ import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../utils/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
-function Review({ data }: { data: { review: ReviewFullInfoVM } }) {
-  const { review } = data;
+function Review({ review }: { review: ReviewFullInfoVM }) {
   return (
     <Box>
       <HeaderTile
@@ -57,5 +56,5 @@ function Review({ data }: { data: { review: ReviewFullInfoVM } }) {
   );
 }
 export default withLoading(Review, {
-  review: async (fetchId: number) => await loadReview(fetchId),
+  review: loadReview,
 });

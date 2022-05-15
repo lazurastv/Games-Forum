@@ -5,8 +5,7 @@ import { loadAllArticles } from "../../fetchData/fetchArticles";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 import ArticleItem from "./ArticleItem";
-const Articles = ({ data }: { data: { articles: ArticleSearchInfoVM[] } }) => {
-  const { articles } = data;
+const Articles = ({ articles }: { articles: ArticleSearchInfoVM[] }) => {
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
@@ -26,4 +25,4 @@ const Articles = ({ data }: { data: { articles: ArticleSearchInfoVM[] } }) => {
     </Container>
   );
 };
-export default withLoading(Articles, { articles: async () => await loadAllArticles() });
+export default withLoading(Articles, { articles: loadAllArticles });

@@ -1,13 +1,12 @@
-import { Box } from "@mui/system";
 import React from "react";
+import { ArticleSearchInfoVM } from "../../api/api";
 import Carousel from "../../components/Carousel/Carousel";
 import ArticleTile from "../../components/Tile/ArticleTile";
 import { loadSimilarArticles } from "../../fetchData/fetchArticles";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 
-function SimilarArticles({ data }) {
-  const { articles } = data;
+function SimilarArticles({ articles }: { articles: ArticleSearchInfoVM }) {
   return (
     <Carousel>
       {Array(10)
@@ -27,5 +26,5 @@ function SimilarArticles({ data }) {
   );
 }
 export default withLoading(SimilarArticles, {
-  articles: async (fetchId: number) => loadSimilarArticles(fetchId),
+  articles: loadSimilarArticles,
 });

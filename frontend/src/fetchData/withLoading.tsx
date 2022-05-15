@@ -40,7 +40,7 @@ function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
         <CircularProgress color="secondary" />
       </Box>
     ) : (
-      <WrappedComponent {...props} data={data} />
+      <WrappedComponent {...props} {...data} />
     );
   };
   return WithLoading;

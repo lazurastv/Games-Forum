@@ -6,8 +6,7 @@ import Filter from "../../components/Filters/Filter";
 import { convertDate } from "../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../api/api";
 
-const Reviews = ({ data }: { data: { reviews: ReviewSearchInfoVM[] } }) => {
-  const { reviews } = data;
+const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }) => {
   return (
     <Container maxWidth="xl">
       <Filter />
@@ -26,4 +25,4 @@ const Reviews = ({ data }: { data: { reviews: ReviewSearchInfoVM[] } }) => {
     </Container>
   );
 };
-export default withLoading(Reviews, { reviews: async () => await loadAllReviews() });
+export default withLoading(Reviews, { reviews: loadAllReviews });
