@@ -6,7 +6,8 @@ import { loadSimilarArticles } from "../../fetchData/fetchArticles";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 
-function SimilarArticles({ data: articles }) {
+function SimilarArticles({ data }) {
+  const { articles } = data;
   return (
     <Carousel>
       {Array(10)
@@ -25,4 +26,6 @@ function SimilarArticles({ data: articles }) {
     </Carousel>
   );
 }
-export default withLoading(SimilarArticles, async (fetchId: number) => loadSimilarArticles(fetchId));
+export default withLoading(SimilarArticles, {
+  articles: async (fetchId: number) => loadSimilarArticles(fetchId),
+});

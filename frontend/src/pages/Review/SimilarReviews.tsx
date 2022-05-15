@@ -1,11 +1,13 @@
 import React from "react";
+import { ReviewSearchInfoVM } from "../../api/api";
 import Carousel from "../../components/Carousel/Carousel";
 import ReviewTile from "../../components/Tile/ReviewTile";
 import { loadSimilarReviews } from "../../fetchData/fetchReviews";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 
-function SimilarArticles({ data: reviews }) {
+function SimilarReviews({ data }: { data: { reviews: ReviewSearchInfoVM } }) {
+  const { reviews } = data;
   return (
     <Carousel>
       {Array(10)
@@ -24,4 +26,6 @@ function SimilarArticles({ data: reviews }) {
     </Carousel>
   );
 }
-export default withLoading(SimilarArticles, async (fetchId: number) => loadSimilarReviews(fetchId));
+export default withLoading(SimilarReviews, {
+  reviews: async (fetchId: number) => loadSimilarReviews(fetchId),
+});

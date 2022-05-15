@@ -6,11 +6,12 @@ import Filter from "../../components/Filters/Filter";
 import { convertDate } from "../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../api/api";
 
-const Reviews = ({ data: reviewsArray }: { data: ReviewSearchInfoVM[] }) => {
+const Reviews = ({ data }: { data: { reviews: ReviewSearchInfoVM[] } }) => {
+  const { reviews } = data;
   return (
     <Container maxWidth="xl">
       <Filter />
-      {reviewsArray.map((r, idx) => (
+      {reviews.map((r, idx) => (
         <ReviewItem
           key={idx}
           reviewId={r.id as number}
@@ -25,4 +26,4 @@ const Reviews = ({ data: reviewsArray }: { data: ReviewSearchInfoVM[] }) => {
     </Container>
   );
 };
-export default withLoading(Reviews, async () => await loadAllReviews());
+export default withLoading(Reviews, { reviews: async () => await loadAllReviews() });

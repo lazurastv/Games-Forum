@@ -29,7 +29,8 @@ const styles = {
     borderRadius: "10px",
   },
 };
-function Game({ data: game }: { data: GameFullInfoVM }) {
+function Game({ data }: { data: { game: GameFullInfoVM } }) {
+  const { game } = data;
   const [rating, setRating] = useState<number | null>(null);
   const auth = new AuthApi();
   const ratingApi = new RatingControllerApi();
@@ -173,4 +174,4 @@ function Game({ data: game }: { data: GameFullInfoVM }) {
     </Box>
   );
 }
-export default withLoading(Game, async (fetchId: number) => await loadGame(fetchId));
+export default withLoading(Game, { game: async (fetchId: number) => await loadGame(fetchId) });

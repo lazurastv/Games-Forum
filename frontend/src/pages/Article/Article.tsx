@@ -9,7 +9,8 @@ import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../utils/dataConversion";
 import SimilarArticles from "./SimilarArticles";
-function Article({ data: article }: { data: ArticleFullInfoVM }) {
+function Article({ data }: { data: { article: ArticleFullInfoVM } }) {
+  const { article } = data;
   return (
     <Box>
       <HeaderTile
@@ -49,4 +50,6 @@ function Article({ data: article }: { data: ArticleFullInfoVM }) {
     </Box>
   );
 }
-export default withLoading(Article, async (fetchId: number) => await loadArticle(fetchId));
+export default withLoading(Article, {
+  article: async (fetchId: number) => await loadArticle(fetchId),
+});

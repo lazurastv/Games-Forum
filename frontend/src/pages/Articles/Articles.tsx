@@ -5,13 +5,14 @@ import { loadAllArticles } from "../../fetchData/fetchArticles";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 import ArticleItem from "./ArticleItem";
-const Articles = ({ data: articlesArray }: { data: ArticleSearchInfoVM[] }) => {
+const Articles = ({ data }: { data: { articles: ArticleSearchInfoVM[] } }) => {
+  const { articles } = data;
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
     <Container maxWidth="xl">
       <Filter />
-      {articlesArray.map((a: any, idx: any) => (
+      {articles.map((a: any, idx: any) => (
         <ArticleItem
           key={idx}
           articleId={a.id}
@@ -25,4 +26,4 @@ const Articles = ({ data: articlesArray }: { data: ArticleSearchInfoVM[] }) => {
     </Container>
   );
 };
-export default withLoading(Articles, async () => await loadAllArticles());
+export default withLoading(Articles, { articles: async () => await loadAllArticles() });

@@ -5,16 +5,22 @@ import GameTile from "../../components/Tile/GameTile";
 import { loadSimilarGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
 
-function SimilarGames({ data: games }: { data: GameSearchInfoVM }) {
+function SimilarGames({ data: games }: { data: { games: GameSearchInfoVM } }) {
   return (
     <Carousel>
       {Array(10)
         .fill(games)
         .flat()
         .map((a, idx) => (
-          <GameTile key={idx} game={a} src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg" />
+          <GameTile
+            key={idx}
+            game={a}
+            src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg"
+          />
         ))}
     </Carousel>
   );
 }
-export default withLoading(SimilarGames, async (fetchId: number) => loadSimilarGames(fetchId));
+export default withLoading(SimilarGames, {
+  games: async (fetchId: number) => loadSimilarGames(fetchId),
+});
