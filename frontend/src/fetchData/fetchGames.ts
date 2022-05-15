@@ -1,32 +1,29 @@
-import { AuthApi } from "../api/api/apis/AuthApi";
-import { GameAddUpdate, GameControllerApi, GameFullInfoVM, GameSearchInfoVM, GameVM } from "../api/api";
+import {
+  GameAddUpdate,
+  GameControllerApi,
+  GameFullInfoVM,
+  GameSearchInfoVM,
+  GameVM,
+} from "../api/api";
 async function loadSimilarGames(id: number): Promise<GameVM[]> {
-  const auth = new AuthApi();
   const games = new GameControllerApi();
-  return auth.login().then((result) => games.getSimilarGames({ gameId: id }));
+  return games.getSimilarGames({ gameId: id });
 }
 async function loadAllGames(): Promise<GameSearchInfoVM[]> {
-  const auth = new AuthApi();
   const games = new GameControllerApi();
-  return auth.login().then((result) => games.getAllGameSearchInfos());
+  return games.getAllGameSearchInfos();
 }
 async function loadGame(id: number): Promise<GameFullInfoVM> {
-  const auth = new AuthApi();
   const games = new GameControllerApi();
-  return auth.login().then((result) => games.getGameFullInfo({ gameId: id }));
+  return games.getGameFullInfo({ gameId: id });
 }
 async function uploadGame(game: GameAddUpdate) {
-  const auth = new AuthApi();
   const games = new GameControllerApi();
-  return auth
-    .login()
-    .catch((error) => console.error("Login " + error))
-    .then((result) => games.addGame({ gameAddUpdate: game }, { credentials: "include" }))
-    .catch((error) => console.error("Add " + error))
-    .then((result) => games.getAllGames())
+  return games
+    .addGame({ gameAddUpdate: game }, { credentials: "include" })
+    .then(() => games.getAllGames())
     .then((result) => {
       result.forEach((x) => console.log(x));
-    })
-    .catch((error) => console.error("Read" + error));
+    });
 }
 export { uploadGame, loadGame, loadAllGames, loadSimilarGames };
