@@ -37,7 +37,11 @@ export default function CreateArticle() {
         }}
       >
         <Box sx={{ mb: 4 }}>
-          <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
+          <OneLineInput
+            label="Tytuł"
+            value={title}
+            onChange={(e: any) => setTitle(e.target.value)}
+          />
           <OneLineInput
             label="Wprowadzenie"
             value={introduction}

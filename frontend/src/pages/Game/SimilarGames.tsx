@@ -4,10 +4,8 @@ import Carousel from "../../components/Carousel/Carousel";
 import GameTile from "../../components/Tile/GameTile";
 import { loadSimilarGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
-import { convertDate } from "../../utils/convertDate";
 
 function SimilarGames({ data: games }: { data: GameSearchInfoVM }) {
-  console.log(games);
   return (
     <Carousel>
       {Array(10)

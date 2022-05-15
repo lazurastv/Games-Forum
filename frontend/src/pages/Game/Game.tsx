@@ -31,16 +31,32 @@ const styles = {
 };
 function Game({ data: game }: { data: GameFullInfoVM }) {
   const [rating, setRating] = useState<number | null>(null);
-  const handleRateGame = (rate) => {
-    const auth = new AuthApi();
-    const ratingApi = new RatingControllerApi();
+  const auth = new AuthApi();
+  const ratingApi = new RatingControllerApi();
+  const handleRateGame = (rate: number | null) => {
     setRating(rate);
+    if (rate === null) {
+      auth
+        .login()
+        .then((res) =>
+          ratingApi.deleteRating({ id: game.id as number }, { credentials: "include" })
+        )
+        .catch((err) => console.error(err));
+    } else {
+      auth
+        .login()
+        .then((res) =>
+          ratingApi.addRating(
+            { ratingAdd: { gameId: game.id, value: 10 } },
+            { credentials: "include" }
+          )
+        )
+        .catch((err) => console.error(err));
+    }
     auth
       .login()
-      .then((res) =>
-        ratingApi.updateRating({ id: game.id as number, ratingUpdate: { value: rating as number } })
-      )
-      .catch((err) => console.error(err));
+      .then((res) => ratingApi.getAllRatings())
+      .then((res) => console.log(res));
   };
   return (
     <Box>

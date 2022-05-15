@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from "react";
+import { UserVM } from "../../api/api";
 
 export type Session = {
+  user?:UserVM;
   isAuthenticated?: boolean;
   redirectPath: string;
 }
