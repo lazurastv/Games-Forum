@@ -12,7 +12,8 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Divider, ListItemIcon, SvgIconTypeMap } from "@mui/material";
 import { Logout } from "@mui/icons-material";
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+const AddIcon = <AddCircleIcon sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />;
 const notLoggedItems = [
   {
     jsxElement: undefined,
@@ -25,7 +26,28 @@ const notLoggedItems = [
     text: "Rejestracja",
   },
 ];
-
+const menuButtons = [
+  {
+    path: "/mojprofil",
+    text: "Mój profil",
+    jsxElement: <Avatar sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />,
+  },
+  {
+    path: "/dodaj/artykul",
+    text: "Artykuł",
+    jsxElement: AddIcon,
+  },
+  {
+    path: "/dodaj/recenzja",
+    text: "Recenzja",
+    jsxElement: AddIcon,
+  },
+  {
+    path: "/dodaj/gra",
+    text: "Gra",
+    jsxElement: AddIcon,
+  },
+];
 interface IMenuItemLink {
   jsxElement?:
     | JSX.Element
@@ -37,8 +59,9 @@ interface IMenuItemLink {
 function MenuItemLink(props: IMenuItemLink) {
   return (
     <Link to={props.path} style={{ textDecoration: "none" }}>
-      <MenuItem sx={{ color: "text.primary", justifyContent: "center" }}>
-        {props.jsxElement} {props.text}
+      <MenuItem sx={{ color: "text.primary", justifyContent: "flex-start" }}>
+        <ListItemIcon>{props.jsxElement}</ListItemIcon>
+        {props.text}
       </MenuItem>
     </Link>
   );
@@ -123,30 +146,32 @@ export default function AccountIconButton() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {session.isAuthenticated
-          ? [
-              <MenuItemLink
-                key="profile"
-                jsxElement={<Avatar sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />}
-                path="/mojprofil"
-                text="Mój profil"
-              />,
-              <Divider key="divider" sx={{ my: 1 }} />,
-              <MenuItem key="logout" onClick={logoutHandler}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Wyloguj
-              </MenuItem>,
-            ]
-          : notLoggedItems.map((item, idx) => (
-              <MenuItemLink
-                key={idx}
-                jsxElement={item.jsxElement}
-                path={item.path}
-                text={item.text}
-              />
+        {session.isAuthenticated ? (
+          <>
+            {menuButtons.map((b, idx) => (
+              <>
+                <MenuItemLink key={idx} jsxElement={b.jsxElement} path={b.path} text={b.text} />
+                <Divider key="divider" sx={{ my: 1 }} />
+              </>
             ))}
+
+            <MenuItem key="logout" onClick={logoutHandler}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Wyloguj
+            </MenuItem>
+          </>
+        ) : (
+          notLoggedItems.map((item, idx) => (
+            <MenuItemLink
+              key={idx}
+              jsxElement={item.jsxElement}
+              path={item.path}
+              text={item.text}
+            />
+          ))
+        )}
       </Menu>
     </>
   );

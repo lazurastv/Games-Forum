@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import { Route } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 export type ProtectedRouteProps = {
   isAuthenticated: boolean;

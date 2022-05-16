@@ -29,20 +29,17 @@ export default function Login() {
     const password = data.get("password");
     console.log(session.isAuthenticated);
     if (email === "a@user.com" && password === "p") {
-      login(email, password)
-        .then(() => {
-          //navigate(session.redirectPath);
-          if (hasPreviousState) {
-            navigate(-1);
-          } else {
-            navigate("/");
-          }
-        })
-        .catch((err) => console.error(err));
+      login(email, password).catch((err) => console.error(err));
     }
   };
 
-  return (
+  return session.isAuthenticated ? (
+    hasPreviousState ? (
+      <>{navigate(-1)}</>
+    ) : (
+      <>{navigate("/")}</>
+    )
+  ) : (
     <div className="login">
       <Container component="main" maxWidth="sm">
         <Box sx={{ p: { xs: 4, sm: 6, md: 6 } }}></Box>
