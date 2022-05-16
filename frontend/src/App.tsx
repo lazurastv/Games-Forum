@@ -42,10 +42,10 @@ function App() {
 
   const theme = React.useMemo(() => getTheme(mode), [mode]);
   //authentication redirects
-  const [sessionContext, updateSessionContext] = useSessionContext();
+  const { session } = useSessionContext();
 
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
-    isAuthenticated: !!sessionContext.isAuthenticated, // !! means if variable is null, it return false
+    isAuthenticated: !!session.isAuthenticated, // !! means if variable is null, it return false
     authenticationPath: "/logowanie",
   };
 

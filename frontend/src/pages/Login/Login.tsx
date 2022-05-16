@@ -20,12 +20,10 @@ import { AuthApi } from "../../api/api/apis/AuthApi";
 import { UserControllerApi } from "../../api/api";
 
 export default function Login() {
-  const [session, setSession] = useSessionContext();
+  const { login, session } = useSessionContext();
   const navigate = useNavigate();
   const location = useLocation();
   const hasPreviousState = location.key !== "default";
-  const auth = new AuthApi();
-  const user = new UserControllerApi();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,11 +31,8 @@ export default function Login() {
     const password = data.get("password");
     console.log(session.isAuthenticated);
     if (email === "a@user.com" && password === "p") {
-      auth
-        .login()
-        .then(() => user.getByEmail({ email: email }))
-        .then((res) => {
-          setSession({ ...session, isAuthenticated: true, user: res });
+      login(email, password)
+        .then(() => {
           //navigate(session.redirectPath);
           if (hasPreviousState) {
             navigate(-1);

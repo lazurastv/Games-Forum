@@ -29,7 +29,7 @@ const styles = {
   },
 };
 function Game({ game }: { game: GameFullInfoVM }) {
-  const [session] = useSessionContext();
+  const { session } = useSessionContext();
   const [rating, setRating] = useState<number | null>(null);
   // fetch rating on component load
   useEffect(() => {
@@ -125,7 +125,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
                 </Typography>
               </Box>
               <Box>
-              <p style={{ display: "inline-block", minWidth: 175 }}>Ocena użytkowników:</p>
+                <p style={{ display: "inline-block", minWidth: 175 }}>Ocena użytkowników:</p>
                 <Typography
                   sx={{
                     color: "staticText.primary",
