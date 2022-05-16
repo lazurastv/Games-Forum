@@ -16,8 +16,6 @@ import { GoogleIcon } from "../../assets/GoogleIcon";
 import DividerWithText from "../../components/DividerWithText";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
-import { AuthApi } from "../../api/api/apis/AuthApi";
-import { UserControllerApi } from "../../api/api";
 
 export default function Login() {
   const { login, session } = useSessionContext();
