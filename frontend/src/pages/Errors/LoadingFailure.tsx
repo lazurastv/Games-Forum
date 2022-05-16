@@ -1,12 +1,12 @@
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
 
-export default function Error() {
+export default function LoadingFailure() {
   return (
     <Box
       sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "200px" }}
     >
-      {"Nie udało się załadować strony :("}
+      <Typography sx={{ fontSize: 24 }}>Nie udało się załadować strony :(</Typography>
     </Box>
   );
 }

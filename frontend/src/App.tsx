@@ -25,6 +25,7 @@ import CreateArticle from "./pages/CreateContent/CreateArticle/CreateArticle";
 import CreateReview from "./pages/CreateContent/CreateReview/CreateReview";
 import CreateGame from "./pages/CreateContent/CreateGame/CreateGame";
 import Articles from "./pages/Articles/Articles";
+import NotFound from "./pages/Errors/NotFound";
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="dodaj-artykul" element={<CreateArticle />} />
+            <Route path="dodaj-artykul" element={<CreateArticle />} />
             <Route path="dodaj-recenzje" element={<CreateReview />} />
             <Route path="dodaj-gre" element={<CreateGame />} />
             <Route path="artykuly" element={<Articles />} />
@@ -66,7 +68,10 @@ function App() {
             <Route path="recenzje/:id" element={<Review />} />
             <Route path="gry" element={<Games />} />
             <Route path="gry/:id" element={<Game />} />
-            <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
+            <Route
+              path="chat"
+              element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />}
+            />
             <Route
               path="mojprofil"
               element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />}
@@ -74,6 +79,7 @@ function App() {
             <Route path="logowanie" element={<Login />} />
             <Route path="profiletmp" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>
       </ColorModeContext.Provider>
