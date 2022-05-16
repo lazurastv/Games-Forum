@@ -58,10 +58,11 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="dodaj-artykul" element={<CreateArticle />} />
-            <Route path="dodaj-artykul" element={<CreateArticle />} />
-            <Route path="dodaj-recenzje" element={<CreateReview />} />
-            <Route path="dodaj-gre" element={<CreateGame />} />
+            <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} />}>
+              <Route path="artykul" element={<CreateArticle />} />
+              <Route path="recenzja" element={<CreateReview />} />
+              <Route path="gra" element={<CreateGame />} />
+            </Route>
             <Route path="artykuly" element={<Articles />} />
             <Route path="artykuly/:id" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />
