@@ -49,9 +49,7 @@ const menuButtons = [
   },
 ];
 interface IMenuItemLink {
-  jsxElement?:
-    | JSX.Element
-    | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string });
+  jsxElement?: JSX.Element | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string });
   path: string;
   text: string;
 }
@@ -87,13 +85,15 @@ export default function AccountIconButton() {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        {session.isAuthenticated ? (
+        {session.loading === undefined || session.loading === true ? (
+          <Box sx={{ padding: 1 }}>
+            <Avatar sx={{ width: 24, height: 24 }} />
+          </Box>
+        ) : session.isAuthenticated ? (
           <Tooltip title="Twój profil">
             <IconButton onClick={handleClick}>
               <Avatar
-                src={
-                  "https://www.pngkey.com/png/detail/14-148130_minion-imagenes-de-100x100-pixeles.png"
-                }
+                src={"https://www.pngkey.com/png/detail/14-148130_minion-imagenes-de-100x100-pixeles.png"}
                 sx={{ width: 24, height: 24 }}
               />
             </IconButton>
@@ -147,7 +147,7 @@ export default function AccountIconButton() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {session.isAuthenticated ? (
-          <>
+          <Box>
             {menuButtons.map((b, idx) => (
               <>
                 <MenuItemLink key={idx} jsxElement={b.jsxElement} path={b.path} text={b.text} />
@@ -161,15 +161,10 @@ export default function AccountIconButton() {
               </ListItemIcon>
               Wyloguj
             </MenuItem>
-          </>
+          </Box>
         ) : (
           notLoggedItems.map((item, idx) => (
-            <MenuItemLink
-              key={idx}
-              jsxElement={item.jsxElement}
-              path={item.path}
-              text={item.text}
-            />
+            <MenuItemLink key={idx} jsxElement={item.jsxElement} path={item.path} text={item.text} />
           ))
         )}
       </Menu>

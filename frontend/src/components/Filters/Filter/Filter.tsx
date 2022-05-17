@@ -28,21 +28,18 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
     if (props.clearOtherFilters) {
       props.clearOtherFilters();
     }
-    if (props.setIdxToFilter) {
-      props.setIdxToFilter([]);
-    }
+    props.setIdxToFilter([]);
   };
   const handleChangeSort = (event: { target: { value: string } }) => {
     if (event.target.value !== sortValue) {
-      onSearch();
       setSortValue(event.target.value);
     }
   };
-  const onSearch = () => {
-    let newIdxToFilter = filterData(props.data, searchValue);
-    if (props.setIdxToFilter) {
-      props.setIdxToFilter(newIdxToFilter as number[]);
-    }
+  const handleSubmitFilters = () => {
+    props.setLoading(true);
+    let newIdxToFilter = filterData(props.data, searchValue, year);
+    props.setIdxToFilter(newIdxToFilter as number[]);
+    setTimeout(() => props.setLoading(false), 500);
   };
   return (
     <FilterWrapper>
@@ -54,9 +51,7 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
         <Box
           component="form"
           onSubmit={(e: any) => {
-            props.setLoading(true);
-            onSearch();
-            setTimeout(() => props.setLoading(false), 500);
+            handleSubmitFilters();
             e.preventDefault();
           }}
         >

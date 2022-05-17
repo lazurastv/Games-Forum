@@ -6,7 +6,7 @@ const match = (tag: string, searchValue: string): boolean => {
   return tag.toUpperCase().includes(searchValue.toUpperCase());
 };
 
-function filterData<T extends PossibleData>(data: T, searchValue: string, checkboxes?: any): number[] {
+function filterData<T extends PossibleData>(data: T, searchValue: string, year: number[], checkboxes?: any): number[] {
   // filter out values that are not included in any tag
   let dataToFilter = data.filter((d) => {
     return (
@@ -17,6 +17,14 @@ function filterData<T extends PossibleData>(data: T, searchValue: string, checkb
       d.authorName &&
       !match(d.authorName, searchValue)
     );
+  });
+  dataToFilter = data.filter((d) => {
+    if (d.publishDate) {
+      let date = d.publishDate && d.publishDate.getFullYear();
+      return date >= year[0] && date <= year[1];
+    } else {
+      return true;
+    }
   });
   return dataToFilter.map((d) => d.id as number);
 }

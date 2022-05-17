@@ -5,11 +5,14 @@ import Cookies from "js-cookie";
 
 export type Session = {
   user?: UserVM;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
   redirectPath: string;
+  loading: boolean;
 };
 
 const initialSession: Session = {
+  loading: true,
+  isAuthenticated: true,
   redirectPath: "",
 };
 interface ISessionContext {
@@ -20,8 +23,7 @@ interface ISessionContext {
 const SessionContext = createContext<ISessionContext | undefined>(undefined);
 const useSessionContext = () => {
   const gridItemContext = useContext(SessionContext);
-  if (!gridItemContext)
-    throw new Error("No SessionContext.Provider found when calling useSessionContext.");
+  if (!gridItemContext) throw new Error("No SessionContext.Provider found when calling useSessionContext.");
   return gridItemContext;
 };
 const SessionContextProvider: React.FC = (props) => {
@@ -37,10 +39,19 @@ const SessionContextProvider: React.FC = (props) => {
             ...s,
             isAuthenticated: res ? true : false,
             user: res,
+            loading: false,
           };
         });
       })
       .catch((res) => {
+        setSession((s) => {
+          return {
+            ...s,
+            isAuthenticated: false,
+            user: undefined,
+            loading: false,
+          };
+        });
         console.log(res);
       });
   }, []);
@@ -51,14 +62,8 @@ const SessionContextProvider: React.FC = (props) => {
       .then((res) => setSession({ ...session, isAuthenticated: true, user: res }));
   };
   const logout = () => {
-    return auth
-      .logout()
-      .then(() => setSession({ ...session, isAuthenticated: false, user: undefined }));
+    return auth.logout().then(() => setSession({ ...session, isAuthenticated: false, user: undefined }));
   };
-  return (
-    <SessionContext.Provider value={{ login, logout, session }}>
-      {props.children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={{ login, logout, session }}>{props.children}</SessionContext.Provider>;
 };
 export { SessionContext, useSessionContext, SessionContextProvider, initialSession };

@@ -18,7 +18,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
     <Container maxWidth="xl">
       <GamesFilter
         setLoading={setLoading}
-        sliderLabel="DATA PREMIERY:"
+        sliderLabel="DATA PUBLIKACJI:"
         data={games}
         page={1}
         setIdxToFilter={setIdxToFilter}

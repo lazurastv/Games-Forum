@@ -15,9 +15,7 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
       <HeaderTile
         title={review.title}
         imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
-        caption={
-          <Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>
-        }
+        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
       <Container maxWidth="xl">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
@@ -32,17 +30,13 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
               },
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
-              {review.introduction}
-            </Typography>
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
-              {/* {stringToHtml(review.path)} */}
-            </Typography>
+            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{review.introduction}</Typography>
+            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{/* {stringToHtml(review.path)} */}</Typography>
           </Grid>
           <Grid item xs={12} md={4}>
             <ReviewRating
               sx={{ mb: 5 }}
-              score={review.score}
+              score={review.score && isNaN(review.score) ? "?" : review.score?.toFixed(0)}
               pluses={review.pluses}
               minuses={review.minuses}
             />
