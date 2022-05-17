@@ -149,10 +149,10 @@ export default function AccountIconButton() {
         {session.isAuthenticated ? (
           <Box>
             {menuButtons.map((b, idx) => (
-              <>
-                <MenuItemLink key={idx} jsxElement={b.jsxElement} path={b.path} text={b.text} />
+              <Box key={idx}>
+                <MenuItemLink jsxElement={b.jsxElement} path={b.path} text={b.text} />
                 <Divider key="divider" sx={{ my: 1 }} />
-              </>
+              </Box>
             ))}
 
             <MenuItem key="logout" onClick={logoutHandler}>

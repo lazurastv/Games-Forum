@@ -1,17 +1,23 @@
+import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, InputAdornment, MenuItem, Collapse, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import { sliderConf } from "./Filter.conf";
+import { sliderConf, sortValues } from "./Filter.conf";
 import FilterSlider from "./FilterSlider";
 import { FilterProps, PossibleData } from "./Filter.types";
-import { filterData } from "./Filter.utils";
+import { filterData, sortData } from "./Filter.utils";
 export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [year, setYear] = useState<number[]>(sliderConf.yearRange);
   const [filterInCollapse, setFilterInCollapse] = useState<boolean>(false);
-  const [sortValue, setSortValue] = useState<string>("Popularność");
+  const [sortValue, setSortValue] = useState<string>(sortValues.popularityDescending.value);
+  useEffect(() => {
+    if (props.setSortOrder) {
+      let newSortOrder = sortData(props.data, sortValue);
+      props.setSortOrder(newSortOrder);
+    }
+  }, [sortValue]);
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
       return;
@@ -28,7 +34,9 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
     if (props.clearOtherFilters) {
       props.clearOtherFilters();
     }
+    props.setLoading(true);
     props.setIdxToFilter([]);
+    setTimeout(() => props.setLoading(false), 500);
   };
   const handleChangeSort = (event: { target: { value: string } }) => {
     if (event.target.value !== sortValue) {
@@ -111,17 +119,18 @@ const SearchBar = ({ searchValue, setSearchValue }) => (
 const SortDropdown = ({ sortValue, handleChangeSort }) => (
   <TextField
     color="secondary"
-    sx={{ minWidth: "165px" }}
+    sx={{ minWidth: "255px" }}
     id="select"
     label="Sortuj"
     value={sortValue}
     onChange={handleChangeSort}
     select
   >
-    <MenuItem value="Alfabetycznie">Alfabetycznie</MenuItem>
-    <MenuItem value="Popularność">Popularność</MenuItem>
-    <MenuItem value="Od najnowszych">Od najnowszych</MenuItem>
-    <MenuItem value="Od najstarszych">Od najstarszych</MenuItem>
+    {Object.entries(sortValues).map(([key, value]) => (
+      <MenuItem key={key} value={value.value}>
+        {value.text}
+      </MenuItem>
+    ))}
   </TextField>
 );
 const FilterWrapper = styled(Box)(({ theme }) => ({

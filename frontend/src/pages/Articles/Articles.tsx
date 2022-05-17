@@ -11,13 +11,20 @@ import { convertDate } from "../../utils/convertDate";
 import ArticleItem from "./ArticleItem";
 const Articles = ({ articles }: { articles: ArticleSearchInfoVM[] }) => {
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
+  const [sortOrder, setSortOrder] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   console.log(articles);
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
     <Container maxWidth="xl">
-      <Filter setLoading={setLoading} sliderLabel="DATA PUBLIKACJI:" data={articles} setIdxToFilter={setIdxToFilter} />
+      <Filter
+        sliderLabel="DATA PUBLIKACJI:"
+        data={articles}
+        setSortOrder={setSortOrder}
+        setLoading={setLoading}
+        setIdxToFilter={setIdxToFilter}
+      />
       <Box sx={{ minHeight: "100vh" }}>
         {loading ? (
           <LoadingSpinner />
@@ -34,8 +41,9 @@ const Articles = ({ articles }: { articles: ArticleSearchInfoVM[] }) => {
             {"Nie znaleziono żadnych artykułów odpowiadających ustawieniom filtrowania :("}
           </Typography>
         ) : (
-          articles
-            .filter((a, idx) => a.id && !idxToFilter.includes(a.id))
+          sortOrder
+            .map((id) => articles.find((a) => a.id === id))
+            .filter((a) => a && a.id && !idxToFilter.includes(a.id))
             .map((a: any, idx: any) => (
               <ArticleItem
                 key={idx}

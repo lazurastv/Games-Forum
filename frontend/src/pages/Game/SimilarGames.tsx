@@ -6,6 +6,8 @@ import { loadSimilarGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
 
 function SimilarGames({ games }: { games: GameSearchInfoVM }) {
+  console.log(games);
+  
   return (
     <Carousel>
       {Array(10)

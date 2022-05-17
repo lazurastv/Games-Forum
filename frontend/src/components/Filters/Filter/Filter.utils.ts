@@ -1,3 +1,4 @@
+import { ASCENDING, POPULARITY, PUBLISH_DATE, sortValues } from "./Filter.conf";
 import { PossibleData } from "./Filter.types";
 // Filter methods return array of ids of elements to be filtered out
 
@@ -28,6 +29,46 @@ function filterData<T extends PossibleData>(data: T, searchValue: string, year: 
   });
   return dataToFilter.map((d) => d.id as number);
 }
+function sortData<T extends PossibleData>(data: T, sortValue: string): number[] {
+  let [property, order] = sortValue.split("-");
+  let ascending = order === ASCENDING ? true : false;
+  var newSortOrder: number[];
+  if (property === PUBLISH_DATE) {
+    newSortOrder = data
+      .sort((a, b) => {
+        if (!a.publishDate?.getFullYear()) {
+          return -1;
+        }
+        if (!b.publishDate?.getFullYear()) {
+          return 1;
+        }
+        if (a.publishDate.getFullYear() > b.publishDate.getFullYear()) {
+          return ascending ? 1 : -1;
+        } else {
+          return ascending ? -1 : 1;
+        }
+      })
+      .map((d) => d.id as number);
+  } else {
+    newSortOrder = data
+      .sort((a, b) => {
+        if (!a.popularity) {
+          return -1;
+        }
+        if (!b.popularity) {
+          return 1;
+        }
+        if (a.popularity > b.popularity) {
+          return ascending ? 1 : -1;
+        } else {
+          return ascending ? -1 : 1;
+        }
+      })
+      .map((d) => d.id as number);
+  }
+  // let ascending = sortValues.publishDateAscending.value === sortValue ? true : false;
+  return newSortOrder;
+}
 // // filter Games
 // function filterData<T extends PossibleData>(data: T, searchValue: string, checkboxes: any) {
 //   let dataToFilter = data.filter((d) => {
@@ -36,4 +77,4 @@ function filterData<T extends PossibleData>(data: T, searchValue: string, year: 
 //   return dataToFilter.map((d) => d.id);
 // }
 
-export { filterData };
+export { filterData, sortData };

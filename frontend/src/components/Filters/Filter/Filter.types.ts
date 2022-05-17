@@ -5,6 +5,7 @@ export type PossibleData = GameSearchInfoVM[] | ArticleSearchInfoVM[] | ReviewSe
 export type FilterProps<T extends PossibleData> = {
   data: T;
   sliderLabel: string;
+  setSortOrder?: (order: number[]) => void;
   setLoading: (loading: boolean) => void;
   // indexes of data that are going to be filtered out
   setIdxToFilter: (idxToFilter: number[]) => void;
@@ -16,7 +17,7 @@ export type FilterProps<T extends PossibleData> = {
 export type FilterSliderProps = {
   // TODO get max and min year from data to filter for better UX
   yearRange?: number[];
-  // 
+  //
   year: number[];
   handleSliderChange: any;
   label: string;
