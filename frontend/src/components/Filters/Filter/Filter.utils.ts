@@ -20,10 +20,10 @@ function filterData<T extends PossibleData>(data: T, searchValue: string, year: 
   });
   dataToFilter = data.filter((d) => {
     if (d.publishDate) {
-      let date = d.publishDate && d.publishDate.getFullYear();
-      return date >= year[0] && date <= year[1];
+      let date = d.publishDate.getFullYear();
+      return date < year[0] || date > year[1];
     } else {
-      return true;
+      return false;
     }
   });
   return dataToFilter.map((d) => d.id as number);
