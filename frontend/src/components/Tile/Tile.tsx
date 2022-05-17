@@ -57,7 +57,7 @@ export default function Tile(props: any) {
         overflow: "hidden",
         height: "325px",
         "&:hover": {
-          filter: "brightness(120%)",
+          filter: "brightness(130%)",
           cursor: "pointer",
         },
         transition: "all 0.3s ease-in-out",

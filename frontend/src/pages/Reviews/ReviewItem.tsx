@@ -46,6 +46,7 @@ export default function ReviewItem(props: IReview) {
           "&:hover": {
             filter: mode === "light" ? "brightness(105%)" : "brightness(120%)",
             cursor: "pointer",
+            color: "secondary.main",
           },
           transition: "all 0.3s ease-in-out",
         }}
