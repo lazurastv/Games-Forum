@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { sliderConf } from "../filterConf";
+import { sliderConf } from "./Filter.conf";
 import FilterSlider from "./FilterSlider";
 import { FilterProps, PossibleData } from "./Filter.types";
 import { filterData } from "./Filter.utils";
@@ -54,6 +54,9 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
         <Box
           component="form"
           onSubmit={(e: any) => {
+            props.setLoading(true);
+            onSearch();
+            setTimeout(() => props.setLoading(false), 500);
             e.preventDefault();
           }}
         >
@@ -71,15 +74,7 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
           <Grid container sx={{ mb: 1 }}>
             {[
               <></>,
-              <Button
-                sx={{ mb: 1 }}
-                type="submit"
-                color="secondary"
-                variant="contained"
-                size="large"
-                fullWidth
-                onClick={onSearch}
-              >
+              <Button sx={{ mb: 1 }} type="submit" color="secondary" variant="contained" size="large" fullWidth>
                 Szukaj
               </Button>,
               <Box sx={{ textAlign: "end" }}>

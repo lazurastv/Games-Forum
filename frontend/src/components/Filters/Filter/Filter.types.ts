@@ -5,10 +5,17 @@ export type PossibleData = GameSearchInfoVM[] | ArticleSearchInfoVM[] | ReviewSe
 export type FilterProps<T extends PossibleData> = {
   data: T;
   sliderLabel: string;
+  setLoading: (loading: boolean) => void;
   // indexes of data that are going to be filtered out
   setIdxToFilter?: (idxToFilter: number[]) => void;
   children?: React.ReactNode;
   otherFilters?: any;
   clearOtherFilters?: any;
   page?: number;
+};
+export type FilterSliderProps = {
+  yearRange?: number[];
+  year: number[];
+  handleSliderChange: any;
+  label: string;
 };

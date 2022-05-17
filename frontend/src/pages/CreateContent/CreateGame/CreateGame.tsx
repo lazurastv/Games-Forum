@@ -12,7 +12,7 @@ import OneLineInput from "../OneLineInput";
 import MultipleSelect from "../MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
-import { sliderConf } from "../../../components/Filters/filterConf";
+import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
 import { gameDataToDB } from "../../../dictionary/mapData";
 import { game } from "../../../dictionary/gameDataDictionary";
 const checkboxGroup = [
