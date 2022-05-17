@@ -8,7 +8,8 @@ import { loadAllGames } from "../../fetchData/fetchGames";
 import { GameSearchInfoVM } from "../../api/api";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 function Games({ games }: { games: GameSearchInfoVM[] }) {
-  const [idxToFilter, setIdxToFilter] = useState([]);
+  const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
+  const [sortOrder, setSortOrder] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState(1);
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
@@ -17,6 +18,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
   return (
     <Container maxWidth="xl">
       <GamesFilter
+        setSortOrder={setSortOrder}
         setLoading={setLoading}
         sliderLabel="DATA PUBLIKACJI:"
         data={games}
@@ -40,11 +42,14 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
           </Typography>
         ) : (
           <Grid container spacing={2}>
-            {games.map((x, i) => (
-              <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                <GameTile game={x} src="./images/Games/cp2077.jpg" />
-              </Grid>
-            ))}
+            {sortOrder
+              .map((id) => games.find((x) => x.id === id))
+              .filter((x) => x && x.id && !idxToFilter.includes(x.id))
+              .map((x: any, i) => (
+                <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
+                  <GameTile game={x} src="./images/Games/cp2077.jpg" />
+                </Grid>
+              ))}
           </Grid>
         )}
       </Box>
