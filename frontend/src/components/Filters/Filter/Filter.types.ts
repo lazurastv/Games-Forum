@@ -4,6 +4,7 @@ import { ArticleSearchInfoVM, GameSearchInfoVM, ReviewSearchInfoVM } from "../..
 export type PossibleData = GameSearchInfoVM[] | ArticleSearchInfoVM[] | ReviewSearchInfoVM[];
 export type FilterProps<T extends PossibleData> = {
   data: T;
+  sliderLabel: string;
   // indexes of data that are going to be filtered out
   setIdxToFilter?: (idxToFilter: number[]) => void;
   children?: React.ReactNode;

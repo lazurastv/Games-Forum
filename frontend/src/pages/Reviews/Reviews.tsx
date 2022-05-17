@@ -12,7 +12,7 @@ const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNod
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
   return (
     <Container maxWidth="xl">
-      <Filter data={reviews} setIdxToFilter={setIdxToFilter} />
+      <Filter sliderLabel="DATA PUBLIKACJI:" data={reviews} setIdxToFilter={setIdxToFilter} />
       {idxToFilter.length === reviews.length ? (
         <Typography sx={{ display: "flex", justifyContent: "center", fontSize: "24px" }}>
           {"Nie znaleziono żadnych gier odpowiadających ustawieniom filtrowania :("}

@@ -14,7 +14,7 @@ const Articles = ({ articles }: { articles: ArticleSearchInfoVM[] }) => {
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
     <Container maxWidth="xl">
-      <Filter data={articles} setIdxToFilter={setIdxToFilter} />
+      <Filter sliderLabel="DATA PUBLIKACJI:" data={articles} setIdxToFilter={setIdxToFilter} />
       {idxToFilter.length === articles.length ? (
         <Typography sx={{ display: "flex", justifyContent: "center", fontSize: "24px" }}>
           {"Nie znaleziono żadnych gier odpowiadających ustawieniom filtrowania :("}

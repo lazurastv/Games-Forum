@@ -39,7 +39,7 @@ export default function GamesFilter(props: any) {
     setCheckedState(checkedStateInitial);
   };
   return (
-    <Filter data={props.data} otherFilters={{ booleanFilters: checkedState }} clearOtherFilters={handleClearCheckboxes} page={props.page}>
+    <Filter {...props} otherFilters={{ booleanFilters: checkedState }} clearOtherFilters={handleClearCheckboxes}>
       <Box>
         {checkboxGroup.map((group) => (
           <FormControl sx={{ display: "flex" }} key={group.name} variant="standard">

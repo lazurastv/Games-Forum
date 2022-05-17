@@ -60,7 +60,7 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
           <Grid container spacing={4} sx={{ mb: 2 }}>
             {[
               <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />,
-              <FilterSlider year={year} handleSliderChange={handleSliderChange} />,
+              <FilterSlider label={props.sliderLabel} year={year} handleSliderChange={handleSliderChange} />,
               props.children,
             ].map((gridElement, idx) => (
               <Grid key={idx} item xs={12} lg={6}>

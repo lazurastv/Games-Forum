@@ -2,8 +2,12 @@ import React from "react";
 import { Typography, Slider } from "@mui/material";
 import { Box } from "@mui/system";
 import { sliderConf } from "../filterConf";
-
-export default function FilterSlider({ year, handleSliderChange }) {
+interface FilterSliderProps {
+  year: number[];
+  handleSliderChange: any;
+  label: string;
+}
+export default function FilterSlider({ year, handleSliderChange, label }: FilterSliderProps) {
   return (
     <div>
       <Box sx={{ display: "flex", mb: 1 }}>
@@ -14,7 +18,7 @@ export default function FilterSlider({ year, handleSliderChange }) {
             fontWeight: 300,
           }}
         >
-          ROK PREMIERY:
+          {label}
         </Typography>
         <Typography
           sx={{

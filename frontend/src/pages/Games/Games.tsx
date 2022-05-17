@@ -14,7 +14,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
   };
   return (
     <Container maxWidth="xl">
-      <GamesFilter data={games} page={1} setIdxToFilter={setIdxToFilter} />
+      <GamesFilter sliderLabel="DATA PREMIERY:" data={games} page={1} setIdxToFilter={setIdxToFilter} />
       <Grid container spacing={2}>
         {idxToFilter.length === games.length ? (
           <Typography sx={{ display: "flex", justifyContent: "center", fontSize: "24px" }}>
