@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CollapseButton from "../../components/CollapseButton";
+import { game } from "../../dictionary/gameDataDictionary";
 const Label = (props: any) => (
   <Typography
     component="span"
@@ -34,8 +35,8 @@ const InfoIcon = (props: any) => (
       display: "inline-block",
       mr: 2,
       mt: 2,
-      p:0.75,
-      pb:0,
+      p: 0.75,
+      pb: 0,
       width: "fit-conent",
       backgroundColor: "primary.main",
       border: "1px solid",
@@ -46,8 +47,8 @@ const InfoIcon = (props: any) => (
       sx={{
         height: "64px",
         width: "64px",
-        mx:"auto",
-        mb:0.75
+        mx: "auto",
+        mb: 0.75,
       }}
     >
       <img
@@ -68,23 +69,42 @@ const InfoIcon = (props: any) => (
     </Typography>
   </Box>
 );
-export default function CollapsedInfo(props: any) {
+export default function CollapsedInfo({ platforms, distributions }) {
   return (
     <Box sx={{ mb: 4 }}>
       <CollapseButton name="Platformy">
-        <InfoIcon src="/images/CollapsedInfoIcons/Platforms/pc.jpg">PC</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Platforms/xbox360.jpg">XBOX 360</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Platforms/ps4.jpg">PS4</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Platforms/xboxone.jpg">XBOX ONE</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Platforms/switch.jpg">Switch</InfoIcon>
+        {platforms.map((p, idx) => {
+          let plat = p;
+          if (plat && !Array.isArray(plat)) {
+            return (
+              <InfoIcon
+                key={idx}
+                src={"/images/CollapsedInfoIcons/Platforms/" + plat.split(" ").join("").toLowerCase() + ".jpg"}
+              >
+                {p}
+              </InfoIcon>
+            );
+          }
+          return <></>;
+        })}
       </CollapseButton>
       <CollapseButton name="Dystrybucje">
-        <InfoIcon src="/images/CollapsedInfoIcons/Distributions/steam.jpg">Steam</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Distributions/epicgames.jpg">Epic Games</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Distributions/origin.jpg">Origin</InfoIcon>
-        <InfoIcon src="/images/CollapsedInfoIcons/Distributions/uplay.jpg">Uplay</InfoIcon>
+        {distributions.map((d) => {
+          let dist = d;
+          if (dist && !Array.isArray(dist)) {
+            return (
+              <InfoIcon
+                key={d}
+                src={"/images/CollapsedInfoIcons/Distributions/" + dist.split(" ").join("").toLowerCase() + ".jpg"}
+              >
+                {d}
+              </InfoIcon>
+            );
+          }
+          return <></>;
+        })}
       </CollapseButton>
-      <CollapseButton name="Wymagania">
+      {/* <CollapseButton name="Wymagania">
         <Grid container spacing={2} sx={{ pt: 2 }}>
           <Grid item xs={12} md={6}>
             <Typography>
@@ -145,7 +165,7 @@ export default function CollapsedInfo(props: any) {
             </Typography>
           </Grid>
         </Grid>
-      </CollapseButton>
+      </CollapseButton> */}
     </Box>
   );
 }

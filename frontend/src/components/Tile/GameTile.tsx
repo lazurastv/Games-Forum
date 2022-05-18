@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { GameSearchInfoVM } from "../../api/api";
 import Tile from "./Tile";
 const Rating = (props: any) => (
   <Box
@@ -7,7 +8,7 @@ const Rating = (props: any) => (
       ...props.sx,
       position: "absolute",
       right: "15px",
-      width: "60px",
+      width: "65px",
       height: "50px",
       backgroundColor: "rgba(0,0,0,0.8)",
       borderRadius: "10px",
@@ -17,18 +18,20 @@ const Rating = (props: any) => (
       zIndex: "100",
     }}
   >
-    <Typography sx={{ fontSize: "18px", fontWeight: 700 }}>
-      {props.children}
-    </Typography>
+    <Typography sx={{ fontSize: "18px", fontWeight: 700 }}>{props.children}</Typography>
   </Box>
 );
-export default function GameTile(props: any) {
+interface GameTileProps {
+  game: GameSearchInfoVM;
+  src: string;
+}
+export default function GameTile({ game, src }: GameTileProps) {
   return (
-    <Link to={`/gry/${props.title}`}>
+    <Link to={`/gry/${game.id}`}>
       <Tile
         small
-        src={props.src}
-        title={props.title}
+        src={src}
+        title={game.title}
         caption={
           <Box
             sx={{
@@ -36,8 +39,16 @@ export default function GameTile(props: any) {
               textAlign: "left",
             }}
           >
-            <div>CD-Project Red</div>
-            <div>RPG, fabularna, science-fiction</div>
+            <div>{game.developer}</div>
+            <div>
+              {game.genres &&
+                game.genres.map((v, idx) => (
+                  <span key={idx}>
+                    {v}
+                    {game.genres && idx < game.genres.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+            </div>
           </Box>
         }
       >
@@ -47,14 +58,19 @@ export default function GameTile(props: any) {
             color: "secondary.main",
           }}
         >
-          10/10
+          {game.editorScore?.toFixed(0)}/10
         </Rating>
         <Rating
           sx={{
             top: "70px",
           }}
         >
-          7.85
+          {game.meanUserScore
+            ? isNaN(game.meanUserScore)
+              ? "?"
+              : game.meanUserScore.toFixed(1)
+            : "?"}
+          /10
         </Rating>
       </Tile>
     </Link>

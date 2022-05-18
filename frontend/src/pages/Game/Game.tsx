@@ -1,25 +1,83 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Rate from "./Rate";
 import Details from "./Details";
 import CollapsedInfo from "./CollapsedInfo";
 import HeaderTile from "../../components/Tile/HeaderTile";
 import SectionHeader from "../../components/SectionHeader";
 import Carousel from "../../components/Carousel/Carousel";
-import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
-import GameTile from "../../components/Tile/GameTile";
+import { reviewsCarousel } from "../../data-mock/carousels";
 import ReviewTile from "../../components/Tile/ReviewTile";
-export default function Game() {
+import withLoading from "../../fetchData/withLoading";
+import { loadGame } from "../../fetchData/fetchGames";
+import { stringToHtml } from "../../utils/dataConversion";
+import SimilarGames from "./SimilarGames";
+import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
+import { convertDate } from "../../utils/convertDate";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
+const styles = {
+  score: {
+    fontSize: "24px",
+    fontWeight: 700,
+    display: "inline-block",
+    py: 1,
+    px: 1.5,
+    ml: 1,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    borderRadius: "10px",
+  },
+};
+function Game({ game }: { game: GameFullInfoVM }) {
+  const { session } = useSessionContext();
   const [rating, setRating] = useState<number | null>(null);
+  // fetch rating on component load
+  useEffect(() => {
+    const ratingApi = new RatingControllerApi();
+    if (session.user?.id) {
+      ratingApi.getRatingByUserId({ id: session.user?.id }).then((res) => {
+        if (res.length) {
+          let r = res.find((v) => v.gameId === game.id)?.value;
+          Number.isInteger(r) && r ? setRating(r) : setRating(null);
+        }
+      });
+    }
+  }, [session.user?.id, game.id]);
+
+  // update rating in database
+  const handleRateGame = (rate: number | null) => {
+    const ratingApi = new RatingControllerApi();
+    setRating(rate);
+    if (session.user?.id) {
+      ratingApi.getRatingByUserId({ id: session.user?.id }).then((res) => {
+        let r = res.find((v) => v.gameId === game.id);
+        let isInDb = res.length && r;
+        if (!isInDb && rate !== null) {
+          return ratingApi.addRating(
+            { ratingAdd: { gameId: game.id, value: rate } },
+            { credentials: "include" }
+          );
+        }
+        if (isInDb && rate !== null) {
+          return ratingApi.updateRating(
+            { id: r?.id as number, ratingUpdate: { value: rate } },
+            { credentials: "include" }
+          );
+        }
+        if (isInDb && rate === null) {
+          return ratingApi.deleteRating({ id: r?.id as number }, { credentials: "include" });
+        }
+      });
+    }
+  };
   return (
     <Box>
       <HeaderTile
-        title="Cyberpunk 2077"
+        title={game.title}
         imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
         caption={
           <Grid container spacing={2} sx={{ color: "staticText.secondary" }}>
             <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>
-              CD-Project Red
+              {game.developer}
             </Grid>
             <Grid
               item
@@ -33,7 +91,13 @@ export default function Game() {
                 marginTop: "auto",
               }}
             >
-              RPG, fabularna, science-fiction
+              {game.genres &&
+                game.genres.map((v, idx) => (
+                  <span key={idx}>
+                    {v}
+                    {game.genres && idx < game.genres.length - 1 ? ", " : ""}
+                  </span>
+                ))}
             </Grid>
             <Grid
               item
@@ -48,40 +112,26 @@ export default function Game() {
                 marginTop: "auto",
               }}
             >
-              <Box>
-                Ocena redakcji:
+              <Box sx={{ mb: 1 }}>
+                <p style={{ display: "inline-block", minWidth: 175 }}>Ocena redakcji:</p>
                 <Typography
                   sx={{
                     color: "secondary.main",
-                    fontSize: "24px",
-                    fontWeight: 700,
-                    display: "inline-block",
-                    py: 1,
-                    px: 1.5,
-                    ml: 1,
-                    backgroundColor: "rgba(0,0,0,0.8)",
-                    borderRadius: "10px",
+                    ...styles.score,
                   }}
                 >
-                  7/10
+                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(0)}/10
                 </Typography>
               </Box>
               <Box>
-                Ocena użytkowników:
+                <p style={{ display: "inline-block", minWidth: 175 }}>Ocena użytkowników:</p>
                 <Typography
                   sx={{
                     color: "staticText.primary",
-                    fontSize: "24px",
-                    fontWeight: 700,
-                    display: "inline-block",
-                    py: 1,
-                    px: 1.5,
-                    ml: 1,
-                    backgroundColor: "rgba(0,0,0,0.8)",
-                    borderRadius: "10px",
+                    ...styles.score,
                   }}
                 >
-                  8.24
+                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(2)}
                 </Typography>
               </Box>
             </Grid>
@@ -102,30 +152,22 @@ export default function Game() {
             }}
           >
             <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
-              Cyberpunk 2077 to najbardziej oczekiwana gra ostatnich lat. Stworzony przez rodzime studio CD Projekt RED
-              erpeg akcji wzbudził ogromne zainteresowanie na długo przed premierą. Tym większe było rozczarowanie, gdy
-              okazało się, że produkcja trafiła na rynek niedokończona, z wybrakowanymi mechanikami (opisywanymi w
-              zapowiedziach), licznymi błędami i rażąco niską liczbą klatek na sekundę na konsolach starej generacji. Z
-              racji tego, że historia V, osadzona w tętniącym życiem Night City, naszym zdaniem w ogóle nie powinna
-              trafić na PlayStation 4 i Xboksy One (jest po prostu zbyt wymagająca technicznie, jak na możliwości tych
-              sprzętów), zebraliśmy oceny dotyczące wyłącznie wersji pecetowej. O wydaniu next genowym nie wspominamy
-              ani słowem, gdyż czekamy na wydanie zapowiadanej przez CD Projekt RED aktualizacji, która przede wszystkim
-              ma wprowadzić oprawę graficzną na nowy poziom.
+              {game.introduction}
             </Typography>
+            {/* <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{stringToHtml(game.path)}</Typography> */}
           </Grid>
           <Grid item xs={12} md={4}>
-            <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={setRating} />
-            <Details sx={{ mb: 5 }} producer="CD Project" publisher="CD Project RED" date="20 marca 2021" />
+            <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={handleRateGame} />
+            <Details
+              sx={{ mb: 5 }}
+              developer={game.developer}
+              date={convertDate(game.gamePublishDate)}
+            />
           </Grid>
         </Grid>
-        <CollapsedInfo />
-
+        <CollapsedInfo platforms={game.platforms} distributions={game.distributions} />
         <SectionHeader>Podobne gry</SectionHeader>
-        <Carousel>
-          {gamesCarousel.map((gameTile) => (
-            <GameTile key={gameTile.title} title={gameTile.title} src={gameTile.src} author={gameTile.author} date={gameTile.date} />
-          ))}
-        </Carousel>
+        <SimilarGames />
         <SectionHeader>Najnowsze recenzje</SectionHeader>
         <Carousel>
           {reviewsCarousel.map((reviewTile) => (
@@ -142,3 +184,4 @@ export default function Game() {
     </Box>
   );
 }
+export default withLoading(Game, { game: loadGame });

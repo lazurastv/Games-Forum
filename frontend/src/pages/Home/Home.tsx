@@ -22,16 +22,17 @@ export default function Home() {
         ))}
       </Carousel>
       <SectionHeader>Gry</SectionHeader>
-      <Carousel>
-        {gamesCarousel.map((gameTile) => (
+      {/* <Carousel>
+        {gamesCarousel.map((gameTile, idx) => (
           <GameTile
+            key={idx}
             title={gameTile.title}
             src={gameTile.src}
             author={gameTile.author}
             date={gameTile.date}
           />
         ))}
-      </Carousel>
+      </Carousel> */}
     </Container>
   );
 }
