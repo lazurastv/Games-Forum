@@ -1,12 +1,12 @@
 const game = {
-  genre: ["Akcji", "RPG", "Strategiczne", "Sportowe", "FPS", "Przygodowe", "Survival", "Sandbox"],
-  platform: ["PC", "XBOX 360", "PS4", "XBOX ONE", "Switch", "PS3"],
-  dystribution: ["Steam", "Epic Games", "Origin", "Ubisoft"],
+  genre: ["Akcji", "RPG", "Strategie", "Survival", "Sandbox", "FPS", "Przygodowe"],
+  platform: ["PC", "Xbox 360", "PlayStation 4", "Xbox One", "PlayStation 3", "Switch"],
+  dystribution: ["Steam", "Epic Games", "Ubisoft", "Origin"],
 };
 const gameDB = {
-  genre: ["Action", "RPG", undefined, undefined, "FPS", "Adventure", "Survival", "Sandbox"],
-  platform: ["PC", "Xbox 360", "PlayStation 4", "Xbox One", undefined, "PlayStation 3"],
-  dystributionDB: ["Steam", "Epic Games", undefined, "Ubisoft"],
+  genre: ["Akcji", "RPG", "Strategie", "Survival", "Sandbox", "FPS", "Przygodowe"],
+  platform: ["PC", "Xbox 360", "PlayStation 4", "Xbox One", "PlayStation 3", "Switch"],
+  dystributionDB: ["Steam", "Epic Games", "Ubisoft", "Origin"],
 };
 const genreMapToDB = new Map(game.genre.map((g, idx) => [g, gameDB.genre[idx]]));
 const platfromMapToDB = new Map(game.platform.map((g, idx) => [g, gameDB.platform[idx]]));
