@@ -13,7 +13,6 @@ import MultipleSelect from "../MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
-import { gameDataToDB } from "../../../dictionary/mapData";
 import { game } from "../../../dictionary/gameDataDictionary";
 const checkboxGroup = [
   {
@@ -56,9 +55,9 @@ export default function CreateGame() {
       gamePublishDate: new Date(gamePublishDate),
       developer: developer,
       editorScore: score ?? 0,
-      genres: (gameDataToDB(genres) ?? [checkboxGroup[0].checkboxLabels[0]]) as Array<string>,
-      platforms: (gameDataToDB(platforms) ?? [checkboxGroup[1].checkboxLabels[0]]) as Array<string>,
-      distributions: (gameDataToDB(distributions) ?? [checkboxGroup[2].checkboxLabels[0]]) as Array<string>,
+      genres: (genres ?? [checkboxGroup[0].checkboxLabels[0]]) as Array<string>,
+      platforms: (platforms ?? [checkboxGroup[1].checkboxLabels[0]]) as Array<string>,
+      distributions: (distributions ?? [checkboxGroup[2].checkboxLabels[0]]) as Array<string>,
     };
     //
     // TODO obsługa błędów

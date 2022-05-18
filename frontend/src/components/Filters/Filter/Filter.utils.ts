@@ -1,4 +1,3 @@
-import { gameDataToDB } from "../../../dictionary/mapData";
 import { CheckboxFilters } from "../GamesFilter/GamesFilter";
 import { ASCENDING, POPULARITY, PUBLISH_DATE, sortValues } from "./Filter.conf";
 import { PossibleData } from "./Filter.types";
@@ -32,8 +31,8 @@ function filterData<T extends PossibleData>(
     if (Object.entries(activeCheckboxGroups).length !== 0) {
       for (const [property, checkboxGroup] of Object.entries(activeCheckboxGroups)) {
         let propertyValues = Object.entries(checkboxGroup)
-          .filter(([key, value]) => gameDataToDB(key) && value)
-          .map((v) => gameDataToDB(v[0]));
+          .filter(([key, value]) => key && value)
+          .map((v) => v[0]);
         console.log(propertyValues);
         dataToKeep = dataToKeep.filter(
           (d) => Array.isArray(d[property]) && propertyValues.some((el) => d[property].includes(el))

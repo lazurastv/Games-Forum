@@ -2,7 +2,6 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CollapseButton from "../../components/CollapseButton";
 import { game } from "../../dictionary/gameDataDictionary";
-import { gameDataFromDB } from "../../dictionary/mapData";
 const Label = (props: any) => (
   <Typography
     component="span"
@@ -75,7 +74,7 @@ export default function CollapsedInfo({ platforms, distributions }) {
     <Box sx={{ mb: 4 }}>
       <CollapseButton name="Platformy">
         {platforms.map((p, idx) => {
-          let plat = gameDataFromDB(p);
+          let plat = p;
           if (plat && !Array.isArray(plat)) {
             return (
               <InfoIcon
@@ -91,7 +90,7 @@ export default function CollapsedInfo({ platforms, distributions }) {
       </CollapseButton>
       <CollapseButton name="Dystrybucje">
         {distributions.map((d) => {
-          let dist = gameDataFromDB(d);
+          let dist = d;
           if (dist && !Array.isArray(dist)) {
             return (
               <InfoIcon
