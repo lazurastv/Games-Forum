@@ -11,7 +11,7 @@ import ReviewTile from "../../components/Tile/ReviewTile";
 import withLoading from "../../fetchData/withLoading";
 import { loadGame } from "../../fetchData/fetchGames";
 import { stringToHtml } from "../../utils/dataConversion";
-import { gameDatafromDB } from "../../dictionary/mapData";
+import { gameDataFromDB } from "../../dictionary/mapData";
 import SimilarGames from "./SimilarGames";
 import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
@@ -95,7 +95,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
               {game.genres &&
                 game.genres.map((v, idx) => (
                   <span key={idx}>
-                    {gameDatafromDB(v)}
+                    {gameDataFromDB(v)}
                     {game.genres && idx < game.genres.length - 1 ? ", " : ""}
                   </span>
                 ))}

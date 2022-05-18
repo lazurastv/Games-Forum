@@ -2,7 +2,7 @@ import { gameDataMapFromDB, gameDataMapToDB } from "./gameDataDictionary";
 const isString = (item: string | undefined): item is string => {
   return !!item;
 };
-function gameDatafromDB(s: string | Array<string>): string | undefined | Array<string> {
+function gameDataFromDB(s: string | Array<string>): string | undefined | Array<string> {
   if (Array.isArray(s)) {
     // If element doesn't exist in dictionary it's removed from array
     return s.map((el) => gameDataMapFromDB.get(el)).filter(isString);
@@ -16,4 +16,4 @@ function gameDataToDB(s: string | Array<string>): string | undefined | Array<str
   }
   return gameDataMapToDB.get(s);
 }
-export { gameDatafromDB, gameDataToDB };
+export { gameDataFromDB, gameDataToDB };

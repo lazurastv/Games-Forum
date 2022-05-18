@@ -7,17 +7,24 @@ import { sliderConf, sortValues } from "./Filter.conf";
 import FilterSlider from "./FilterSlider";
 import { FilterProps, PossibleData } from "./Filter.types";
 import { filterData, sortData } from "./Filter.utils";
-export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
+export default function Filter<T extends PossibleData>({
+  data,
+  sliderLabel,
+  setSortOrder,
+  setLoading,
+  setIdxToFilter,
+  children,
+  otherFilters,
+  clearOtherFilters,
+  page,
+}: FilterProps<T>) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [year, setYear] = useState<number[]>(sliderConf.yearRange);
   const [filterInCollapse, setFilterInCollapse] = useState<boolean>(false);
   const [sortValue, setSortValue] = useState<string>(sortValues.popularityDescending.value);
   useEffect(() => {
-    if (props.setSortOrder) {
-      let newSortOrder = sortData(props.data, sortValue);
-      props.setSortOrder(newSortOrder);
-    }
-  }, [sortValue]);
+    setSortOrder(sortData(data, sortValue));
+  }, [sortValue, data, setSortOrder]);
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
       return;
@@ -31,12 +38,13 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
   const handleClearFilters = () => {
     setSearchValue("");
     setYear(sliderConf.yearRange);
-    if (props.clearOtherFilters) {
-      props.clearOtherFilters();
+    if (clearOtherFilters) {
+      clearOtherFilters();
     }
-    props.setLoading(true);
-    props.setIdxToFilter([]);
-    setTimeout(() => props.setLoading(false), 500);
+    setFilterInCollapse(false);
+    setLoading(true);
+    setIdxToFilter([]);
+    setTimeout(() => setLoading(false), 500);
   };
   const handleChangeSort = (event: { target: { value: string } }) => {
     if (event.target.value !== sortValue) {
@@ -44,10 +52,10 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
     }
   };
   const handleSubmitFilters = () => {
-    props.setLoading(true);
-    let newIdxToFilter = filterData(props.data, searchValue, year);
-    props.setIdxToFilter(newIdxToFilter as number[]);
-    setTimeout(() => props.setLoading(false), 500);
+    setLoading(true);
+    let newIdxToFilter: number[] = filterData(data, searchValue, year, otherFilters);
+    setIdxToFilter(newIdxToFilter);
+    setTimeout(() => setLoading(false), 500);
   };
   return (
     <FilterWrapper>
@@ -66,8 +74,8 @@ export default function Filter<T extends PossibleData>(props: FilterProps<T>) {
           <Grid container spacing={4} sx={{ mb: 2 }}>
             {[
               <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />,
-              <FilterSlider label={props.sliderLabel} year={year} handleSliderChange={handleSliderChange} />,
-              props.children,
+              <FilterSlider label={sliderLabel} year={year} handleSliderChange={handleSliderChange} />,
+              children,
             ].map((gridElement, idx) => (
               <Grid key={idx} item xs={12} lg={6}>
                 {gridElement}

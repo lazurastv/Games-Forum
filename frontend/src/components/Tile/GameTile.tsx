@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { GameSearchInfoVM } from "../../api/api";
-import { gameDatafromDB } from "../../dictionary/mapData";
+import { gameDataFromDB } from "../../dictionary/mapData";
 import Tile from "./Tile";
 const Rating = (props: any) => (
   <Box
@@ -45,7 +45,7 @@ export default function GameTile({ game, src }: GameTileProps) {
               {game.genres &&
                 game.genres.map((v, idx) => (
                   <span key={idx}>
-                    {gameDatafromDB(v)}
+                    {gameDataFromDB(v)}
                     {game.genres && idx < game.genres.length - 1 ? ", " : ""}
                   </span>
                 ))}

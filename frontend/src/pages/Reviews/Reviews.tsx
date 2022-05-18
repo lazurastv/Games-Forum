@@ -49,7 +49,7 @@ const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNod
                 title={r.title ?? ""}
                 content={r.introduction ?? ""}
                 author={r.authorName ?? ""}
-                rate={r.score ?? 0}
+                rate={r.score ?? -1}
                 image={"https://cdn.mos.cms.futurecdn.net/3ZbPC5LNRVccsePfX2PbM7-1200-80.jpg"}
               />
             ))

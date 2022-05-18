@@ -3,57 +3,68 @@ import { useState } from "react";
 import Filter from "../Filter/Filter";
 import CollapseButton from "../../CollapseButton";
 import { game } from "../../../dictionary/gameDataDictionary";
-const checkboxGroup = [
-  {
-    name: "Gatunek",
+const checkboxGroup = {
+  genres: {
+    text: "Gatunek",
     checkboxLabels: game.genre,
   },
-  {
-    name: "Platforma",
+  platforms: {
+    text: "Platforma",
     checkboxLabels: game.platform,
   },
-  {
-    name: "Dystrybucja cyfrowa",
+  distributions: {
+    text: "Dystrybucja cyfrowa",
     checkboxLabels: game.dystribution,
   },
-];
-const checkedStateInitial = checkboxGroup.reduce(
-  (a, v) => ({
+};
+const checkedStateInitial = Object.entries(checkboxGroup).reduce(
+  (a, [key, value]) => ({
     ...a,
-    [v.name]: v.checkboxLabels.reduce((a, v) => ({ ...a, [v]: false }), {}),
+    [key]: value.checkboxLabels.reduce((a, v) => ({ ...a, [v]: false }), {}),
   }),
   {}
 );
+export interface CheckboxFilters {
+  genres: {
+    [key: string]: boolean;
+  };
+  platforms: {
+    [key: string]: boolean;
+  };
+  distributions: {
+    [key: string]: boolean;
+  };
+}
 export default function GamesFilter(props: any) {
-  const [checkedState, setCheckedState] = useState<{ [key: string]: any }>(checkedStateInitial);
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, groupName: string) => {
+  const [checkedState, setCheckedState] = useState<CheckboxFilters>(checkedStateInitial as CheckboxFilters);
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, groupName: string) => {
     setCheckedState({
       ...checkedState,
       [groupName]: {
         ...checkedState[groupName],
-        [event.target.name]: event.target.checked,
+        [e.target.name]: e.target.checked,
       },
     });
   };
   const handleClearCheckboxes = () => {
-    setCheckedState(checkedStateInitial);
+    setCheckedState(checkedStateInitial as CheckboxFilters);
   };
   return (
-    <Filter {...props} otherFilters={{ booleanFilters: checkedState }} clearOtherFilters={handleClearCheckboxes}>
+    <Filter {...props} otherFilters={checkedState} clearOtherFilters={handleClearCheckboxes}>
       <Box>
-        {checkboxGroup.map((group) => (
-          <FormControl sx={{ display: "flex" }} key={group.name} variant="standard">
-            <CollapseButton name={group.name}>
+        {Object.entries(checkboxGroup).map(([key, value]) => (
+          <FormControl sx={{ display: "flex" }} key={key} variant="standard">
+            <CollapseButton name={value.text}>
               <FormGroup>
-                {group.checkboxLabels.map((checkboxLabel) => (
+                {value.checkboxLabels.map((checkboxLabel) => (
                   <FormControlLabel
                     key={checkboxLabel}
                     control={
                       <Checkbox
                         color="secondary"
                         name={checkboxLabel}
-                        checked={checkedState[group.name][checkboxLabel]}
-                        onChange={(e) => handleCheckboxChange(e, group.name)}
+                        checked={checkedState[key][checkboxLabel]}
+                        onChange={(e) => handleCheckboxChange(e, key)}
                       />
                     }
                     label={checkboxLabel}

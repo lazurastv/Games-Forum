@@ -15,6 +15,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
+  console.log(games)
   return (
     <Container maxWidth="xl">
       <GamesFilter
