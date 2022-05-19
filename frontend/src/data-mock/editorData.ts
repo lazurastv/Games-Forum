@@ -100,7 +100,7 @@ const article = {
         height: "auto",
         width: "auto",
         alt: "",
-        alignment: "none",
+        alignment: "center",
       },
     },
   },

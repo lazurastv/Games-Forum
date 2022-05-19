@@ -20,26 +20,14 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(article.publishDate)}</Typography>}
       />
       <Container maxWidth="xl">
-        <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
-          <Grid
-            item
-            xs={12}
-            md={8}
-            sx={{
-              pr: {
-                xs: 0,
-                md: 15,
-              },
-            }}
-          >
+        <Container maxWidth="lg">
+          <Box sx={{ pb: 6 }}>
+            <Author sx={{ mb: 5, maxWidth: "550px" }} authorData={article.author} />
             <StyledEditorContent>
               <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
             </StyledEditorContent>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Author sx={{ mb: 5 }} authorData={article.author} />
-          </Grid>
-        </Grid>
+          </Box>
+        </Container>
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
       </Container>
