@@ -6,7 +6,7 @@ import { Box, Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadGame, uploadGame } from "../../../fetchData/fetchGames";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { editorToString } from "../../../utils/dataConversion";
+import { editorToString } from "../../../components/Editor/dataConversion";
 import { GameAddUpdate } from "../../../api/api";
 import OneLineInput from "../OneLineInput";
 import MultipleSelect from "../MultipleSelect";

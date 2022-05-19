@@ -6,7 +6,7 @@ import HeaderTile from "../../components/Tile/HeaderTile";
 import { loadReview } from "../../fetchData/fetchReviews";
 import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
-import { stringToHtml } from "../../utils/dataConversion";
+import { stringToHtml } from "../../components/Editor/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
 function Review({ review }: { review: ReviewFullInfoVM }) {

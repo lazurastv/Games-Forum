@@ -10,7 +10,7 @@ import { reviewsCarousel } from "../../data-mock/carousels";
 import ReviewTile from "../../components/Tile/ReviewTile";
 import withLoading from "../../fetchData/withLoading";
 import { loadGame } from "../../fetchData/fetchGames";
-import { stringToHtml } from "../../utils/dataConversion";
+import { stringToHtml } from "../../components/Editor/dataConversion";
 import SimilarGames from "./SimilarGames";
 import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
