@@ -4,7 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Widget from "../../components/Widget";
 const starFonSize = {
   xs: "clamp(1.5rem, 8vw, 3rem)",
-  md: "clamp(1.2rem, 2.8vw, 2.2rem)",
+  md: "clamp(1.2rem, 2.8vw, 2.1rem)",
 };
 export default function Rate(props: any) {
   return (

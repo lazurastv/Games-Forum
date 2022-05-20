@@ -14,6 +14,7 @@ import draftToHtml from "draftjs-to-html";
 function editorToString(editorState: EditorState): string {
   const content: ContentState = editorState.getCurrentContent();
   const json: RawDraftContentState = convertToRaw(content);
+  console.log(json);
   return JSON.stringify(json);
 }
 

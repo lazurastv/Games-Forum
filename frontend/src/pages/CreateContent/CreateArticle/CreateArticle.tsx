@@ -7,9 +7,10 @@ import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { editorToString } from "../../../utils/dataConversion";
+import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../OneLineInput";
+import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
@@ -37,18 +38,16 @@ export default function CreateArticle() {
         }}
       >
         <Box sx={{ mb: 4 }}>
-          <OneLineInput
-            label="Tytuł"
-            value={title}
-            onChange={(e: any) => setTitle(e.target.value)}
-          />
+          <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
           <OneLineInput
             label="Wprowadzenie"
             value={introduction}
             onChange={(e: any) => setIntroduction(e.target.value)}
           />
         </Box>
-        <DraftEditor editorState={editorState} setEditorState={setEditorState} />
+        <StyledEditorContent>
+          <DraftEditor editorState={editorState} setEditorState={setEditorState} />
+        </StyledEditorContent>
         <Box sx={{ textAlign: "right", mt: 4 }}>
           <Button
             sx={{

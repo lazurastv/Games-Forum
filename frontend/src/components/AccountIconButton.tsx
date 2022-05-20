@@ -14,6 +14,8 @@ import { Divider, ListItemIcon, SvgIconTypeMap } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 const AddIcon = <AddCircleIcon sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />;
+const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+
 const notLoggedItems = [
   {
     jsxElement: undefined,
@@ -27,11 +29,6 @@ const notLoggedItems = [
   },
 ];
 const menuButtons = [
-  {
-    path: "/mojprofil",
-    text: "Mój profil",
-    jsxElement: <Avatar sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />,
-  },
   {
     path: "/dodaj/artykul",
     text: "Artykuł",
@@ -93,7 +90,8 @@ export default function AccountIconButton() {
           <Tooltip title="Twój profil">
             <IconButton onClick={handleClick}>
               <Avatar
-                src={"https://www.pngkey.com/png/detail/14-148130_minion-imagenes-de-100x100-pixeles.png"}
+                alt={session.user?.username}
+                src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
                 sx={{ width: 24, height: 24 }}
               />
             </IconButton>
@@ -148,6 +146,19 @@ export default function AccountIconButton() {
       >
         {session.isAuthenticated ? (
           <Box>
+            <Box>
+              <MenuItemLink
+                jsxElement={
+                  <Avatar
+                    src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
+                    sx={{ mr: 2, ml: -1, width: 32, height: 32 }}
+                  />
+                }
+                path={"/profil"}
+                text={session.user?.username ?? "unknown"}
+              />
+              <Divider key="divider" sx={{ my: 1 }} />
+            </Box>
             {menuButtons.map((b, idx) => (
               <Box key={idx}>
                 <MenuItemLink jsxElement={b.jsxElement} path={b.path} text={b.text} />

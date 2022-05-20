@@ -8,6 +8,7 @@ import { convertDate } from "../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../api/api";
 import { Box, Typography } from "@mui/material";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
 const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNode => {
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
@@ -50,7 +51,7 @@ const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNod
                 content={r.introduction ?? ""}
                 author={r.authorName ?? ""}
                 rate={r.score && isNaN(r.score) ? "?" : r.score?.toFixed(0) ?? -1}
-                image={"https://cdn.mos.cms.futurecdn.net/3ZbPC5LNRVccsePfX2PbM7-1200-80.jpg"}
+                image={`${NGINX_URL}/${r.path}/horizontal.png`}
               />
             ))
         )}

@@ -143,12 +143,13 @@ const SortDropdown = ({ sortValue, handleChangeSort }) => (
 );
 const FilterWrapper = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(6),
-  marginBottom: theme.spacing(2),
+  marginBottom: theme.spacing(3),
   textAlign: "left",
 }));
 const FilterTopWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
+  alignItems:"center",
   marginBottom: theme.spacing(2),
   height: "43px",
 }));
