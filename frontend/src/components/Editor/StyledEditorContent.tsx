@@ -34,4 +34,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
     borderColor: theme.palette.secondary.light,
     paddingLeft: "2rem",
   },
+  img: {
+    maxWidth: "100%",
+  },
 }));

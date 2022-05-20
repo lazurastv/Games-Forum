@@ -15,6 +15,8 @@ import SimilarGames from "./SimilarGames";
 import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
+import StyledEditorContent from "../../components/Editor/StyledEditorContent";
+import { articleDangerousHtml } from "../../data-mock/editorData";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 function Game({ game }: { game: GameFullInfoVM }) {
   const { session } = useSessionContext();
@@ -41,10 +43,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
         let r = res.find((v) => v.gameId === game.id);
         let isInDb = res.length && r;
         if (!isInDb && rate !== null) {
-          return ratingApi.addRating(
-            { ratingAdd: { gameId: game.id, value: rate } },
-            { credentials: "include" }
-          );
+          return ratingApi.addRating({ ratingAdd: { gameId: game.id, value: rate } }, { credentials: "include" });
         }
         if (isInDb && rate !== null) {
           return ratingApi.updateRating(
@@ -62,7 +61,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
     <Box>
       <HeaderTile
         title={game.title}
-        imgSrc={`${NGINX_URL}/${game.path}/horizontal.png`} 
+        imgSrc={`${NGINX_URL}/${game.path}/horizontal.png`}
         caption={
           <Grid container spacing={2} sx={{ color: "staticText.secondary" }}>
             <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>
@@ -127,31 +126,23 @@ function Game({ game }: { game: GameFullInfoVM }) {
           </Grid>
         }
       />
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Grid container sx={{ flexWrap: "wrap-reverse", mb: 3 }}>
           <Grid
             item
             xs={12}
             md={8}
             sx={{
-              pr: {
-                xs: 0,
-                md: 15,
-              },
+              pr: { xs: 0, md: 5 },
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>
-              {game.introduction}
-            </Typography>
-            {/* <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{stringToHtml(game.path)}</Typography> */}
+            <StyledEditorContent>
+              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+            </StyledEditorContent>
           </Grid>
           <Grid item xs={12} md={4}>
             <Rate sx={{ position: "relative", mb: 5 }} rating={rating} setRating={handleRateGame} />
-            <Details
-              sx={{ mb: 5 }}
-              developer={game.developer}
-              date={convertDate(game.gamePublishDate)}
-            />
+            <Details sx={{ mb: 5 }} developer={game.developer} date={convertDate(game.gamePublishDate)} />
           </Grid>
         </Grid>
         <CollapsedInfo platforms={game.platforms} distributions={game.distributions} />

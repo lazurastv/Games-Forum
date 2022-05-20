@@ -14,6 +14,8 @@ import { Divider, ListItemIcon, SvgIconTypeMap } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 const AddIcon = <AddCircleIcon sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />;
+const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+
 const notLoggedItems = [
   {
     jsxElement: undefined,
@@ -93,7 +95,8 @@ export default function AccountIconButton() {
           <Tooltip title="Twój profil">
             <IconButton onClick={handleClick}>
               <Avatar
-                src={"https://www.pngkey.com/png/detail/14-148130_minion-imagenes-de-100x100-pixeles.png"}
+                alt={session.user?.username}
+                src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
                 sx={{ width: 24, height: 24 }}
               />
             </IconButton>

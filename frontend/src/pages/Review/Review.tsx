@@ -9,7 +9,10 @@ import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../components/Editor/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
+import StyledEditorContent from "../../components/Editor/StyledEditorContent";
+import { articleDangerousHtml } from "../../data-mock/editorData";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
 function Review({ review }: { review: ReviewFullInfoVM }) {
   return (
     <Box>
@@ -18,30 +21,28 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
         imgSrc={`${NGINX_URL}/${review.path}/horizontal.png`}
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
           <Grid
             item
             xs={12}
             md={8}
             sx={{
-              pr: {
-                xs: 0,
-                md: 15,
-              },
+              pr: { xs: 0, md: 5 },
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{review.introduction}</Typography>
-            <Typography sx={{ textAlign: "left", fontSize: "20px" }}>{/* {stringToHtml(review.path)} */}</Typography>
+            <StyledEditorContent>
+              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+            </StyledEditorContent>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column" }}>
+            <Author authorData={review.author} />
             <ReviewRating
               sx={{ mb: 5 }}
               score={review.score && isNaN(review.score) ? "?" : review.score?.toFixed(0)}
               pluses={review.pluses}
               minuses={review.minuses}
             />
-            <Author sx={{ mb: 5 }} authorData={review.author} />
           </Grid>
         </Grid>
         <SectionHeader>Podobne recenzje</SectionHeader>

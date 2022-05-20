@@ -20,15 +20,13 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         imgSrc={`${NGINX_URL}/${article.path}/horizontal.png`}
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(article.publishDate)}</Typography>}
       />
-      <Container maxWidth="xl">
-        <Container maxWidth="lg">
-          <Box sx={{ pb: 6 }}>
-            <Author sx={{ mb: 5, maxWidth: "550px" }} authorData={article.author} />
-            <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
-            </StyledEditorContent>
-          </Box>
-        </Container>
+      <Container maxWidth="lg">
+        <Box sx={{ pb: 6 }}>
+          <Author sx={{ maxWidth: "550px" }} authorData={article.author} />
+          <StyledEditorContent>
+            <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+          </StyledEditorContent>
+        </Box>
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
       </Container>

@@ -11,7 +11,7 @@ interface IArticle {
   articleId: number;
   date: string;
   title: string;
-  content:string;
+  content: string;
   author: string;
   image: string;
 }
