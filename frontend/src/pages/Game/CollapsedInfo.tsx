@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CollapseButton from "../../components/CollapseButton";
-import { game } from "../../dictionary/gameDataDictionary";
+import { game } from "../../data-mock/gameDataDictionary";
 const Label = (props: any) => (
   <Typography
     component="span"

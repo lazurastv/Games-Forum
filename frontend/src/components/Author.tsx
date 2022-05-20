@@ -1,11 +1,12 @@
 import { Avatar, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Widget from "./Widget";
+const NGINX_URL = process.env.REACT_APP_NGINX_URL_USER;
 export default function Author({ authorData, sx }) {
   return (
     <Widget sx={sx}>
       <Box sx={{ display: "flex", alignItems: "baseline", mb: 1 }}>
-        <Avatar sx={{ mr: 1 }}>{authorData.profilePicturePath}</Avatar>
+        <Avatar alt={authorData.name} src={`${NGINX_URL}/${authorData.profilePicturePath}/profile.png`} sx={{ mr: 1 }} />
         <Typography
           sx={{
             fontSize: "18px",

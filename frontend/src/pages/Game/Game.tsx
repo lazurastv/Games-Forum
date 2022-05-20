@@ -15,18 +15,7 @@ import SimilarGames from "./SimilarGames";
 import { RatingControllerApi, GameFullInfoVM, RatingVM } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
-const styles = {
-  score: {
-    fontSize: "24px",
-    fontWeight: 700,
-    display: "inline-block",
-    py: 1,
-    px: 1.5,
-    ml: 1,
-    backgroundColor: "rgba(0,0,0,0.8)",
-    borderRadius: "10px",
-  },
-};
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 function Game({ game }: { game: GameFullInfoVM }) {
   const { session } = useSessionContext();
   const [rating, setRating] = useState<number | null>(null);
@@ -73,7 +62,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
     <Box>
       <HeaderTile
         title={game.title}
-        imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
+        imgSrc={`${NGINX_URL}/${game.path}/horizontal.png`} 
         caption={
           <Grid container spacing={2} sx={{ color: "staticText.secondary" }}>
             <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>
@@ -184,4 +173,16 @@ function Game({ game }: { game: GameFullInfoVM }) {
     </Box>
   );
 }
+const styles = {
+  score: {
+    fontSize: "24px",
+    fontWeight: 700,
+    display: "inline-block",
+    py: 1,
+    px: 1.5,
+    ml: 1,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    borderRadius: "10px",
+  },
+};
 export default withLoading(Game, { game: loadGame });

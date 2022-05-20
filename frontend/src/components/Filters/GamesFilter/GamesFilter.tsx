@@ -2,7 +2,7 @@ import { Box, Checkbox, FormControlLabel, FormGroup, FormControl } from "@mui/ma
 import { useState } from "react";
 import Filter from "../Filter/Filter";
 import CollapseButton from "../../CollapseButton";
-import { game } from "../../../dictionary/gameDataDictionary";
+import { game } from "../../../data-mock/gameDataDictionary";
 const checkboxGroup = {
   genres: {
     text: "Gatunek",

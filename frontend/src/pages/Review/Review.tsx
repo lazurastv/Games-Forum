@@ -9,12 +9,13 @@ import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../components/Editor/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 function Review({ review }: { review: ReviewFullInfoVM }) {
   return (
     <Box>
       <HeaderTile
         title={review.title}
-        imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
+        imgSrc={`${NGINX_URL}/${review.path}/horizontal.png`}
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
       <Container maxWidth="xl">

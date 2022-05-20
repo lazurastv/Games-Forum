@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { ArticleFullInfoVM } from "../../api/api";
 import Author from "../../components/Author";
@@ -11,12 +11,13 @@ import withLoading from "../../fetchData/withLoading";
 import { convertDate } from "../../utils/convertDate";
 import { stringToHtml } from "../../components/Editor/dataConversion";
 import SimilarArticles from "./SimilarArticles";
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 function Article({ article }: { article: ArticleFullInfoVM }) {
   return (
     <Box>
       <HeaderTile
         title={article.title}
-        imgSrc="https://geex.x-kom.pl/wp-content/uploads/2020/01/wiedzmin-3-dziki-gon.jpg"
+        imgSrc={`${NGINX_URL}/${article.path}/horizontal.png`}
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(article.publishDate)}</Typography>}
       />
       <Container maxWidth="xl">

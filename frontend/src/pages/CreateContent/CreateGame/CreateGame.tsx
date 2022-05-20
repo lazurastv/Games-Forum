@@ -13,7 +13,7 @@ import MultipleSelect from "../MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
-import { game } from "../../../dictionary/gameDataDictionary";
+import { game } from "../../../data-mock/gameDataDictionary";
 const checkboxGroup = [
   {
     name: "Gatunek",

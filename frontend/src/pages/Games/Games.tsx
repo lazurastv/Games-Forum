@@ -7,6 +7,8 @@ import withLoading from "../../fetchData/withLoading";
 import { loadAllGames } from "../../fetchData/fetchGames";
 import { GameSearchInfoVM } from "../../api/api";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
 function Games({ games }: { games: GameSearchInfoVM[] }) {
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
   const [sortOrder, setSortOrder] = useState<number[]>([]);
@@ -48,7 +50,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
               .filter((x) => x && x.id && !idxToFilter.includes(x.id))
               .map((x: any, i) => (
                 <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                  <GameTile game={x} src="./images/Games/cp2077.jpg" />
+                  <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.png`} />
                 </Grid>
               ))}
           </Grid>
