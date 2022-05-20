@@ -30,11 +30,6 @@ const notLoggedItems = [
 ];
 const menuButtons = [
   {
-    path: "/mojprofil",
-    text: "Mój profil",
-    jsxElement: <Avatar sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />,
-  },
-  {
     path: "/dodaj/artykul",
     text: "Artykuł",
     jsxElement: AddIcon,
@@ -151,6 +146,19 @@ export default function AccountIconButton() {
       >
         {session.isAuthenticated ? (
           <Box>
+            <Box>
+              <MenuItemLink
+                jsxElement={
+                  <Avatar
+                    src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
+                    sx={{ mr: 2, ml: -1, width: 32, height: 32 }}
+                  />
+                }
+                path={"/profil"}
+                text={session.user?.username ?? "unknown"}
+              />
+              <Divider key="divider" sx={{ my: 1 }} />
+            </Box>
             {menuButtons.map((b, idx) => (
               <Box key={idx}>
                 <MenuItemLink jsxElement={b.jsxElement} path={b.path} text={b.text} />

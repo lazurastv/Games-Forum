@@ -74,7 +74,7 @@ function App() {
               element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />}
             />
             <Route
-              path="mojprofil"
+              path="profil"
               element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />}
             />
             <Route path="logowanie" element={<Login />} />
