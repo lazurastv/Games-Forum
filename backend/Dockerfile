@@ -1,7 +1,5 @@
 FROM maven
 
-WORKDIR /usr/src/app
-
 COPY . .
 
 RUN mvn install
