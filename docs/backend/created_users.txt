@@ -5,12 +5,12 @@ ROLA
 nazwa email hasło
 
 ADMIN
-TraXson		a@user.com a
+TraXson		a@user.com p
 
 EDITOR
-Kanonada	b@user.com a
-sebster71	c@user.com a
-Cziczaki	d@user.com a
+Kanonada	b@user.com p
+sebster71	c@user.com p
+Cziczaki	d@user.com p
 
 USER
 Cebullanka y Grzanka	cebullanka@onet.pl			dGC?39a<)Ne{;P2
