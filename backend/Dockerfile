@@ -1,6 +1,8 @@
 FROM maven
 
-COPY . .
+COPY src src
+
+COPY pom.xml pom.xml
 
 RUN mvn install
 
