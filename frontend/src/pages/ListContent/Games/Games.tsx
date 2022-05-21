@@ -1,15 +1,18 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import GameTile from "../../components/Tile/GameTile";
-import GamesFilter from "../../components/Filters/GamesFilter/GamesFilter";
-import PaginationFilter from "../../components/Filters/PaginationFilter";
+import GameTile from "../../../components/Tile/GameTile";
+import GamesFilter from "../../../components/Filters/GamesFilter/GamesFilter";
+import PaginationFilter from "../../../components/Filters/PaginationFilter";
 import { useState } from "react";
-import withLoading from "../../fetchData/withLoading";
-import { loadAllGames } from "../../fetchData/fetchGames";
-import { GameSearchInfoVM } from "../../api/api";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import withLoading from "../../../fetchData/withLoading";
+import { loadAllGames } from "../../../fetchData/fetchGames";
+import { GameSearchInfoVM } from "../../../api/api";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import { ListContent } from "../../Content.types";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
-
-function Games({ games }: { games: GameSearchInfoVM[] }) {
+interface GamesProps extends ListContent {
+  games: GameSearchInfoVM[];
+}
+function Games({ games, edit }: GamesProps) {
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
   const [sortOrder, setSortOrder] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,7 +20,7 @@ function Games({ games }: { games: GameSearchInfoVM[] }) {
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
-  console.log(games)
+  console.log(games);
   return (
     <Container maxWidth="xl">
       <GamesFilter

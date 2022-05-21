@@ -2,12 +2,12 @@ import { Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { ArticleSearchInfoVM } from "../../api/api";
-import Filter from "../../components/Filters/Filter/Filter";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import { loadAllArticles } from "../../fetchData/fetchArticles";
-import withLoading from "../../fetchData/withLoading";
-import { convertDate } from "../../utils/convertDate";
+import { ArticleSearchInfoVM } from "../../../api/api";
+import Filter from "../../../components/Filters/Filter/Filter";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import { loadAllArticles } from "../../../fetchData/fetchArticles";
+import withLoading from "../../../fetchData/withLoading";
+import { convertDate } from "../../../utils/convertDate";
 import ArticleItem from "./ArticleItem";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 const Articles = ({ articles }: { articles: ArticleSearchInfoVM[] }) => {

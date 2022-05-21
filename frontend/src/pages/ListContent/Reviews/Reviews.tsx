@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import ReviewItem from "./ReviewItem";
-import withLoading from "../../fetchData/withLoading";
-import { loadAllReviews } from "../../fetchData/fetchReviews";
-import Filter from "../../components/Filters/Filter/Filter";
-import { convertDate } from "../../utils/convertDate";
-import { ReviewSearchInfoVM } from "../../api/api";
+import withLoading from "../../../fetchData/withLoading";
+import { loadAllReviews } from "../../../fetchData/fetchReviews";
+import Filter from "../../../components/Filters/Filter/Filter";
+import { convertDate } from "../../../utils/convertDate";
+import { ReviewSearchInfoVM } from "../../../api/api";
 import { Box, Typography } from "@mui/material";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
 const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNode => {

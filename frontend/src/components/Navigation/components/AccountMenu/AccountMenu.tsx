@@ -78,7 +78,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }) {
             <Divider key="divider" sx={{ my: 1 }} />
           </Box>
           <Box>
-            <MenuItemLink onClick={handleClose} jsxElement={<FeedIcon/>} path="/" text="Moje wpisy" />
+            <MenuItemLink onClick={handleClose} jsxElement={<FeedIcon/>} path="/wpisy" text="Moje wpisy" />
             <Divider key="divider" sx={{ my: 1 }} />
           </Box>
           <MenuCollapse icon={AddIcon} name="Dodaj">
