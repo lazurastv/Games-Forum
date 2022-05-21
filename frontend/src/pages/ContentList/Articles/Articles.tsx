@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { ArticleSearchInfoVM } from "../../../api/api";
 import Filter from "../../../components/Filters/Filter/Filter";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
-import { loadAllArticles } from "../../../fetchData/fetchArticles";
+import { deleteArticle, loadAllArticles } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import useFilterData from "../../../hooks/useFilterData";
 import { convertDate } from "../../../utils/convertDate";
@@ -17,7 +17,9 @@ interface ArticlesProps extends ContentList {
 const Articles = (props: ArticlesProps) => {
   const { articles, edit, userName } = props;
   const filter = useFilterData(articles, userName);
-  console.log(articles);
+  const handleDeleteArticle = (id: number) => {
+    deleteArticle(id);
+  };
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
@@ -27,9 +29,8 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <EditMenuSupply edit={edit}>
+              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteArticle(a.id)}>
                 <ArticleItem
-                  key={idx}
                   articleId={a.id}
                   content={a.introduction}
                   date={convertDate(a.publishDate)}

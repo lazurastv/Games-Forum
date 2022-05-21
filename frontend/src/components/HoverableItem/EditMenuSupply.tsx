@@ -3,13 +3,16 @@ import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mu
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MenuItemLink from "../Menu/MenuItemLink";
 const ITEM_HEIGHT = 48;
 interface EditMenuSupplyProps {
   position?: "left" | "right";
   children: React.ReactNode;
   edit?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
-export default function EditMenuSupply({ edit, position = "right", children }: EditMenuSupplyProps) {
+export default function EditMenuSupply({ edit, position = "right", children, onDelete, onEdit }: EditMenuSupplyProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -18,6 +21,7 @@ export default function EditMenuSupply({ edit, position = "right", children }: E
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const pos = position === "left" ? { left: 15 } : { right: 15 };
   return edit ? (
     <Box sx={{ position: "relative" }}>
@@ -53,6 +57,7 @@ export default function EditMenuSupply({ edit, position = "right", children }: E
           MenuListProps={{ "aria-labelledby": "edit-button" }}
           anchorEl={anchorEl}
           open={open}
+          onClick={handleClose}
           onClose={handleClose}
           PaperProps={{
             style: {
@@ -61,13 +66,8 @@ export default function EditMenuSupply({ edit, position = "right", children }: E
             },
           }}
         >
-          <MenuItem onClick={handleClose}>
-            <ListItemIcon>
-              <EditIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Edytuj</ListItemText>
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItemLink path="/" jsxElement={<EditIcon fontSize="small" />} text="Edytuj" onClick={onEdit} />
+          <MenuItem onClick={onDelete}>
             <ListItemIcon>
               <DeleteIcon fontSize="small" />
             </ListItemIcon>

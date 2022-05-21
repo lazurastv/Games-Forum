@@ -2,7 +2,7 @@ import React from "react";
 import Container from "@mui/material/Container";
 import ReviewItem from "./ReviewItem";
 import withLoading from "../../../fetchData/withLoading";
-import { loadAllReviews } from "../../../fetchData/fetchReviews";
+import { deleteReview, loadAllReviews } from "../../../fetchData/fetchReviews";
 import Filter from "../../../components/Filters/Filter/Filter";
 import { convertDate } from "../../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../../api/api";
@@ -16,7 +16,12 @@ interface ReviewsProps extends ContentList {
 }
 const Reviews = (props: ReviewsProps): React.ReactNode => {
   const { reviews, edit, userName } = props;
+  console.log(reviews);
+  
   const filter = useFilterData(reviews, userName);
+  const handleDeleteReview = (id: number) => {
+    deleteReview(id).catch((err) => console.log(err));
+  };
   return (
     <Container maxWidth="xl">
       <Filter sliderLabel="DATA PUBLIKACJI:" data={reviews} {...filter.filterControl} />
@@ -24,9 +29,8 @@ const Reviews = (props: ReviewsProps): React.ReactNode => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((r: any, idx) => (
-              <EditMenuSupply edit={edit}>
+              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteReview(r.id)}>
                 <ReviewItem
-                  key={idx}
                   reviewId={r.id as number}
                   date={convertDate(r.publishDate)}
                   title={r.title ?? ""}

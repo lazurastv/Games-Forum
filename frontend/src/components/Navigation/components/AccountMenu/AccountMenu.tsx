@@ -8,8 +8,8 @@ import FeedIcon from "@mui/icons-material/Feed";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import { Logout } from "@mui/icons-material";
 import { styled } from "@mui/system";
-import MenuItemLink from "./MenuItemLink";
-import MenuCollapse from "./MenuCollapse";
+import MenuItemLink from "../../../Menu/MenuItemLink";
+import MenuCollapse from "../../../Menu/MenuCollapse";
 const AddIcon = <AddCircleIcon sx={{ mr: 2, ml: -1, width: 24, height: 24 }} />;
 const notLoggedItems = [
   {

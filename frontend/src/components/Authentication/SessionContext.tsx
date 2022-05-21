@@ -16,7 +16,8 @@ const initialSession: Session = {
   redirectPath: "",
 };
 interface ISessionContext {
-  login: (email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   session: Session;
 }
@@ -55,15 +56,21 @@ const SessionContextProvider: React.FC = (props) => {
         console.log(res);
       });
   }, []);
-  const login = (email: string, password: string): Promise<void> => {
+  const register = (username: string, email: string, password: string): Promise<void> => {
     return auth
-      .login()
-      .then(() => user.getByEmail({ email: email }))
+      .register(username, email, password)
+      .then(() => user.getByUsername({ username: username }))
+      .then((res) => setSession({ ...session, isAuthenticated: true, user: res }));
+  };
+  const login = (username: string, password: string): Promise<void> => {
+    return auth
+      .login(username, password)
+      .then(() => user.getByUsername({ username: username }))
       .then((res) => setSession({ ...session, isAuthenticated: true, user: res }));
   };
   const logout = () => {
     return auth.logout().then(() => setSession({ ...session, isAuthenticated: false, user: undefined }));
   };
-  return <SessionContext.Provider value={{ login, logout, session }}>{props.children}</SessionContext.Provider>;
+  return <SessionContext.Provider value={{ register, login, logout, session }}>{props.children}</SessionContext.Provider>;
 };
 export { SessionContext, useSessionContext, SessionContextProvider, initialSession };

@@ -37,8 +37,6 @@ export default function useFilterData<T extends ContentData>(data: T[], userName
       </Typography>
     );
   }
-  console.log(userName);
-
   return {
     Feedback: Feedback,
     filterControl: {

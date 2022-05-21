@@ -225,7 +225,7 @@ export class ReviewControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async getSimilarReviewsRaw(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ReviewVM>>> {
+    async getSimilarReviewsRaw(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ReviewSearchInfoVM>>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling getSimilarReviews.');
         }
@@ -241,12 +241,12 @@ export class ReviewControllerApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewVMFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewSearchInfoVMFromJSON));
     }
 
     /**
      */
-    async getSimilarReviews(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<Array<ReviewVM>> {
+    async getSimilarReviews(requestParameters: GetSimilarReviewsRequest, initOverrides?: RequestInit): Promise<Array<ReviewSearchInfoVM>> {
         const response = await this.getSimilarReviewsRaw(requestParameters, initOverrides);
         return await response.value();
     }

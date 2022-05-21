@@ -10,16 +10,20 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import "../../index.css";
+import { useSessionContext } from '../../../components/Authentication/SessionContext';
 
 export default function Registration() {
+  const { register } = useSessionContext();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const username = data.get('username') as string;
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
+    console.log([username, email, password].join(', '));
+    register(username, email, password).catch(err => console.error(err));
   };
 
   return (
