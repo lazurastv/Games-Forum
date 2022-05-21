@@ -5,6 +5,7 @@ import Carousel from "../../components/Carousel/Carousel";
 import GameTile from "../../components/Tile/GameTile";
 import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
 import SectionHeader from "../../components/SectionHeader";
+import PageNotFoundError from "../../components/Errors/PageNotFoundError";
 
 export default function Home() {
   return (
