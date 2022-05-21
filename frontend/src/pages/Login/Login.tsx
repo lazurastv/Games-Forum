@@ -25,12 +25,10 @@ export default function Login() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
+    const username = data.get("username") as string;
+    const password = data.get("password") as string;
     console.log(session.isAuthenticated);
-    if (email === "a@user.com" && password === "p") {
-      login(email, password).catch((err) => console.error(err));
-    }
+    login(username, password).catch((err) => console.error(err));
   };
 
   return session.isAuthenticated ? (
@@ -63,14 +61,14 @@ export default function Login() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              defaultValue="a@user.com"
+              defaultValue="TraXson"
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Adres Email"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Nazwa użytkownika"
+              name="username"
+              autoComplete="username"
               autoFocus
               color="secondary"
             />

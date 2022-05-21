@@ -16,7 +16,7 @@ const initialSession: Session = {
   redirectPath: "",
 };
 interface ISessionContext {
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   session: Session;
 }
@@ -55,10 +55,10 @@ const SessionContextProvider: React.FC = (props) => {
         console.log(res);
       });
   }, []);
-  const login = (email: string, password: string): Promise<void> => {
+  const login = (username: string, password: string): Promise<void> => {
     return auth
-      .login()
-      .then(() => user.getByEmail({ email: email }))
+      .login(username, password)
+      .then(() => user.getByUsername({ username: username }))
       .then((res) => setSession({ ...session, isAuthenticated: true, user: res }));
   };
   const logout = () => {
