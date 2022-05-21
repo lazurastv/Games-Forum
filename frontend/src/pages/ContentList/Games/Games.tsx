@@ -1,7 +1,6 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import GameTile from "../../../components/Tile/GameTile";
 import GamesFilter from "../../../components/Filters/GamesFilter/GamesFilter";
-import PaginationFilter from "../../../components/Filters/PaginationFilter";
 import { useState } from "react";
 import withLoading from "../../../fetchData/withLoading";
 import { loadAllGames } from "../../../fetchData/fetchGames";
@@ -14,8 +13,8 @@ interface GamesProps extends ContentList {
   games: GameSearchInfoVM[];
 }
 function Games(props: GamesProps) {
-  const { games } = props;
-  const filter = useFilterData(games);
+  const { games, edit, userName } = props;
+  const filter = useFilterData(games, userName);
   const [page, setPage] = useState(1);
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
@@ -31,7 +30,7 @@ function Games(props: GamesProps) {
           <Grid container spacing={2}>
             {filter.data.map((x: any, i) => (
               <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                <EditMenuSupply edit={props.edit} position="left">
+                <EditMenuSupply edit={edit} position="left">
                   <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.png`} />
                 </EditMenuSupply>
               </Grid>

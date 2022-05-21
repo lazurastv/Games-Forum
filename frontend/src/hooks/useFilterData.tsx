@@ -10,14 +10,19 @@ interface FilterData<T extends ContentData> {
   // filterControl -> props to pass down to Filter component
   filterControl: FilterControl;
 }
-export default function useFilterData<T extends ContentData>(data: T[]): FilterData<T> {
+export default function useFilterData<T extends ContentData>(data: T[], userName?: string): FilterData<T> {
   const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
   const [sortOrder, setSortOrder] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   let Feedback: React.ReactNode;
+  let dataToDisplay = userName
+    ? sortOrder
+        .map((id) => data.find((d) => d.id === id))
+        .filter((d) => d && d.id && !idxToFilter.includes(d.id) && d.authorName === userName)
+    : sortOrder.map((id) => data.find((d) => d.id === id)).filter((d) => d && d.id && !idxToFilter.includes(d.id));
   if (loading) {
     Feedback = <LoadingSpinner />;
-  } else if (idxToFilter.length === data.length) {
+  } else if (!dataToDisplay?.length) {
     Feedback = (
       <Typography
         sx={{
@@ -28,10 +33,12 @@ export default function useFilterData<T extends ContentData>(data: T[]): FilterD
           minHeight: "200px",
         }}
       >
-        {"Nie znaleziono żadnych artykułów odpowiadających ustawieniom filtrowania :("}
+        {"Nie znaleziono żadnych elementów odpowiadających ustawieniom filtrowania :("}
       </Typography>
     );
   }
+  console.log(userName);
+
   return {
     Feedback: Feedback,
     filterControl: {
@@ -39,6 +46,6 @@ export default function useFilterData<T extends ContentData>(data: T[]): FilterD
       setSortOrder: setSortOrder,
       setLoading: setLoading,
     },
-    data: sortOrder.map((id) => data.find((d) => d.id === id)).filter((d) => d && d.id && !idxToFilter.includes(d.id)),
+    data: dataToDisplay,
   };
 }

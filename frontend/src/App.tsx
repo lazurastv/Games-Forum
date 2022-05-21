@@ -1,31 +1,34 @@
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React from "react";
-import Navigation from "./components/Navigation/Navigation";
-import { ThemeProvider } from "@mui/material/styles";
-import getTheme from "./theme";
+import "slick-carousel/slick/slick.css";
+
 import CssBaseline from "@mui/material/CssBaseline";
-import { Routes, Route,  BrowserRouter } from "react-router-dom";
-import Games from "./pages/ContentList/Games/Games";
-import Chat from "./pages/Chat";
-import Login from "./pages/Authentication/Login/Login";
-import Registration from "./pages/Authentication/Registration/Registration";
-import Home from "./pages/Home/Home";
-import Reviews from "./pages/ContentList/Reviews/Reviews";
-import Game from "./pages/ContentPage/Game/Game";
-import Article from "./pages/ContentPage/Article/Article";
-import Review from "./pages/ContentPage/Review/Review";
-import MyProfile from "./pages/Profile/MyProfile";
-import Profile from "./pages/Profile/Profile";
+import { ThemeProvider } from "@mui/material/styles";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
+import Navigation from "./components/Navigation/Navigation";
 import ScrollToTop from "./components/ScrollToTop";
+import Login from "./pages/Authentication/Login/Login";
+import Registration from "./pages/Authentication/Registration/Registration";
+import Chat from "./pages/Chat";
 import CreateArticle from "./pages/ContentCreate/CreateArticle/CreateArticle";
-import CreateReview from "./pages/ContentCreate/CreateReview/CreateReview";
 import CreateGame from "./pages/ContentCreate/CreateGame/CreateGame";
+import CreateReview from "./pages/ContentCreate/CreateReview/CreateReview";
 import Articles from "./pages/ContentList/Articles/Articles";
+import Games from "./pages/ContentList/Games/Games";
+import Reviews from "./pages/ContentList/Reviews/Reviews";
+import Article from "./pages/ContentPage/Article/Article";
+import Game from "./pages/ContentPage/Game/Game";
+import Review from "./pages/ContentPage/Review/Review";
 import NotFound from "./pages/Errors/NotFound";
-import MyContent from "./pages/MyContent/MyContent";
+import Home from "./pages/Home/Home";
+import UserContent from "./pages/UserContent/UserContent";
+import MyProfile from "./pages/Profile/MyProfile";
+import Profile from "./pages/Profile/Profile";
+import getTheme from "./theme";
+
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
@@ -63,7 +66,7 @@ function App() {
               <Route path="recenzja" element={<CreateReview />} />
               <Route path="gra" element={<CreateGame />} />
             </Route>
-            <Route path="wpisy" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyContent />} />} />
+            <Route path="wpisy/:userName" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<UserContent />} />} />
             <Route path="artykuly" element={<Articles />} />
             <Route path="artykuly/:id" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />

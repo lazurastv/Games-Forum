@@ -29,7 +29,7 @@ const Navigation = () => {
             </Grid>
             <Grid item xs container justifyContent="flex-end" order={{ xs: 2, sm: 2, md: 3 }}>
               <Grid item xs="auto" md="auto">
-                <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }}>
+                <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
                   <ThemeSwitch />
                   {loginBreak ? (
                     session.isAuthenticated ? (

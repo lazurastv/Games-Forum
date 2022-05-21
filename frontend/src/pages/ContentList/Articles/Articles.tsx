@@ -9,13 +9,14 @@ import useFilterData from "../../../hooks/useFilterData";
 import { convertDate } from "../../../utils/convertDate";
 import { ContentList } from "../ContentList.types";
 import ArticleItem from "./ArticleItem";
+
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 interface ArticlesProps extends ContentList {
   articles: ArticleSearchInfoVM[];
 }
 const Articles = (props: ArticlesProps) => {
-  const { articles } = props;
-  const filter = useFilterData(articles);
+  const { articles, edit, userName } = props;
+  const filter = useFilterData(articles, userName);
   console.log(articles);
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
@@ -26,7 +27,7 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <EditMenuSupply edit={props.edit}>
+              <EditMenuSupply edit={edit}>
                 <ArticleItem
                   key={idx}
                   articleId={a.id}

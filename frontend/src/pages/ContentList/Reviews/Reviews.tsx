@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "@mui/material/Container";
 import ReviewItem from "./ReviewItem";
 import withLoading from "../../../fetchData/withLoading";
@@ -6,7 +6,7 @@ import { loadAllReviews } from "../../../fetchData/fetchReviews";
 import Filter from "../../../components/Filters/Filter/Filter";
 import { convertDate } from "../../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../../api/api";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { ContentList } from "../ContentList.types";
 import useFilterData from "../../../hooks/useFilterData";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
@@ -15,8 +15,8 @@ interface ReviewsProps extends ContentList {
   reviews: ReviewSearchInfoVM[];
 }
 const Reviews = (props: ReviewsProps): React.ReactNode => {
-  const { reviews } = props;
-  const filter = useFilterData(reviews);
+  const { reviews, edit, userName } = props;
+  const filter = useFilterData(reviews, userName);
   return (
     <Container maxWidth="xl">
       <Filter sliderLabel="DATA PUBLIKACJI:" data={reviews} {...filter.filterControl} />
@@ -24,7 +24,7 @@ const Reviews = (props: ReviewsProps): React.ReactNode => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((r: any, idx) => (
-              <EditMenuSupply edit={props.edit}>
+              <EditMenuSupply edit={edit}>
                 <ReviewItem
                   key={idx}
                   reviewId={r.id as number}

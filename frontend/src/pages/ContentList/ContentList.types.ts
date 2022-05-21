@@ -1,3 +1,4 @@
 export interface ContentList {
-    edit?: boolean;
-  }
+  edit?: boolean;
+  userName?: string;
+}

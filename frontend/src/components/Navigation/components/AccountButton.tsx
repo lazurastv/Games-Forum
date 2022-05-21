@@ -25,11 +25,11 @@ export default function AccountButton() {
           </Box>
         ) : session.isAuthenticated ? (
           <Tooltip title="Twój profil">
-            <IconButton onClick={handleClick}>
+            <IconButton size="large" onClick={handleClick} sx={{ mx: 1 }}>
               <Avatar
                 alt={session.user?.username}
                 src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
-                sx={{ width: 24, height: 24 }}
+                sx={{ width: 28, height: 28 }}
               />
             </IconButton>
           </Tooltip>
