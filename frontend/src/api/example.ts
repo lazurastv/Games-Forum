@@ -8,7 +8,7 @@ import { ArticleAddUpdate } from "./api/models/ArticleAddUpdate";
 export function example() {
     const auth = new AuthApi();
     const articles = new ArticleControllerApi();
-    auth.login()
+    auth.login("TraXson", "p")
         .then(result => {
             console.log(result);
             const article = { 'title': 'Article 11', 'introduction': 'Hello', 'content': '<html><html/>' } as ArticleAddUpdate;

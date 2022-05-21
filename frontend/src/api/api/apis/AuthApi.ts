@@ -5,7 +5,7 @@ import * as runtime from '../runtime';
  * 
  */
 export class AuthApi extends runtime.BaseAPI {
-    async login() {
+    async login(username: string, password: string) {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -19,8 +19,8 @@ export class AuthApi extends runtime.BaseAPI {
             query: queryParameters,
 
             body: {
-                username: "a",
-                password: "p",
+                username: username,
+                password: password,
                 rememberMe: false
             },
         }, {
