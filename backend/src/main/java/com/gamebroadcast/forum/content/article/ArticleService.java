@@ -34,11 +34,10 @@ public class ArticleService {
         return ArticleSearchInfoVM.toArticleSearchInfoVMList(articles);
     }
 
-    public List<ArticleVM> getSimilarArticles(Long articleId) {
-        Article article = getArticle(articleId);
-        List<Article> articles = articleRepository.findByAuthorId(article.getAuthor().getId());
-        articles.remove(article);
-        return ArticleVM.toArticleVMList(articles);
+    public List<ArticleSearchInfoVM> getSimilarArticles(Long articleId) {
+        List<ArticleSearchInfoVM> articles = getAllArticleSearchInfos();
+        articles.removeIf(x -> x.id == articleId);
+        return articles;
     }
 
     public ArticleVM getArticleById(Long articleId) {

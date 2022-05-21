@@ -35,7 +35,7 @@ public class ReviewController {
     }
 
     @GetMapping(path = "/Similar/{reviewId}")
-    public List<ReviewVM> getSimilarReviews(@PathVariable("reviewId") Long reviewId) {
+    public List<ReviewSearchInfoVM> getSimilarReviews(@PathVariable("reviewId") Long reviewId) {
         return reviewService.getSimilarReviews(reviewId);
     }
 
