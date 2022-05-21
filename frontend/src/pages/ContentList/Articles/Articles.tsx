@@ -2,6 +2,7 @@ import Container from "@mui/material/Container";
 import { Box } from "@mui/system";
 import { ArticleSearchInfoVM } from "../../../api/api";
 import Filter from "../../../components/Filters/Filter/Filter";
+import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
 import { loadAllArticles } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import useFilterData from "../../../hooks/useFilterData";
@@ -25,15 +26,17 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <ArticleItem
-                key={idx}
-                articleId={a.id}
-                content={a.introduction}
-                date={convertDate(a.publishDate)}
-                title={a.title as string}
-                author={a.authorName as string}
-                image={`${NGINX_URL}/${a.path}/horizontal.png`}
-              />
+              <EditMenuSupply edit={props.edit}>
+                <ArticleItem
+                  key={idx}
+                  articleId={a.id}
+                  content={a.introduction}
+                  date={convertDate(a.publishDate)}
+                  title={a.title as string}
+                  author={a.authorName as string}
+                  image={`${NGINX_URL}/${a.path}/horizontal.png`}
+                />
+              </EditMenuSupply>
             ))}
       </Box>
     </Container>

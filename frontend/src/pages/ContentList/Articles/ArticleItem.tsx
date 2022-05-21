@@ -4,11 +4,8 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { IconButton } from "@mui/material";
 import MultilineTruncatedText from "../../../components/MultilineTruncatedText";
 import HoverableItem from "../../../components/HoverableItem/HoverableItem";
-import FloatingEditButtons from "../../../components/HoverableItem/EditMenu";
-import EditMenu from "../../../components/HoverableItem/EditMenu";
 const height = { xs: 160, sm: 180, md: 200 };
 const imgWidth = { xs: 120, sm: 180, md: 200 };
 const textBoxSize = {
@@ -83,7 +80,6 @@ export default function ArticleItem(props: IArticle) {
           </Box>
         </Box>
       </Link>
-      <EditMenu />
     </HoverableItem>
   );
 }

@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import MultilineTruncatedText from "../../../components/MultilineTruncatedText";
 import { Link } from "react-router-dom";
 import HoverableItem from "../../../components/HoverableItem/HoverableItem";
-import EditMenu from "../../../components/HoverableItem/EditMenu";
 const height = { xs: "auto", sm: 280, md: 300 };
 const imgWidth = { xs: "auto", sm: 180, md: 200 };
 const imgHeight = { xs: 200, sm: 280, md: 300 };
@@ -91,7 +90,6 @@ export default function ReviewItem(props: IReview) {
           </Box>
         </Box>
       </Link>
-      <EditMenu />
     </HoverableItem>
   );
 }

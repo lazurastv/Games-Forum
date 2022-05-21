@@ -4,8 +4,10 @@ import { FilterControl } from "../components/Filters/Filter/Filter.types";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { ContentData } from "../pages/ApiData.types";
 interface FilterData<T extends ContentData> {
+  // Feedback ->  something to display if data is loading/undefined
   Feedback: React.ReactNode;
   data: (T | undefined)[];
+  // filterControl -> props to pass down to Filter component
   filterControl: FilterControl;
 }
 export default function useFilterData<T extends ContentData>(data: T[]): FilterData<T> {
