@@ -38,11 +38,10 @@ public class ReviewService {
         return ReviewSearchInfoVM.toReviewSearchInfoVMList(reviews);
     }
 
-    public List<ReviewVM> getSimilarReviews(Long reviewId) {
-        Review review = getReview(reviewId);
-        List<Review> reviews = reviewRepository.findByAuthorId(review.getAuthor().getId());
-        reviews.remove(review);
-        return ReviewVM.toReviewVMList(reviews);
+    public List<ReviewSearchInfoVM> getSimilarReviews(Long reviewId) {
+        List<ReviewSearchInfoVM> reviews = getAllReviewSearchInfos();
+        reviews.removeIf(x -> x.id == reviewId);
+        return reviews;
     }
 
     public ReviewVM getReviewById(Long reviewId) {

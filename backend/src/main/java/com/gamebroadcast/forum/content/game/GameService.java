@@ -34,11 +34,10 @@ public class GameService {
         return GameSearchInfoVM.toGameSearchInfoVMList(games);
     }
 
-    public List<GameVM> getSimilarGames(Long gameId) {
-        Game game = getGame(gameId);
-        List<Game> games = gameRepository.findByGenres(game.getGenres().get(0));
-        games.remove(game);
-        return GameVM.toGameVMList(games);
+    public List<GameSearchInfoVM> getSimilarGames(Long gameId) {
+        List<GameSearchInfoVM> games = getAllGameSearchInfos();
+        games.removeIf(x -> x.id == gameId);
+        return games;
     }
 
     public GameVM getGameById(Long id) {
