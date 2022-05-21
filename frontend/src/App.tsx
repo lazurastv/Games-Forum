@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import React from "react";
-import Navigation from "./components/Navigation";
+import Navigation from "./components/Navigation/Navigation";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import getTheme from "./theme";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,6 +26,7 @@ import CreateReview from "./pages/CreateContent/CreateReview/CreateReview";
 import CreateGame from "./pages/CreateContent/CreateGame/CreateGame";
 import Articles from "./pages/Articles/Articles";
 import NotFound from "./pages/Errors/NotFound";
+import MyContent from "./pages/MyContent/MyContent";
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
@@ -63,20 +64,15 @@ function App() {
               <Route path="recenzja" element={<CreateReview />} />
               <Route path="gra" element={<CreateGame />} />
             </Route>
+            <Route path="wpisy" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyContent />} />} />
             <Route path="artykuly" element={<Articles />} />
             <Route path="artykuly/:id" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />
             <Route path="recenzje/:id" element={<Review />} />
             <Route path="gry" element={<Games />} />
             <Route path="gry/:id" element={<Game />} />
-            <Route
-              path="chat"
-              element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />}
-            />
-            <Route
-              path="profil"
-              element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />}
-            />
+            <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
+            <Route path="profil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
             <Route path="logowanie" element={<Login />} />
             <Route path="profiletmp" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
