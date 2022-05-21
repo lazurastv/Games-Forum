@@ -1,10 +1,10 @@
 import React from "react";
-import { ReviewSearchInfoVM } from "../../api/api";
-import Carousel from "../../components/Carousel/Carousel";
-import ReviewTile from "../../components/Tile/ReviewTile";
-import { loadSimilarReviews } from "../../fetchData/fetchReviews";
-import withLoading from "../../fetchData/withLoading";
-import { convertDate } from "../../utils/convertDate";
+import { ReviewSearchInfoVM } from "../../../api/api";
+import Carousel from "../../../components/Carousel/Carousel";
+import ReviewTile from "../../../components/Tile/ReviewTile";
+import { loadSimilarReviews } from "../../../fetchData/fetchReviews";
+import withLoading from "../../../fetchData/withLoading";
+import { convertDate } from "../../../utils/convertDate";
 
 function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
   return (

@@ -1,9 +1,9 @@
 import React from "react";
-import { GameSearchInfoVM } from "../../api/api";
-import Carousel from "../../components/Carousel/Carousel";
-import GameTile from "../../components/Tile/GameTile";
-import { loadSimilarGames } from "../../fetchData/fetchGames";
-import withLoading from "../../fetchData/withLoading";
+import { GameSearchInfoVM } from "../../../api/api";
+import Carousel from "../../../components/Carousel/Carousel";
+import GameTile from "../../../components/Tile/GameTile";
+import { loadSimilarGames } from "../../../fetchData/fetchGames";
+import withLoading from "../../../fetchData/withLoading";
 
 function SimilarGames({ games }: { games: GameSearchInfoVM }) {
   console.log(games);
