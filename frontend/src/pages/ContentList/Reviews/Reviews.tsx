@@ -8,41 +8,22 @@ import { convertDate } from "../../../utils/convertDate";
 import { ReviewSearchInfoVM } from "../../../api/api";
 import { Box, Typography } from "@mui/material";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import { ContentList } from "../ContentList.types";
+import useFilterData from "../../../hooks/useFilterData";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
-
-const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNode => {
-  const [idxToFilter, setIdxToFilter] = useState<number[]>([]);
-  const [sortOrder, setSortOrder] = useState<number[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+interface ReviewsProps extends ContentList {
+  reviews: ReviewSearchInfoVM[];
+}
+const Reviews = (props: ReviewsProps): React.ReactNode => {
+  const { reviews } = props;
+  const filter = useFilterData(reviews);
   return (
     <Container maxWidth="xl">
-      <Filter
-        setSortOrder={setSortOrder}
-        setLoading={setLoading}
-        sliderLabel="DATA PUBLIKACJI:"
-        data={reviews}
-        setIdxToFilter={setIdxToFilter}
-      />
+      <Filter sliderLabel="DATA PUBLIKACJI:" data={reviews} {...filter.filterControl} />
       <Box sx={{ minHeight: "100vh" }}>
-        {loading ? (
-          <LoadingSpinner />
-        ) : idxToFilter.length === reviews.length ? (
-          <Typography
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: "24px",
-              minHeight: "200px",
-            }}
-          >
-            {"Nie znaleziono żadnych recenzji odpowiadających ustawieniom filtrowania :("}
-          </Typography>
-        ) : (
-          sortOrder
-            .map((id) => reviews.find((r) => r.id === id))
-            .filter((r) => r && r.id && !idxToFilter.includes(r.id))
-            .map((r: any, idx) => (
+        {filter.Feedback
+          ? filter.Feedback
+          : filter.data.map((r: any, idx) => (
               <ReviewItem
                 key={idx}
                 reviewId={r.id as number}
@@ -53,8 +34,7 @@ const Reviews = ({ reviews }: { reviews: ReviewSearchInfoVM[] }): React.ReactNod
                 rate={r.score && isNaN(r.score) ? "?" : r.score?.toFixed(0) ?? -1}
                 image={`${NGINX_URL}/${r.path}/horizontal.png`}
               />
-            ))
-        )}
+            ))}
       </Box>
     </Container>
   );

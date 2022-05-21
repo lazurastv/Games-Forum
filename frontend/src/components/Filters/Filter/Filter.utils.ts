@@ -1,6 +1,6 @@
+import { ContentData } from "../../../pages/ApiData.types";
 import { CheckboxFilters } from "../GamesFilter/GamesFilter";
 import { ASCENDING, POPULARITY, PUBLISH_DATE, sortValues } from "./Filter.conf";
-import { PossibleData } from "./Filter.types";
 // Filter methods return array of ids of elements to be filtered out
 
 // Returns true if value from search box is in tag
@@ -8,13 +8,13 @@ const match = (tag: string, searchValue: string): boolean => {
   return tag.toUpperCase().includes(searchValue.toUpperCase());
 };
 
-function filterData<T extends PossibleData>(
-  data: T,
+function filterData<T extends ContentData>(
+  data: T[],
   searchValue: string,
   year: number[],
   checkboxGroups?: CheckboxFilters
 ): number[] {
-  let dataToKeep: PossibleData = data;
+  let dataToKeep = data;
   // filter out values that are not included in any tag
   if (checkboxGroups) {
     // remove group from filtering if all checkboxes are unchecked
@@ -58,7 +58,7 @@ function filterData<T extends PossibleData>(
   console.log(dataToKeep);
   return data.filter((d) => !dataToKeep.includes(d)).map((d) => d.id as number);
 }
-function sortData<T extends PossibleData>(data: T, sortValue: string): number[] {
+function sortData<T extends ContentData>(data: T[], sortValue: string): number[] {
   let [property, order] = sortValue.split("-");
   let ascending = order === ASCENDING ? true : false;
   var newSortOrder: number[];
@@ -98,12 +98,4 @@ function sortData<T extends PossibleData>(data: T, sortValue: string): number[] 
   // let ascending = sortValues.publishDateAscending.value === sortValue ? true : false;
   return newSortOrder;
 }
-// // filter Games
-// function filterData<T extends PossibleData>(data: T, searchValue: string, checkboxes: any) {
-//   let dataToFilter = data.filter((d) => {
-//     return !d.title?.toUpperCase().includes(searchValue.toUpperCase());
-//   });
-//   return dataToFilter.map((d) => d.id);
-// }
-
 export { filterData, sortData };

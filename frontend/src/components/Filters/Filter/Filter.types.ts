@@ -1,14 +1,14 @@
 import React from "react";
-import { ArticleSearchInfoVM, GameSearchInfoVM, ReviewSearchInfoVM } from "../../../api/api";
-
-export type PossibleData = GameSearchInfoVM[] | ArticleSearchInfoVM[] | ReviewSearchInfoVM[];
-export type FilterProps<T extends PossibleData> = {
-  data: T;
-  sliderLabel: string;
+import { ContentData } from "../../../pages/ApiData.types";
+export interface FilterControl {
   setSortOrder: (order: number[]) => void;
   setLoading: (loading: boolean) => void;
   // indexes of data that are going to be filtered out
   setIdxToFilter: (idxToFilter: number[]) => void;
+}
+export interface FilterProps<T extends ContentData> extends FilterControl {
+  data: T[];
+  sliderLabel: string;
   children?: React.ReactNode;
   otherFilters?: any;
   clearOtherFilters?: any;

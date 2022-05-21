@@ -5,9 +5,10 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { sliderConf, sortValues } from "./Filter.conf";
 import FilterSlider from "./FilterSlider";
-import { FilterProps, PossibleData } from "./Filter.types";
+import { FilterProps } from "./Filter.types";
 import { filterData, sortData } from "./Filter.utils";
-export default function Filter<T extends PossibleData>({
+import { ContentData } from "../../../pages/ApiData.types";
+export default function Filter<T extends ContentData>({
   data,
   sliderLabel,
   setSortOrder,
@@ -149,7 +150,7 @@ const FilterWrapper = styled(Box)(({ theme }) => ({
 const FilterTopWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
-  alignItems:"center",
+  alignItems: "center",
   marginBottom: theme.spacing(2),
   height: "43px",
 }));
