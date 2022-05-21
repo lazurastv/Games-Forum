@@ -10,7 +10,7 @@ import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
-import OneLineInput from "../OneLineInput";
+import OneLineInput from "../components/OneLineInput";
 import { ReviewAdd } from "../../../api/api";
 
 export default function CreateReview() {

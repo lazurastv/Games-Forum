@@ -7,8 +7,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { green, red } from "@mui/material/colors";
-import OneLineInput from "../OneLineInput";
-import Label from "../Label";
+import OneLineInput from "../components/OneLineInput";
+import Label from "../components/Label";
 const Plus = (props: any) => (
   <AddCircleOutlineIcon sx={{ mr: 1, color: green[500] }} />
 );

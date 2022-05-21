@@ -7,7 +7,7 @@ import withLoading from "../../../fetchData/withLoading";
 import { loadAllGames } from "../../../fetchData/fetchGames";
 import { GameSearchInfoVM } from "../../../api/api";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
-import { ListContent } from "../../Content.types";
+import { ListContent } from "../ListContent.types";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 interface GamesProps extends ListContent {
   games: GameSearchInfoVM[];

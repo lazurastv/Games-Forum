@@ -8,10 +8,10 @@ import { loadGame, uploadGame } from "../../../fetchData/fetchGames";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { GameAddUpdate } from "../../../api/api";
-import OneLineInput from "../OneLineInput";
-import MultipleSelect from "../MultipleSelect";
+import OneLineInput from "../components/OneLineInput";
+import MultipleSelect from "../components/MultipleSelect";
 import CRRating from "../CreateReview/CRRating";
-import DatePicker from "../DatePicker";
+import DatePicker from "../components/DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
 import { game } from "../../../data-mock/gameDataDictionary";
 const checkboxGroup = [

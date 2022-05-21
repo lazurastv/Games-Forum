@@ -9,7 +9,7 @@ import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
-import OneLineInput from "../OneLineInput";
+import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 
 export default function CreateArticle() {
