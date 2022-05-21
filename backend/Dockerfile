@@ -4,7 +4,7 @@ COPY pom.xml .
 
 RUN mvn verify --fail-never
 
-COPY src .
+COPY src src
 
 RUN mvn compile
 
