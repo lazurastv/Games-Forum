@@ -1,10 +1,10 @@
-FROM maven
+FROM maven as build
 
-COPY src src
+COPY pom.xml .
 
-COPY pom.xml pom.xml
+RUN mvn verify --fail-never
 
-RUN mvn install
+COPY src .
 
 RUN mvn compile
 
