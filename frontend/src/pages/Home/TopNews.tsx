@@ -2,10 +2,17 @@ import { Box, Grid, useMediaQuery } from "@mui/material";
 import Carousel from "../../components/Carousel/Carousel";
 import ArticleTile from "../../components/Tile/ArticleTile";
 import { useTheme } from "@mui/material/styles";
+import { ArticleVM } from "../../api/api";
+import withLoading from "../../fetchData/withLoading";
+import { loadAllArticles } from "../../fetchData/fetchArticles";
+import { convertDate } from "../../utils/convertDate";
 
-export default function TopNews() {
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
+function TopNews({ news }: { news: ArticleVM[] }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <Box className="TopNews" sx={{ mb: 4 }}>
       {matches ? (
@@ -19,67 +26,37 @@ export default function TopNews() {
             responsive: [],
           }}
         >
-          <ArticleTile
-            title="Wiedźmin 3 znowu najlepszy!"
-            src="./images/witcher3.jpg"
-            author="Piotr Nowak"
-            date="11.02.2022"
-          />
-          <ArticleTile
-            title="Gaszenie pożaru w The Sims *Zobacz jak*"
-            src="./images/sims.jpg"
-            author="Bartłomiej Czekaj"
-            date="10.02.2022"
-          />
-          <ArticleTile
-            title="Jak sobie radzi GTA-Online 8 lat po premierze?"
-            src="./images/gta.jpg"
-            author="Bartłomiej Czekaj"
-            date="11.02.2022"
-          />
-          <ArticleTile
-            title="Premiera Daying Light 2 - co przyniesie najnowsza gra polskiej wytwórni?"
-            src="./images/dl2.jpg"
-            author="Bartłomiej Czekaj"
-            date="11.02.2022"
-          />
+          {
+            news.slice(0, 4).map((x, id) =>
+              <ArticleTile
+                key={id}
+                articleId={x.id}
+                title={x.title}
+                src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                author={x.authorName}
+                date={convertDate(x.publishDate)}
+              />
+            )
+          }
         </Carousel>
       ) : (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <ArticleTile
-              title="Wiedźmin 3 znowu najlepszy!"
-              src="./images/witcher3.jpg"
-              author="Piotr Nowak"
-              date="11.02.2022"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <ArticleTile
-              title="Gaszenie pożaru w The Sims *Zobacz jak*"
-              src="./images/sims.jpg"
-              author="Bartłomiej Czekaj"
-              date="10.02.2022"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <ArticleTile
-              title="Jak sobie radzi GTA-Online 8 lat po premierze?"
-              src="./images/gta.jpg"
-              author="Bartłomiej Czekaj"
-              date="11.02.2022"
-            />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <ArticleTile
-              title="Premiera Daying Light 2 - co przyniesie najnowsza gra polskiej wytwórni?"
-              src="./images/dl2.jpg"
-              author="Bartłomiej Czekaj"
-              date="11.02.2022"
-            />
-          </Grid>
+          {
+            news.slice(0, 4).map((x, id) =>
+              <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
+                <ArticleTile
+                  articleId={x.id}
+                  title={x.title}
+                  src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                  author={x.authorName}
+                  date={convertDate(x.publishDate)}
+                />
+              </Grid>
+            )
+          }
         </Grid>
       )}
     </Box>
   );
 }
+export default withLoading(TopNews, { news: loadAllArticles });
