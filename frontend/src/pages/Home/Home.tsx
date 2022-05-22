@@ -5,23 +5,14 @@ import Carousel from "../../components/Carousel/Carousel";
 import GameTile from "../../components/Tile/GameTile";
 import { gamesCarousel, reviewsCarousel } from "../../data-mock/carousels";
 import SectionHeader from "../../components/SectionHeader";
+import LatestReviews from "./LatestReviews";
 
 export default function Home() {
   return (
     <Container maxWidth="xl" sx={{ my: 4 }}>
       <TopNews />
       <SectionHeader>Najnowsze recenzje</SectionHeader>
-      <Carousel>
-        {reviewsCarousel.map((reviewTile, idx) => (
-          <ReviewTile
-            key={idx}
-            title={reviewTile.title}
-            src={reviewTile.src}
-            author={reviewTile.author}
-            date={reviewTile.date}
-          />
-        ))}
-      </Carousel>
+      <LatestReviews />
       <SectionHeader>Gry</SectionHeader>
       {/* <Carousel>
         {gamesCarousel.map((gameTile, idx) => (

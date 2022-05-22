@@ -30,6 +30,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
             news.slice(0, 4).map((x, id) =>
               <ArticleTile
                 key={id}
+                articleId={x.id}
                 title={x.title}
                 src={`${NGINX_URL}/${x.path}/horizontal.png`}
                 author={x.authorName}
@@ -44,6 +45,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
             news.slice(0, 4).map((x, id) =>
               <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
                 <ArticleTile
+                  articleId={x.id}
                   title={x.title}
                   src={`${NGINX_URL}/${x.path}/horizontal.png`}
                   author={x.authorName}
