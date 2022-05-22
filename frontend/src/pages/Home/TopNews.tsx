@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { ArticleVM } from "../../api/api";
 import withLoading from "../../fetchData/withLoading";
 import { loadAllArticles } from "../../fetchData/fetchArticles";
+import { convertDate } from "../../utils/convertDate";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
@@ -31,7 +32,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
                 title={x.title}
                 src={`${NGINX_URL}/${x.path}/horizontal.png`}
                 author={x.authorName}
-                date={x.publishDate}
+                date={convertDate(x.publishDate)}
               />
             )
           }
@@ -40,12 +41,12 @@ function TopNews({ news }: { news: ArticleVM[] }) {
         <Grid container spacing={3}>
           {
             news.slice(0, 4).map((x, id) =>
-              <Grid item xs={12} md={12 - id % 2 * 4}>
+              <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
                 <ArticleTile
                   title={x.title}
                   src={`${NGINX_URL}/${x.path}/horizontal.png`}
                   author={x.authorName}
-                  date={x.publishDate}
+                  date={convertDate(x.publishDate)}
                 />
               </Grid>
             )
