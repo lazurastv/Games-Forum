@@ -1,13 +1,12 @@
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
-
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
+import PageNotFoundError from "./components/Errors/PageNotFoundError";
 import Navigation from "./components/Navigation/Navigation";
 import ScrollToTop from "./components/ScrollToTop";
 import Login from "./pages/Authentication/Login/Login";
@@ -22,12 +21,13 @@ import Reviews from "./pages/ContentList/Reviews/Reviews";
 import Article from "./pages/ContentPage/Article/Article";
 import Game from "./pages/ContentPage/Game/Game";
 import Review from "./pages/ContentPage/Review/Review";
-import NotFound from "./pages/Errors/NotFound";
 import Home from "./pages/Home/Home";
-import UserContent from "./pages/UserContent/UserContent";
 import MyProfile from "./pages/Profile/MyProfile";
 import Profile from "./pages/Profile/Profile";
+import UserContent from "./pages/UserContent/UserContent";
 import getTheme from "./theme";
+
+
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -79,7 +79,7 @@ function App() {
             <Route path="logowanie" element={<Login />} />
             <Route path="profiletmp" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<PageNotFoundError />} />
           </Routes>
         </ThemeProvider>
       </ColorModeContext.Provider>
