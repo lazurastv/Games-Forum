@@ -27,8 +27,9 @@ function TopNews({ news }: { news: ArticleVM[] }) {
           }}
         >
           {
-            news.slice(0, 4).map(x =>
+            news.slice(0, 4).map((x, id) =>
               <ArticleTile
+                key={id}
                 title={x.title}
                 src={`${NGINX_URL}/${x.path}/horizontal.png`}
                 author={x.authorName}

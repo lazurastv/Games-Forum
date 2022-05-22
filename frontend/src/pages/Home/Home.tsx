@@ -12,8 +12,9 @@ export default function Home() {
       <TopNews />
       <SectionHeader>Najnowsze recenzje</SectionHeader>
       <Carousel>
-        {reviewsCarousel.map((reviewTile) => (
+        {reviewsCarousel.map((reviewTile, idx) => (
           <ReviewTile
+            key={idx}
             title={reviewTile.title}
             src={reviewTile.src}
             author={reviewTile.author}
