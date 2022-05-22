@@ -78,22 +78,30 @@ export default function AccountMenu({ anchorEl, setAnchorEl }) {
             <Divider key="divider" sx={{ my: 1 }} />
           </Box>
           <Box>
-            <MenuItemLink
-              onClick={handleClose}
-              jsxElement={<FeedIcon />}
-              path={`/wpisy/${session.user?.username}`}
-              text="Moje wpisy"
-            />
-            <Divider key="divider" sx={{ my: 1 }} />
-          </Box>
-          <MenuCollapse icon={AddIcon} name="Dodaj">
-            {collapseButtons.map((b, idx) => (
-              <Box key={idx}>
-                <MenuItemLink onClick={handleClose} jsxElement={b.jsxElement} path={b.path} text={b.text} />
-                <Divider key="divider" sx={{ my: 1 }} />
+            {session.user?.role != "USER" &&
+              <Box>
+                <Box>
+                  <MenuItemLink
+                    onClick={handleClose}
+                    jsxElement={<FeedIcon />}
+                    path={`/wpisy/${session.user?.username}`}
+                    text="Moje wpisy"
+                  />
+                  <Divider key="divider" sx={{ my: 1 }} />
+                </Box>
+                <MenuCollapse icon={AddIcon} name="Dodaj">
+                  {
+                    collapseButtons.map((b, idx) => (
+                      <Box key={idx}>
+                        <MenuItemLink onClick={handleClose} jsxElement={b.jsxElement} path={b.path} text={b.text} />
+                        <Divider key="divider" sx={{ my: 1 }} />
+                      </Box>
+                    ))
+                  }
+                </MenuCollapse>
               </Box>
-            ))}
-          </MenuCollapse>
+            }
+          </Box>
           <MenuItem key="logout" onClick={logoutHandler}>
             <ListItemIcon>
               <Logout fontSize="small" />

@@ -29,7 +29,7 @@ import MyProfile from "./pages/Profile/MyProfile";
 import Profile from "./pages/Profile/Profile";
 import getTheme from "./theme";
 
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 function App() {
   //theme
@@ -49,6 +49,7 @@ function App() {
 
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
     isAuthenticated: !!session.isAuthenticated, // !! means if variable is null, it return false
+    role: session.user?.role,
     authenticationPath: "/logowanie",
   };
 
@@ -61,12 +62,12 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} />}>
+            <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" />}>
               <Route path="artykul" element={<CreateArticle />} />
               <Route path="recenzja" element={<CreateReview />} />
               <Route path="gra" element={<CreateGame />} />
             </Route>
-            <Route path="wpisy/:userName" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<UserContent />} />} />
+            <Route path="wpisy/:userName" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" outlet={<UserContent />} />} />
             <Route path="artykuly" element={<Articles />} />
             <Route path="artykuly/:id" element={<Article />} />
             <Route path="recenzje" element={<Reviews />} />
