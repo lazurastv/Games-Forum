@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material/styles";
 import { ReviewSearchInfoVM } from "../../api/api";
 import Carousel from "../../components/Carousel/Carousel";
 import ReviewTile from "../../components/Tile/ReviewTile";
@@ -9,8 +8,6 @@ import { convertDate } from "../../utils/convertDate";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
 function LatestReviews({ reviews }: { reviews: ReviewSearchInfoVM[] }) {
-    const theme = useTheme();
-
     return (
         <Carousel>
             {
