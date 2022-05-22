@@ -16,8 +16,6 @@ export default function UserContent() {
   } = useSessionContext();
   const [value, setValue] = useState<number>(0);
   const { userName } = useParams();
-  console.log(userName);
-  
   let edit = userName === user?.username;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -25,7 +23,7 @@ export default function UserContent() {
   return (
     <Box sx={{ mt: 6 }}>
       <Container maxWidth="xl">
-        <Widget noPadding sx={{ backgroundColor: "primary.main", pt: 4, px: 3 }}>
+        <Widget noPadding sx={{ backgroundColor: "primary.main", pt: 4, px: 4 }}>
           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 4 }}>
             <Avatar
               alt={user?.username}
@@ -76,18 +74,14 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <Box
-      sx={{ mt: -3 }}
+      sx={{ mt: -1 }}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ px: 4 }}>{children}</Box>}
     </Box>
   );
 }
