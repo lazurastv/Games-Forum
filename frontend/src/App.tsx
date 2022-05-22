@@ -26,7 +26,8 @@ import CreateReview from "./pages/CreateContent/CreateReview/CreateReview";
 import CreateGame from "./pages/CreateContent/CreateGame/CreateGame";
 import Articles from "./pages/Articles/Articles";
 import NotFound from "./pages/Errors/NotFound";
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+import PageNotFoundError from "./components/Errors/PageNotFoundError";
+export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 function App() {
   //theme
@@ -80,7 +81,7 @@ function App() {
             <Route path="logowanie" element={<Login />} />
             <Route path="profiletmp" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<PageNotFoundError />} />
           </Routes>
         </ThemeProvider>
       </ColorModeContext.Provider>
