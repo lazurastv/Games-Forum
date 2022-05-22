@@ -55,4 +55,4 @@ function TopNews({ news }: { news: ArticleVM[] }) {
     </Box>
   );
 }
-export default withLoading(TopNews, { news: loadAllArticles })
+export default withLoading(TopNews, { news: loadAllArticles });
