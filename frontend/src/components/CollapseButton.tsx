@@ -1,9 +1,14 @@
 import { Button, Collapse, Divider, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
-export default function CollapseButton(props: any) {
+interface CollapseButtonProps {
+  children?: React.ReactNode;
+  name: string;
+  menuLabel?: boolean
+}
+export default function CollapseButton(props: CollapseButtonProps) {
   const [inCollapse, setInCollapse] = useState<boolean | undefined>(false);
   return (
     <Box sx={{ mb: 2 }}>

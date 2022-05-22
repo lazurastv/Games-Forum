@@ -14,6 +14,10 @@ async function loadReview(id: number) {
     //   content: result?.path ? stringToHtml(result?.path) : "Loading error",
   }));
 }
+async function deleteReview(id: number) {
+  const reviews = new ReviewControllerApi();
+  return reviews.deleteReview({ reviewId: id }, { credentials: "include" });
+}
 async function uploadReview(review: ReviewAdd) {
   const reviews = new ReviewControllerApi();
   return reviews
@@ -23,4 +27,4 @@ async function uploadReview(review: ReviewAdd) {
       result.forEach((x) => console.log(x));
     });
 }
-export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews };
+export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews, deleteReview };

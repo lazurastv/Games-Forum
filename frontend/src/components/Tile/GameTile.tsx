@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { GameSearchInfoVM } from "../../api/api";
+import EditMenu from "../HoverableItem/EditMenuSupply";
 import Tile from "./Tile";
 const Rating = (props: any) => (
   <Box
@@ -65,11 +66,7 @@ export default function GameTile({ game, src }: GameTileProps) {
             top: "70px",
           }}
         >
-          {game.meanUserScore
-            ? isNaN(game.meanUserScore)
-              ? "?"
-              : game.meanUserScore.toFixed(1)
-            : "?"}
+          {game.meanUserScore ? (isNaN(game.meanUserScore) ? "?" : game.meanUserScore.toFixed(1)) : "?"}
           /10
         </Rating>
       </Tile>

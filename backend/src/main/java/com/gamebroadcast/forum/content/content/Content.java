@@ -3,6 +3,7 @@ package com.gamebroadcast.forum.content.content;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,10 +55,10 @@ public class Content {
     @JoinColumn(name = "author_id", nullable = false)
     protected AppUser author;
 
-    @OneToMany(mappedBy = "content")
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
     protected List<Like> likes;
 
-    @OneToMany(mappedBy = "content")
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
     protected List<Comment> comments;
 
     public Content() {
