@@ -47,7 +47,7 @@ export default function ProfileDataBox(props: IProfileDataBox) {
       <ProfileData label="Email:">{props.email}</ProfileData>
       <ProfileData label="Liczba komentarzy:">{props.numberOfComments}</ProfileData>
       {editingDesc.editing === false ? (
-        <ProfileData label="Opis:">{props.description + (descValue ?? "")}</ProfileData>
+        <ProfileData label="Opis:">{descValue ?? props.description}</ProfileData>
       ) : (
         <TextField
           id="outlined-multiline-static"

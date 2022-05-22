@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid, InputAdornment, MenuItem, Collapse, TextField } from "@mui/material";
+import { Box, Button, Grid, InputAdornment, MenuItem, Collapse, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { sliderConf, sortValues } from "./Filter.conf";
 import FilterSlider from "./FilterSlider";
-import { FilterProps, PossibleData } from "./Filter.types";
+import { FilterProps } from "./Filter.types";
 import { filterData, sortData } from "./Filter.utils";
-export default function Filter<T extends PossibleData>({
-  data,
-  sliderLabel,
-  setSortOrder,
-  setLoading,
-  setIdxToFilter,
-  children,
-  otherFilters,
-  clearOtherFilters,
-  page,
-}: FilterProps<T>) {
+import { ContentData } from "../../../pages/ApiData.types";
+export default function Filter<T extends ContentData>(props: FilterProps<T>) {
+  const {
+    data,
+    sliderLabel,
+    setSortOrder,
+    setLoading,
+    setIdxToFilter,
+    children,
+    otherFilters,
+    clearOtherFilters,
+    page,
+  } = props;
   const [searchValue, setSearchValue] = useState<string>("");
   const [year, setYear] = useState<number[]>(sliderConf.yearRange);
   const [filterInCollapse, setFilterInCollapse] = useState<boolean>(false);
@@ -105,8 +107,18 @@ export default function Filter<T extends PossibleData>({
   );
 }
 const FilterButton = ({ onClick }) => (
-  <Button size="large" variant="contained" color="secondary" startIcon={<FilterListIcon />} onClick={onClick}>
-    Filtruj
+  <Button sx={{ minWidth: "32px" }} size="large" variant="contained" color="secondary" onClick={onClick}>
+    <FilterListIcon sx={{ mr: { xs: 0, sm: 1 } }} />
+    <Box
+      sx={{
+        display: {
+          xs: "none",
+          sm: "block",
+        },
+      }}
+    >
+      Filtruj
+    </Box>
   </Button>
 );
 const SearchBar = ({ searchValue, setSearchValue }) => (
@@ -127,7 +139,7 @@ const SearchBar = ({ searchValue, setSearchValue }) => (
 const SortDropdown = ({ sortValue, handleChangeSort }) => (
   <TextField
     color="secondary"
-    sx={{ minWidth: "255px" }}
+    sx={{ minWidth: { xs: 0, md: "255px" } }}
     id="select"
     label="Sortuj"
     value={sortValue}
@@ -148,8 +160,9 @@ const FilterWrapper = styled(Box)(({ theme }) => ({
 }));
 const FilterTopWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
+  gap: "10px",
   justifyContent: "space-between",
-  alignItems:"center",
+  alignItems: "center",
   marginBottom: theme.spacing(2),
   height: "43px",
 }));
