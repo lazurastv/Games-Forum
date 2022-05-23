@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { ArticleVM } from "../../api/api";
 import withLoading from "../../fetchData/withLoading";
 import { loadAllArticles } from "../../fetchData/fetchArticles";
-import { convertDate } from "../../utils/convertDate";
+import { compareDate, convertDate } from "../../utils/convertDate";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
@@ -27,32 +27,38 @@ function TopNews({ news }: { news: ArticleVM[] }) {
           }}
         >
           {
-            news.slice(0, 4).map((x, id) =>
-              <ArticleTile
-                key={id}
-                articleId={x.id}
-                title={x.title}
-                src={`${NGINX_URL}/${x.path}/horizontal.png`}
-                author={x.authorName}
-                date={convertDate(x.publishDate)}
-              />
-            )
-          }
-        </Carousel>
-      ) : (
-        <Grid container spacing={3}>
-          {
-            news.slice(0, 4).map((x, id) =>
-              <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
+            news
+              .sort((a, b) => -compareDate(a.publishDate!, b.publishDate!))
+              .slice(0, 4)
+              .map((x, id) =>
                 <ArticleTile
+                  key={id}
                   articleId={x.id}
                   title={x.title}
                   src={`${NGINX_URL}/${x.path}/horizontal.png`}
                   author={x.authorName}
                   date={convertDate(x.publishDate)}
                 />
-              </Grid>
-            )
+              )
+          }
+        </Carousel>
+      ) : (
+        <Grid container spacing={3}>
+          {
+            news
+              .sort((a, b) => -compareDate(a.publishDate!, b.publishDate!))
+              .slice(0, 4)
+              .map((x, id) =>
+                <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
+                  <ArticleTile
+                    articleId={x.id}
+                    title={x.title}
+                    src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                    author={x.authorName}
+                    date={convertDate(x.publishDate)}
+                  />
+                </Grid>
+              )
           }
         </Grid>
       )}
