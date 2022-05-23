@@ -2,23 +2,28 @@ import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import MultilineTruncatedText from "../../components/MultilineTruncatedText";
 import { styled } from "@mui/material/styles";
+import { loadUser } from "../../fetchData/fetchUser";
+import { UserVM } from "../../api/api";
+import withLoading from "../../fetchData/withLoading";
 
-const Profile = () => {
+const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+
+const Profile = ({ user }: { user: UserVM }) => {
   return (
     <Container maxWidth="xl">
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md="auto">
           <ProfileBox
-            username="NameSurname1234!"
-            role="Użytkownik"
-            image="https://www.pngkey.com/png/detail/14-148130_minion-imagenes-de-100x100-pixeles.png"
+            username={user.username!}
+            role={user.role!}
+            image={`${NGINX_URL}/${user.profilePicturePath}/profile.png`}
           />
         </Grid>
         <Grid item xs={12} sm={12} md sx={{ minWidth: 0 }}>
           <ProfileDataBox
-            username="NameSurname1234!"
-            number_of_comments={33}
-            description="opis lorem ipsum opis lorem ipsum opis lorem ipsum opis lorem ipsum opis lorem ipsum opis lorem ipsum opis lorem ipsum dluwwwwwwwgiwwwwwwwwwwwwwwweslowoslugieslowowwwwwwwwwwwowoowowwo opis lorem ipsum opis lorem ipsum"
+            username={user.username!}
+            number_of_comments={user.commentCount!}
+            description={user.shortDescription!}
           />
         </Grid>
       </Grid>
@@ -141,4 +146,5 @@ const Label = (props: any) => (
     {props.children}
   </Typography>
 );
-export default Profile;
+
+export default withLoading(Profile, { user: loadUser });
