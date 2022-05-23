@@ -16,6 +16,7 @@ import { convertDate } from "../../../utils/convertDate";
 import { useSessionContext } from "../../../components/Authentication/SessionContext";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 import { articleDangerousHtml } from "../../../data-mock/editorData";
+import LatestReviews from "../../Home/LatestReviews";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 function Game({ game }: { game: GameFullInfoVM }) {
   const { session } = useSessionContext();
@@ -148,17 +149,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
         <SectionHeader>Podobne gry</SectionHeader>
         <SimilarGames />
         <SectionHeader>Najnowsze recenzje</SectionHeader>
-        <Carousel>
-          {reviewsCarousel.map((reviewTile) => (
-            <ReviewTile
-              key={reviewTile.title}
-              title={reviewTile.title}
-              src={reviewTile.src}
-              author={reviewTile.author}
-              date={reviewTile.date}
-            />
-          ))}
-        </Carousel>
+        <LatestReviews />
       </Container>
     </Box>
   );
