@@ -5,9 +5,11 @@ import GameTile from "../../../components/Tile/GameTile";
 import { loadSimilarGames } from "../../../fetchData/fetchGames";
 import withLoading from "../../../fetchData/withLoading";
 
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
 function SimilarGames({ games }: { games: GameSearchInfoVM }) {
   console.log(games);
-  
+
   return (
     <Carousel>
       {Array(10)
@@ -17,7 +19,7 @@ function SimilarGames({ games }: { games: GameSearchInfoVM }) {
           <GameTile
             key={idx}
             game={a}
-            src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg"
+            src={`${NGINX_URL}/${a.path}/horizontal.png`}
           />
         ))}
     </Carousel>

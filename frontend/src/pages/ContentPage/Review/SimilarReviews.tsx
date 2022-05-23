@@ -6,6 +6,8 @@ import { loadSimilarReviews } from "../../../fetchData/fetchReviews";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 
+const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
 function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
   return (
     <Carousel>
@@ -17,7 +19,7 @@ function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
             key={idx}
             articleId={a.id}
             title={a.title}
-            src="https://allegro.stati.pl/AllegroIMG/PRODUCENCI/Bethesda/Fallout%204/GOTY/f2.jpg"
+            src={`${NGINX_URL}/${a.path}/horizontal.png`}
             author={a.authorName}
             date={convertDate(a.publishDate)}
           />
