@@ -1,5 +1,4 @@
 import { Box, Container, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { ArticleFullInfoVM } from "../../../api/api";
 import Author from "../../../components/Author";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
@@ -9,9 +8,10 @@ import { articleDangerousHtml } from "../../../data-mock/editorData";
 import { loadArticle } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
-import { stringToHtml } from "../../../components/Editor/dataConversion";
 import SimilarArticles from "./SimilarArticles";
+
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+
 function Article({ article }: { article: ArticleFullInfoVM }) {
   return (
     <Box>

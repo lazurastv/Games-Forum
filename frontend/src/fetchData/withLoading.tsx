@@ -34,7 +34,7 @@ function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
     return isError ? (
       <LoadingFailure />
     ) : isLoading ? (
-      <LoadingSpinner/>
+      <LoadingSpinner />
     ) : (
       <WrappedComponent {...props} {...data} />
     );

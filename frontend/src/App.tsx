@@ -77,7 +77,7 @@ function App() {
             <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
             <Route path="profil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
             <Route path="logowanie" element={<Login />} />
-            <Route path="profiletmp" element={<Profile />} />
+            <Route path="profil/:id" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
             <Route path="*" element={<PageNotFoundError />} />
           </Routes>
