@@ -15,8 +15,8 @@ function LatestReviews({ reviews }: { reviews: ReviewSearchInfoVM[] }) {
                     .sort((a, b) => -compareDate(a.publishDate!, b.publishDate!))
                     .map((x, id) =>
                         <ReviewTile
-                            reviewId={x.id}
                             key={id}
+                            reviewId={x.id}
                             title={x.title}
                             src={`${NGINX_URL}/${x.path}/horizontal.png`}
                             author={x.authorName}

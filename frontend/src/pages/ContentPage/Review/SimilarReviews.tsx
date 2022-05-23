@@ -1,4 +1,3 @@
-import React from "react";
 import { ReviewSearchInfoVM } from "../../../api/api";
 import Carousel from "../../../components/Carousel/Carousel";
 import ReviewTile from "../../../components/Tile/ReviewTile";
@@ -17,7 +16,7 @@ function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
         .map((a, idx) => (
           <ReviewTile
             key={idx}
-            articleId={a.id}
+            reviewId={a.id}
             title={a.title}
             src={`${NGINX_URL}/${a.path}/horizontal.png`}
             author={a.authorName}
