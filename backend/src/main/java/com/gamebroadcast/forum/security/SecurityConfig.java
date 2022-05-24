@@ -5,6 +5,7 @@ import static com.gamebroadcast.forum.security.Role.EDITOR;
 import static com.gamebroadcast.forum.security.Role.USER;
 import static com.gamebroadcast.forum.utils.ResponseUtils.SESSION_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.Arrays;
@@ -62,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
                 .antMatchers(GET, "**").permitAll()
+                .antMatchers(POST, "**").permitAll()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
