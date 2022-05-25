@@ -59,6 +59,6 @@ build/
 
 #VS Code
 .vscode/
-
+.vs
 #Database files
 **/db/

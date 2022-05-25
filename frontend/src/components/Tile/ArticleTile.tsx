@@ -4,7 +4,7 @@ import Tile from "./Tile";
 
 export default function ArticleTile(props: any) {
   return (
-    <Link to={`/recenzje/${props.title}`}>
+    <Link to={`/artykuly/${props.articleId}`}>
       <Tile
         src={props.src}
         caption={

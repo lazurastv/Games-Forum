@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Tile from "./Tile";
 export default function ReviewTile(props: any) {
   return (
-    <Link to={`/recenzje/${props.title}`}>
+    <Link to={`/recenzje/${props.reviewId ?? 0}`}>
       <Tile
         small
         src={props.src}

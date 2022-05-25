@@ -222,7 +222,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async getSimilarArticlesRaw(requestParameters: GetSimilarArticlesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ArticleVM>>> {
+    async getSimilarArticlesRaw(requestParameters: GetSimilarArticlesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ArticleSearchInfoVM>>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
             throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling getSimilarArticles.');
         }
@@ -238,12 +238,12 @@ export class ArticleControllerApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ArticleVMFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ArticleSearchInfoVMFromJSON));
     }
 
     /**
      */
-    async getSimilarArticles(requestParameters: GetSimilarArticlesRequest, initOverrides?: RequestInit): Promise<Array<ArticleVM>> {
+    async getSimilarArticles(requestParameters: GetSimilarArticlesRequest, initOverrides?: RequestInit): Promise<Array<ArticleSearchInfoVM>> {
         const response = await this.getSimilarArticlesRaw(requestParameters, initOverrides);
         return await response.value();
     }

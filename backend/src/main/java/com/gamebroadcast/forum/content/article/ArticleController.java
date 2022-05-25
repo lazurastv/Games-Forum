@@ -34,7 +34,7 @@ public class ArticleController {
     }
 
     @GetMapping(path = "/Similar/{articleId}")
-    public List<ArticleVM> getSimilarArticles(@PathVariable("articleId") Long articleId) {
+    public List<ArticleSearchInfoVM> getSimilarArticles(@PathVariable("articleId") Long articleId) {
         return articleService.getSimilarArticles(articleId);
     }
 

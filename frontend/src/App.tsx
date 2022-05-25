@@ -1,81 +1,88 @@
-import "slick-carousel/slick/slick.css";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
-import React from 'react';
-import Navigation from "./components/Navigation"
-import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
-import getTheme from "./theme";
-import CssBaseline from '@mui/material/CssBaseline';
-import { Routes, Route, Link, BrowserRouter, } from "react-router-dom";
-import { Navigate, useLocation } from 'react-router';
-import Articles from "./pages/Articles/Articles";
-import Games from "./pages/Games/Games";
-import Chat from "./pages/Chat";
-import Login from "./pages/Login/Login";
-import Registration from "./pages/Registration/Registration";
-import Home from './pages/Home/Home';
-import Reviews from './pages/Reviews/Reviews';
-import Game from './pages/Game/Game';
-import Article from './pages/Article/Article';
-import Review from './pages/Review/Review';
-import MyProfile from "./pages/Profile/MyProfile";
-import Profile from "./pages/Profile/Profile";
+import "slick-carousel/slick/slick.css";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
+import PageNotFoundError from "./components/Errors/PageNotFoundError";
+import Navigation from "./components/Navigation/Navigation";
 import ScrollToTop from "./components/ScrollToTop";
-import DraftEditor from "./components/DraftEditor";
+import Login from "./pages/Authentication/Login/Login";
+import Registration from "./pages/Authentication/Registration/Registration";
+import Chat from "./pages/Chat";
+import CreateArticle from "./pages/ContentCreate/CreateArticle/CreateArticle";
+import CreateGame from "./pages/ContentCreate/CreateGame/CreateGame";
+import CreateReview from "./pages/ContentCreate/CreateReview/CreateReview";
+import Articles from "./pages/ContentList/Articles/Articles";
+import Games from "./pages/ContentList/Games/Games";
+import Reviews from "./pages/ContentList/Reviews/Reviews";
+import Article from "./pages/ContentPage/Article/Article";
+import Game from "./pages/ContentPage/Game/Game";
+import Review from "./pages/ContentPage/Review/Review";
+import Home from "./pages/Home/Home";
+import MyProfile from "./pages/Profile/MyProfile";
+import Profile from "./pages/Profile/Profile";
+import UserContent from "./pages/UserContent/UserContent";
+import getTheme from "./theme";
+
 
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 function App() {
   //theme
-  const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
+  const [mode, setMode] = React.useState<"light" | "dark">("dark");
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
-  const theme = React.useMemo(
-    () =>
-      getTheme(mode),
-    [mode],
-  );
+  const theme = React.useMemo(() => getTheme(mode), [mode]);
   //authentication redirects
-  const [sessionContext, updateSessionContext] = useSessionContext();
-  
-  const defaultProtectedRouteProps: Omit<ProtectedRouteProps, 'outlet'> = {
-    isAuthenticated: !!sessionContext.isAuthenticated, // !! means if variable is null, it return false
-    authenticationPath: '/logowanie'
+  const { session } = useSessionContext();
+
+  const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
+    isAuthenticated: !!session.isAuthenticated, // !! means if variable is null, it return false
+    role: session.user?.role,
+    authenticationPath: "/logowanie",
   };
 
   return (
     <BrowserRouter>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <Navigation />
-            <CssBaseline />
-            <ScrollToTop/>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="mockEditor" element={<DraftEditor />} />
-              <Route path="artykuly" element={<Articles />} />
-              <Route path="artykuly/:title" element={<Article />} />
-              <Route path="recenzje" element={<Reviews />} />
-              <Route path="recenzje/:title" element={<Review />} />
-              <Route path="gry" element={<Games />} />
-              <Route path="gry/:title" element={<Game />} />
-              <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
-              <Route path="mojprofil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
-              <Route path="logowanie" element={<Login />} />
-              <Route path="profiletmp" element={<Profile />} />
-              <Route path="rejestracja" element={<Registration />} />
-            </Routes>
-          </ThemeProvider>
-        </ColorModeContext.Provider>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <Navigation />
+          <CssBaseline />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" />}>
+              <Route path="artykul" element={<CreateArticle />} />
+              <Route path="recenzja" element={<CreateReview />} />
+              <Route path="gra" element={<CreateGame />} />
+            </Route>
+            <Route path="wpisy/:userName" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" outlet={<UserContent />} />} />
+            <Route path="artykuly" element={<Articles />} />
+            <Route path="artykuly/:id" element={<Article />} />
+            <Route path="recenzje" element={<Reviews />} />
+            <Route path="recenzje/:id" element={<Review />} />
+            <Route path="gry" element={<Games />} />
+            <Route path="gry/:id" element={<Game />} />
+            <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
+            <Route path="profil" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />} />
+            <Route path="logowanie" element={<Login />} />
+            <Route path="profil/:id" element={<Profile />} />
+            <Route path="rejestracja" element={<Registration />} />
+            <Route path="*" element={<PageNotFoundError />} />
+          </Routes>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
     </BrowserRouter>
   );
 }

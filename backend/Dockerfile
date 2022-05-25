@@ -1,10 +1,10 @@
-FROM maven
+FROM maven as build
 
-WORKDIR /usr/src/app
+COPY pom.xml .
 
-COPY . .
+RUN mvn verify --fail-never
 
-RUN mvn install
+COPY src src
 
 RUN mvn compile
 

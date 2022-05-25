@@ -5,13 +5,13 @@ import java.util.List;
 
 public class TagRepositories {
     public static final List<String> genres = Arrays.asList(new String[] {
-            "Action",
+            "Akcji",
             "RPG",
-            "Strategy",
+            "Strategie",
             "Survival",
             "Sandbox",
             "FPS",
-            "Adventure"
+            "Przygodowe"
     });
 
     public static final List<String> platforms = Arrays.asList(new String[] {
@@ -19,13 +19,15 @@ public class TagRepositories {
             "Xbox 360",
             "PlayStation 4",
             "Xbox One",
-            "PlayStation 3"
+            "PlayStation 3",
+            "Switch"
     });
 
     public static final List<String> distributions = Arrays.asList(new String[] {
             "Steam",
             "Epic Games",
-            "Ubisoft"
+            "Ubisoft",
+            "Origin"
     });
 
     private static boolean itemsExist(List<String> candidates, List<String> destination) {

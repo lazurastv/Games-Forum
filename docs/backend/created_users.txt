@@ -2,24 +2,24 @@ Lista wszystkich użytkowników których mamy od zera w bazie,
 w formacie:
 
 ROLA
-nazwa hasło
+nazwa email hasło
 
 ADMIN
-a a
+TraXson		a@user.com p
 
 EDITOR
-b a
-c a
-d a
+Kanonada	b@user.com p
+sebster71	c@user.com p
+Cziczaki	d@user.com p
 
 USER
-Cebullanka y Grzanka dGC?39a<)Ne{;P2
-mateomateowy         HZjPh+)p2cqQB,,)
-ksiunszka            Xy.V%mDF_fNA32d@
-barbarara            D*e#6=v6GbEnttQ=
-tomorrow             g&!bd=Zh6Jk+uyFH
-mAjKeL               12345
-dramione             lubieMarchewki123
-Darkboy64            passwordpassword
-theguiltyone         kocham#Parowki1
-AjgorPL              r=*RQ^yB3^^+
+Cebullanka y Grzanka	cebullanka@onet.pl			dGC?39a<)Ne{;P2
+mateomateowy			mm@zabawa.pl				HZjPh+)p2cqQB,,)
+ksiunszka				kasia@kwiatek.com			Xy.V%mDF_fNA32d@
+barbarara				brb@bump.up					D*e#6=v6GbEnttQ=
+tomorrow				txt@usasa.com				g&!bd=Zh6Jk+uyFH
+mAjKeL					majkel@zal.pl				12345
+dramione				drama@wtopa.pl				lubieMarchewki123
+Darkboy64				darek@wp.pl					passwordpassword
+theguiltyone			theguiltyone@innocence.lt	kocham#Parowki1
+AjgorPL					ajgor@onet.pl				r=*RQ^yB3^^+
