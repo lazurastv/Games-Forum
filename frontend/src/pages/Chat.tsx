@@ -21,10 +21,15 @@ const Chat = () => {
     clientRef!.sendMessage('/app/send', JSON.stringify({ message: Date.now() }));
   }
 
+  const getSessionId = () => {
+    return "MzA4NzE5YTMtZWFmYi00ZTczLWI2YTAtMzg5NDlhYjRkOGQz"
+  }
+
   return (
     <Container maxWidth="xl">
       <SockJsClient
         url={SOCKET_URL}
+        headers={{ "sessionId": getSessionId() }}
         topics={['/topic/message']}
         onConnect={onConnected}
         onDisconnect={console.log("Disconnected!")}

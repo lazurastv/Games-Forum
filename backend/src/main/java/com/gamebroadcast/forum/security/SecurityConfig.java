@@ -34,24 +34,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserConfig userConfig;
     private final PersistentTokenBasedRememberMeServices rememberMeServices;
-
-    @Autowired
-    public SecurityConfig(
-            PasswordEncoder passwordEncoder,
-            UserConfig userConfig,
-            PersistentTokenBasedRememberMeServices rememberMeServices) {
-        this.passwordEncoder = passwordEncoder;
-        this.userConfig = userConfig;
-        this.rememberMeServices = rememberMeServices;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
