@@ -7,6 +7,16 @@ const SOCKET_URL = 'http://localhost:8080/chat';
 
 const Chat = () => {
   const [clientRef, setClientRef] = useState<any>();
+  const [chatKey, setChatKey] = useState<string>();
+
+  if (!chatKey) {
+    fetch('http://localhost:8080/api/chat/key', { credentials: 'include' }).then(x => x.text()).then(
+      x => {
+        console.log(x);
+        setChatKey(x);
+      }
+    );
+  }
 
   const onConnected = () => {
     console.log("Connected!")
@@ -21,22 +31,24 @@ const Chat = () => {
     clientRef!.sendMessage('/app/send', JSON.stringify({ message: Date.now() }));
   }
 
-  const getSessionId = () => {
-    return "MzA4NzE5YTMtZWFmYi00ZTczLWI2YTAtMzg5NDlhYjRkOGQz"
-  }
-
   return (
     <Container maxWidth="xl">
-      <SockJsClient
-        url={SOCKET_URL}
-        headers={{ "sessionId": getSessionId() }}
-        topics={['/topic/message']}
-        onConnect={onConnected}
-        onDisconnect={console.log("Disconnected!")}
-        onMessage={msg => onMessageReceived(msg)}
-        ref={client => setClientRef(client)}
-      />
-      <button onClick={sendMessage}>Wyślij</button>
+      {
+        chatKey &&
+        <div>
+          <SockJsClient
+            url={SOCKET_URL}
+            headers={{ "key": chatKey }}
+            topics={['/topic/message']}
+            onConnect={onConnected}
+            onDisconnect={console.log("Disconnected!")}
+            onMessage={msg => onMessageReceived(msg)}
+            ref={client => setClientRef(client)}
+          />
+          <button onClick={sendMessage}>Wyślij</button>
+        </div>
+      }
+
     </Container>
   );
 };
