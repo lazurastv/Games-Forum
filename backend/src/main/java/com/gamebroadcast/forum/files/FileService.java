@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.Soundbank;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -56,44 +57,6 @@ public class FileService {
         }
     }
 
-//    public void writeImage(boolean user, String path, MultipartFile file) throws IOException {
-//        if (file.isEmpty()) {
-//            throw new IllegalStateException("provisional exception 1");
-//        }
-//
-//        if (!isPathExists(path)) {
-//            throw new IllegalStateException("provisional exception 3");
-//        }
-//
-//        String type = user ? "users" : "articles";
-//        file.transferTo(new File(PATH + "/" + type + "/" + path + "/" + "image.png"));
-//    }
-
-//    public String readHtmlContent(String path) {
-//        // Open file {PATH}/{path}/content.html
-//        // Return its content
-//        String content = "";
-//        // TODO change path
-//        try (BufferedReader buffer = new BufferedReader(new FileReader(PATH + "/" + path + "/" + "content.html"))) {
-//            String line;
-//            while ((line = buffer.readLine()) != null)
-//                content += line;
-//        } catch (IOException e) {
-//            // TODO add custom exception
-//            throw new NullPointerException();
-//        }
-//        return content;
-//    }
-
-//    public byte[] readImage(boolean user, String path) throws IOException {
-//
-//        String type = user ? "users" : "articles";
-//        InputStream inStream = getClass().getResourceAsStream(PATH + "/" + type + "/" + path + "/" + "image.png");
-//        byte[] image = new byte[inStream.available()];
-//        inStream.read(image);
-//        return image;
-//    }
-
     public String parseJson(String editorData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(editorData);
@@ -103,11 +66,14 @@ public class FileService {
 
     public BufferedImage downloadImageFromUrl(String urlString) {
         try {
+            System.out.println(urlString);
             URL url = new URL(urlString);
+            System.out.println("Nie zrobiłem URLa");
             BufferedImage image = ImageIO.read(url);
             return image;
         } catch (IOException e) {
             // TODO add custom exception
+            System.out.println(e.getMessage());
             throw new IllegalArgumentException(e.getMessage());
         }
     }
@@ -125,19 +91,6 @@ public class FileService {
     public String saveNewContent(String content, String username) {
         String hash = getUniqueName(username);
         writeHtmlContent(hash, content);
-        try {
-            String url = parseJson(content);
-            BufferedImage image = downloadImageFromUrl(url);
-            saveImage(PATH + "\\" + hash + "\\" + "image.png", image);
-            System.out.println("udało się");
-        } catch (JsonProcessingException e) {
-            System.out.println("Nie udało się");
-        }
-
         return hash;
-    }
-    public static void main(String[] args) {
-        FileService fileService = new FileService();
-        fileService.saveNewContent("Ala ma kota", "Franio");
     }
 }

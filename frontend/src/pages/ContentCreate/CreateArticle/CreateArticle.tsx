@@ -12,6 +12,9 @@ import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 
+// temp
+import { convertToRaw } from "draft-js";
+
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
@@ -55,6 +58,19 @@ export default function CreateArticle() {
                 sm: "100%",
                 md: "150px",
               },
+            }}
+            onClick={() => {
+              let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+              for (let key in list) {
+                console.log(list[key].data.src);
+                fetch(list[key].data.src).then(res => res.blob()).then(image => {
+                  fetch('http://localhost:8080/api/images/upload', {
+                    method: "POST",
+                    body: image
+                  }).then(res => console.log(res))
+                  .catch(err => alert(err));
+                });
+              }
             }}
             type="submit"
             variant="contained"
