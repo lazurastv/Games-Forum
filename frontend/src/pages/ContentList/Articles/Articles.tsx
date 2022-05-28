@@ -5,6 +5,7 @@ import Filter from "../../../components/Filters/Filter/Filter";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
 import { deleteArticle, loadAllArticles } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
+import { useAlert } from "../../../hooks/useAlert";
 import useFilterData from "../../../hooks/useFilterData";
 import { convertDate } from "../../../utils/convertDate";
 import { ContentList } from "../ContentList.types";
@@ -17,8 +18,11 @@ interface ArticlesProps extends ContentList {
 const Articles = (props: ArticlesProps) => {
   const { articles, edit, userName } = props;
   const filter = useFilterData(articles, userName);
-  const handleDeleteArticle = (id: number) => {
-    deleteArticle(id);
+  const { displayAlert } = useAlert();
+  const handleDeleteArticle = (id: number, title: string) => {
+    deleteArticle(id)
+      .then(() => displayAlert(`Pomyślenie usunięto "${title}" `))
+      .catch((err) => displayAlert(`Błąd podczas usuwania "${title}" `, true));
     if (props.setReload) {
       props.setReload((r) => r + 1);
     }
@@ -32,7 +36,7 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteArticle(a.id)}>
+              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteArticle(a.id, a.title)}>
                 <ArticleItem
                   articleId={a.id}
                   content={a.introduction}

@@ -22,8 +22,9 @@ function Games(props: GamesProps) {
     setPage(newPage);
   };
   const handleDeleteGame = (id: number, title: string) => {
-    displayAlert("aAAAAAA");
-    // deleteGame(id).then(() => displayAlert(title));
+    deleteGame(id)
+      .then(() => displayAlert(`Pomyślenie usunięto "${title}" `))
+      .catch((err) => displayAlert(`Błąd podczas usuwania "${title}" `, true));
     if (props.setReload) {
       props.setReload((r) => r + 1);
     }
