@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './ArticleControllerApi';
+export * from './ChatControllerApi';
 export * from './CommentControllerApi';
 export * from './GameControllerApi';
 export * from './LikeControllerApi';

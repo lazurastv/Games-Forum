@@ -5,92 +5,85 @@ import React, { useState } from "react";
 import SockJsClient from "react-stomp";
 import SendIcon from "@mui/icons-material/Send";
 import ChatMessage from "./ChatMessage";
+import { ChatMessageVM } from "../../api/api/models/ChatMessageVM";
+import { ChatMessageAdd } from "../../api/api/models/ChatMessageAdd";
+import withLoading from "../../fetchData/withLoading";
+import { getChatToken } from "../../fetchData/fetchChat";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
 const SOCKET_URL = "http://localhost:8080/chat";
+const RECV_PATH = "/topic/message";
+const SEND_PATH = "/app/send";
 
-const Chat = () => {
+const Chat = ({ token }: { token: string }) => {
   const [clientRef, setClientRef] = useState<any>();
-  const [chatKey, setChatKey] = useState<string>();
-  const [sendMessageValue, setSendMessageValue] = useState<string>("");
-  if (!chatKey) {
-    fetch("http://localhost:8080/api/chat/key", { credentials: "include" })
-      .then((x) => x.text())
-      .then((x) => {
-        console.log(x);
-        setChatKey(x);
-      });
-  }
-
+  const [messages, setMessages] = useState<ChatMessageVM[]>([]); // add initial loading of messages once implemented
+  const [message, setMessage] = useState<string>("");
+  const {
+    session: { user },
+  } = useSessionContext();
   const onConnected = () => {
     console.log("Connected!");
   };
 
-  const onMessageReceived = (msg) => {
-    console.log("I received:");
-    console.log(msg);
+  const onMessageReceived = (msg: ChatMessageVM) => {
+    msg.publishDate = new Date(msg.publishDate);
+    setMessages([...messages, msg]);
   };
 
   const sendMessage = () => {
-    clientRef!.sendMessage("/app/send", JSON.stringify({ message: Date.now() }));
+    clientRef!.sendMessage(SEND_PATH, JSON.stringify({ message: message } as ChatMessageAdd));
+    setMessage("");
   };
+
   // it must be handled with form if we want message to be sent on enter
   const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendMessage();
-    setSendMessageValue("");
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
-      {chatKey && (
-        <>
-          <SockJsClient
-            url={SOCKET_URL}
-            headers={{ key: chatKey }}
-            topics={["/topic/message"]}
-            onConnect={onConnected}
-            onDisconnect={console.log("Disconnected!")}
-            onMessage={(msg) => onMessageReceived(msg)}
-            ref={(client) => setClientRef(client)}
-          />
-          <ChatMessagesBox sx={{ mb: 4 }}>
-            {Array(100)
-              .fill([
-                <ChatMessage user="me">dassdada</ChatMessage>,
-                <ChatMessage user="other">
-                  fgvdvtgvartgvagvvragvrtgdsadasadfgaertvawtvgrdsasdadadfd,
-                  dsadasadfgaertvawtvgrdsasdadadfddsadasadfgaertvawtvgrdsasdadadfddsada.
-                  sadfgaertvawtvgrdsasdadadfddsadasadfgaertvawtvgrdsasdadadfddsadasadfgaertvawtvgrdsasdadadfd.
-                </ChatMessage>,
-              ])
-              .map((msg) => msg)}
-          </ChatMessagesBox>
-          <Box component="form" noValidate autoComplete="off" onSubmit={handleSendMessage}>
-            <MessageTextField
-              value={sendMessageValue}
-              onChange={(e) => setSendMessageValue(e.target.value)}
-              fullWidth
-              required
-              placeholder="Aa"
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton aria-label="toggle password visibility" type="submit">
-                      <SendIcon color="secondary" />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-        </>
-      )}
+      <SockJsClient
+        url={SOCKET_URL}
+        headers={{ token: token }}
+        topics={[RECV_PATH]}
+        onConnect={onConnected}
+        // onDisconnect={console.log("Disconnected!")}
+        onMessage={(msg) => onMessageReceived(msg)}
+        ref={(client) => setClientRef(client)}
+      />
+      <ChatMessagesBox sx={{ mb: 4 }}>
+        {messages.map((msg, idx) => (
+          <ChatMessage key={idx} isMyMessage={msg.authorId === user?.id}>
+            {msg.message}
+          </ChatMessage>
+        ))}
+      </ChatMessagesBox>
+      <Box component="form" noValidate autoComplete="off" onSubmit={handleSendMessage}>
+        <MessageTextField
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          fullWidth
+          required
+          placeholder="Aa"
+          variant="outlined"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton aria-label="send message" type="submit">
+                  <SendIcon color="secondary" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
     </Container>
   );
 };
-export default Chat;
+export default withLoading(Chat, { token: getChatToken });
 const ChatMessagesBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
-  maxHeight: "70vh",
+  height: "70vh",
   borderRadius: 5,
   padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
   overflowY: "scroll",

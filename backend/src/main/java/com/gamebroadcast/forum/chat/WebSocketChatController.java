@@ -19,8 +19,9 @@ public class WebSocketChatController {
     @MessageMapping("/send")
     public void sendMessage(@Payload ChatMessageAdd chatMessageAdd, StompHeaderAccessor headerAccessor) {
         ChatUser user = (ChatUser) headerAccessor.getUser();
+
         if (user == null) {
-            System.out.println("Null.");
+            return;
         }
 
         ChatMessageVM chatMessageVM = new ChatMessageVM();

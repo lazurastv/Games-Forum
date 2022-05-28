@@ -20,18 +20,17 @@ public class WebSocketInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        String token = accessor.getFirstNativeHeader("key");
+        String token = accessor.getFirstNativeHeader("token");
 
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            System.out.println(token);
-            AppUser user = chatController.get(token);
+        if (accessor.getCommand() == StompCommand.CONNECT) {
+            AppUser user = chatController.pop(token);
 
             if (user == null) {
-                return message;
+                return null;
             }
 
             accessor.setUser(new ChatUser(user));
-            accessor.setLeaveMutable(true);
+            // accessor.setLeaveMutable(true); maybe to change after login?
         }
 
         return message;
