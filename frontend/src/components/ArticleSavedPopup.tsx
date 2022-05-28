@@ -16,6 +16,11 @@ export default function ArticleSavedPopup(props: SimpleDialogProps) {
 
   return (
     <Dialog
+      PaperProps={{
+        style: {
+          backgroundColor: "secondary.main"
+        },
+      }}
       open={open}
       onClose={handleClose}
     >
@@ -30,7 +35,17 @@ export default function ArticleSavedPopup(props: SimpleDialogProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose}>
+        <Button
+          sx={{
+            width: {
+              sm: "100%",
+              md: "50px",
+            },
+          }}
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={handleClose}>
             OK
         </Button>
       </DialogActions>
