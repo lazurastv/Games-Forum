@@ -19,7 +19,7 @@ public class WebSocketInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        String token = accessor.getFirstNativeHeader("key");
+        String token = accessor.getFirstNativeHeader("token");
 
         switch (accessor.getCommand()) {
             case CONNECT:
@@ -30,7 +30,7 @@ public class WebSocketInterceptor implements ChannelInterceptor {
                 }
 
                 accessor.setUser(new ChatUser(user));
-                // accessor.setLeaveMutable(true);
+                // accessor.setLeaveMutable(true); maybe to change after login?
                 break;
             case DISCONNECT:
                 chatController.removeSession();
