@@ -11,11 +11,13 @@ import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
+import ArticleSavedPopup from "../../../components/ArticleSavedPopup";
 
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleSave = async () => {
     const article: ArticleAddUpdate = {
       title: title,
@@ -60,11 +62,15 @@ export default function CreateArticle() {
             variant="contained"
             color="secondary"
             size="large"
+            onClick={() => setIsOpen(true)}
           >
             Zapisz
           </Button>
         </Box>
       </Box>
+      <ArticleSavedPopup open={isOpen} handleClose={function (): void {
+        setIsOpen(false);
+      } } />
     </Container>
   );
 }
