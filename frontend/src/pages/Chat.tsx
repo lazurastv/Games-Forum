@@ -7,10 +7,10 @@ const SOCKET_URL = 'http://localhost:8080/chat';
 
 const Chat = () => {
   const [clientRef, setClientRef] = useState<any>();
-  const [chatKey, setChatKey] = useState<string>();
+  const [chatToken, setChatKey] = useState<string>();
 
-  if (!chatKey) {
-    fetch('http://localhost:8080/api/chat/key', { credentials: 'include' }).then(x => x.text()).then(
+  if (!chatToken) {
+    fetch('http://localhost:8080/api/chat/token', { credentials: 'include' }).then(x => x.text()).then(
       x => {
         console.log(x);
         setChatKey(x);
@@ -34,11 +34,11 @@ const Chat = () => {
   return (
     <Container maxWidth="xl">
       {
-        chatKey &&
+        chatToken &&
         <div>
           <SockJsClient
             url={SOCKET_URL}
-            headers={{ "key": chatKey }}
+            headers={{ "token": chatToken }}
             topics={['/topic/message']}
             onConnect={onConnected}
             onDisconnect={console.log("Disconnected!")}
