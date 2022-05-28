@@ -63,6 +63,14 @@ public class ChatController {
         return token;
     }
 
+    /**
+     * Creates session token and returns it.
+     * Note there is no timeout on it, so a security vulnerability
+     * is that you can generate one, and if you don't use it, after 5 years
+     * it will still be in program memory.
+     * 
+     * @return The generated one time use token.
+     */
     @GetMapping(path = "/token")
     @PreAuthorize("hasRole('USER')")
     public String getToken() {
