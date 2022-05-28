@@ -62,7 +62,6 @@ export default function CreateArticle() {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={() => setIsOpen(true)}
           >
             Zapisz
           </Button>
