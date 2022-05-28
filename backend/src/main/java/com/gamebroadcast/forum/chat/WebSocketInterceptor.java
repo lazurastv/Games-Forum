@@ -4,6 +4,7 @@ import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
@@ -21,22 +22,15 @@ public class WebSocketInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         String token = accessor.getFirstNativeHeader("token");
 
-        switch (accessor.getCommand()) {
-            case CONNECT:
-                AppUser user = chatController.get(token);
+        if (accessor.getCommand() == StompCommand.CONNECT) {
+            AppUser user = chatController.pop(token);
 
-                if (user == null) {
-                    return null;
-                }
+            if (user == null) {
+                return null;
+            }
 
-                accessor.setUser(new ChatUser(user));
-                // accessor.setLeaveMutable(true); maybe to change after login?
-                break;
-            case DISCONNECT:
-                chatController.removeSession();
-                break;
-            default:
-                break;
+            accessor.setUser(new ChatUser(user));
+            // accessor.setLeaveMutable(true); maybe to change after login?
         }
 
         return message;
