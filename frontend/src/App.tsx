@@ -11,7 +11,7 @@ import Navigation from "./components/Navigation/Navigation";
 import ScrollToTop from "./components/ScrollToTop";
 import Login from "./pages/Authentication/Login/Login";
 import Registration from "./pages/Authentication/Registration/Registration";
-import Chat from "./pages/Chat";
+import Chat from "./pages/Chat/Chat";
 import CreateArticle from "./pages/ContentCreate/CreateArticle/CreateArticle";
 import CreateGame from "./pages/ContentCreate/CreateGame/CreateGame";
 import CreateReview from "./pages/ContentCreate/CreateReview/CreateReview";
@@ -58,7 +58,7 @@ function App() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <Navigation />
-          <CssBaseline />
+          <CssBaseline enableColorScheme  />
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
