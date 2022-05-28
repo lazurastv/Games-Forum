@@ -7,9 +7,11 @@ interface ChatMessageProps {
 }
 export default function ChatMessage({ user, children }: ChatMessageProps) {
   return (
-    <div>
+    <Box>
+
       {user === "me" ? <MyMessageBox>{children}</MyMessageBox> : <OthersMessageBox>{children}</OthersMessageBox>}
-    </div>
+
+    </Box>
   );
 }
 const MessageBox = styled(Box)(({ theme }) => ({
@@ -18,6 +20,7 @@ const MessageBox = styled(Box)(({ theme }) => ({
   maxWidth: 500,
   padding: `${theme.spacing(1.2)} ${theme.spacing(2)}`,
   borderRadius: 25,
+  color: theme.palette.staticText.primary,
 }));
 const MyMessageBox = styled(MessageBox)(({ theme }) => ({
   marginLeft: "auto",
@@ -25,5 +28,5 @@ const MyMessageBox = styled(MessageBox)(({ theme }) => ({
 }));
 const OthersMessageBox = styled(MessageBox)(({ theme }) => ({
   marginRight: "auto",
-  backgroundColor: darken(theme.palette.primary.light, 0.3),
+  backgroundColor: darken(theme.palette.primary.light, 0.4),
 }));

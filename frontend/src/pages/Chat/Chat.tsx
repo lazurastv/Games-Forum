@@ -92,7 +92,7 @@ const ChatMessagesBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   maxHeight: "70vh",
   borderRadius: 5,
-  padding: `0 ${theme.spacing(4)}`,
+  padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
   overflowY: "scroll",
 }));
 const MessageTextField = styled(TextField)(({ theme }) => ({
