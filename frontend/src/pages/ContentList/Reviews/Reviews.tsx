@@ -17,10 +17,13 @@ interface ReviewsProps extends ContentList {
 const Reviews = (props: ReviewsProps): React.ReactNode => {
   const { reviews, edit, userName } = props;
   console.log(reviews);
-  
+
   const filter = useFilterData(reviews, userName);
   const handleDeleteReview = (id: number) => {
     deleteReview(id).catch((err) => console.log(err));
+    if (props.setReload) {
+      props.setReload((r) => r + 1);
+    }
   };
   return (
     <Container maxWidth="xl">

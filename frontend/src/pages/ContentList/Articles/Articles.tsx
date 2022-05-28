@@ -19,6 +19,9 @@ const Articles = (props: ArticlesProps) => {
   const filter = useFilterData(articles, userName);
   const handleDeleteArticle = (id: number) => {
     deleteArticle(id);
+    if (props.setReload) {
+      props.setReload((r) => r + 1);
+    }
   };
   //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?

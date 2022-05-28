@@ -3,7 +3,7 @@ import GameTile from "../../../components/Tile/GameTile";
 import GamesFilter from "../../../components/Filters/GamesFilter/GamesFilter";
 import { useState } from "react";
 import withLoading from "../../../fetchData/withLoading";
-import { loadAllGames } from "../../../fetchData/fetchGames";
+import { deleteGame, loadAllGames } from "../../../fetchData/fetchGames";
 import { GameSearchInfoVM } from "../../../api/api";
 import { ContentList } from "../ContentList.types";
 import useFilterData from "../../../hooks/useFilterData";
@@ -19,6 +19,12 @@ function Games(props: GamesProps) {
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
+  const handleDeleteGame = (id: number) => {
+    deleteGame(id);
+    if (props.setReload) {
+      props.setReload((r) => r + 1);
+    }
+  };
   console.log(games);
   return (
     <Container maxWidth="xl">
@@ -30,7 +36,7 @@ function Games(props: GamesProps) {
           <Grid container spacing={2}>
             {filter.data.map((x: any, i) => (
               <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                <EditMenuSupply edit={edit} position="left">
+                <EditMenuSupply edit={edit} position="left" onDelete={() => handleDeleteGame(x.id)}>
                   <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.png`} />
                 </EditMenuSupply>
               </Grid>

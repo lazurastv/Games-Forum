@@ -10,6 +10,7 @@ interface IFetchFun {
 function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
   const WithLoading = (props: any) => {
     let { id } = useParams();
+    const [reload, setReload] = useState<number>(0);
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<boolean>(false);
@@ -30,14 +31,8 @@ function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
             setIsError(true);
           });
       }
-    }, [id]);
-    return isError ? (
-      <LoadingFailure />
-    ) : isLoading ? (
-      <LoadingSpinner />
-    ) : (
-      <WrappedComponent {...props} {...data} />
-    );
+    }, [id,reload]);
+    return isError ? <LoadingFailure /> : isLoading ? <LoadingSpinner /> : <WrappedComponent {...props} {...data} setReload={setReload}/>;
   };
   return WithLoading;
 }
