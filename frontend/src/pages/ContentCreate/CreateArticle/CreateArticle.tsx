@@ -63,10 +63,15 @@ export default function CreateArticle() {
               let list = convertToRaw(editorState.getCurrentContent()).entityMap;
               for (let key in list) {
                 console.log(list[key].data.src);
-                fetch(list[key].data.src).then(res => res.blob()).then(image => {
+                fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+                  let formData : FormData = new FormData();
+                  formData.append("file", blob);
+                  return formData
+                }).then(image => {
                   fetch('http://localhost:8080/api/images/upload', {
                     method: "POST",
-                    body: image
+                    body: image,
+                    credentials: "include"
                   }).then(res => console.log(res))
                   .catch(err => alert(err));
                 });
