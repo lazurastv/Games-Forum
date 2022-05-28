@@ -17,7 +17,7 @@ public class ChatMessageVM {
         this.message = chat.getMessage();
         this.publishDate = chat.getPublishDate();
         this.profilePicturePath = chat.getAuthor().getProfilePicturePath();
-    }
+    }                                                      
 
     public static List<ChatMessageVM> toChatMessageVMList(List<ChatMessage> chatMessages) {
         List<ChatMessageVM> chatMessageVMs = new ArrayList<>();

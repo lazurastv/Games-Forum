@@ -1,10 +1,11 @@
 package com.gamebroadcast.forum.chat.models;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.user.schemas.AppUser;
+import com.gamebroadcast.forum.utils.SessionUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,5 +31,18 @@ public class ChatMessage {
     private String message;
 
     @Column(name = "last_used", nullable = false)
-    private Timestamp publishDate;
+    private Date publishDate;
+
+    public void publish() {
+        this.author = SessionUtils.getUserFromSession();
+        this.publishDate = new Date();
+    }
+
+    public boolean ownedBy(AppUser user) {
+        return this.author.getId().equals(user.getId());
+    }
+
+    public boolean ownedBy(Long id) {
+        return this.author.getId().equals(id);
+    }
 }
