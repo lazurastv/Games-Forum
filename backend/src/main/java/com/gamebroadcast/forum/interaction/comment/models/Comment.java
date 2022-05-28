@@ -1,5 +1,8 @@
 package com.gamebroadcast.forum.interaction.comment.models;
 
+import java.time.Instant;
+import java.util.Date;
+
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.content.content.Content;
@@ -30,11 +33,15 @@ public class Comment {
     @JoinColumn(name = "author_id", nullable = false)
     private AppUser author;
 
+    @Column
+    private Date publishDate;
+
     @Column(length = 2048, nullable = false)
     private String comment;
 
     public void publish() {
         author = SessionUtils.getUserFromSession();
+        publishDate = Date.from(Instant.now());
     }
 
     public boolean ownedBy(AppUser user) {

@@ -39,6 +39,12 @@ export interface CommentVM {
     authorName?: string;
     /**
      * 
+     * @type {Date}
+     * @memberof CommentVM
+     */
+    publishDate?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof CommentVM
      */
@@ -58,6 +64,7 @@ export function CommentVMFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': !exists(json, 'id') ? undefined : json['id'],
         'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
         'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
+        'publishDate': !exists(json, 'publishDate') ? undefined : (new Date(json['publishDate'])),
         'comment': !exists(json, 'comment') ? undefined : json['comment'],
     };
 }
@@ -74,6 +81,7 @@ export function CommentVMToJSON(value?: CommentVM | null): any {
         'id': value.id,
         'contentId': value.contentId,
         'authorName': value.authorName,
+        'publishDate': value.publishDate === undefined ? undefined : (value.publishDate.toISOString()),
         'comment': value.comment,
     };
 }
