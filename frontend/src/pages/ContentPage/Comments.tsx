@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   List,
   ListItem,
@@ -10,104 +11,123 @@ import {
   TextField,
   Stack,
   Button,
+  Box,
 } from "@mui/material";
-import { CommentVM } from "../../api/api";
-import { loadCommentsByContentId } from "../../fetchData/fetchComments";
+import { CommentVM, CommentAdd } from "../../api/api";
+import { loadCommentsByContentId, uploadComment } from "../../fetchData/fetchComments";
 import withLoading from "../../fetchData/withLoading";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
+import { Link } from "react-router-dom";
 
-const comments = [
-  {
-    author: "Bartłomiej Czekaj",
-    content: "Fajny artykuł! Bardzo ciekawy",
-    date: "30.12.2021",
-  },
-  {
-    author: "Major Suchodolski",
-    content: "artykuł! Fajny ciekawy oguem",
-    date: "31.12.2021",
-  },
-  {
-    author: "Krzysztof Piłsudski",
-    content: "Ja jestem mlecznym człowiekiem, mleko lubie, lubie mleko, chrum",
-    date: "29.12.2021",
-  },
-  {
-    author: "Andrzej Gieremek",
-    content: "Fajny artykuł! Bardzo ciekawy i tego",
-    date: "21.12.2021",
-  },
-];
+function Comments({ comments,contentId }: { comments: CommentVM[], contentId: number }) {
+  const { session } = useSessionContext();
+  const [commentContent, setCommentContent] = useState<string>("");
 
-interface IComment {
-  author: string;
-  content: string;
-  date: string;
-}
+  const handleSave = async () => {
+    const comment: CommentAdd = {
+      contentId: contentId,
+      comment: commentContent,
+    };
+    uploadComment(comment);
+  };
 
-const Comments = () => {
+
   return (
     <>
-      <TextField
-        id="outlined-multiline-static"
-        label="Wpisz komentarz!"
-        multiline
-        rows={3}
-        color="secondary"
-        autoFocus={false}
-        helperText="Pamiętaj o kulturze wypowiedzi, maksymalna długość komentarza to XXX znaków."
-        sx={{ width: "100%" }}
-      />
-      <Stack direction="row" justifyContent="end">
-        <Button
-          disableElevation
-          variant="outlined"
-          color="secondary"
-          sx={{
-            color: "text.primary",
-            borderColor: "secondary.main",
-            width: 200,
-            mt: 1,
-            mb: 3,
+      {session.isAuthenticated ? (
+        <Box
+          component="form"
+          onSubmit={(e: any) => {
+            handleSave();
+            e.preventDefault();
           }}
         >
-          Dodaj komentarz
-        </Button>
-      </Stack>
-
-      <List sx={{ width: "100%", backgroundColor: "primary.main", mb: 5 }}>
-        {comments.map((comment: IComment, idx) => {
-          return (
-            <React.Fragment key={idx}>
-              <ListItem key={idx} alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar
-                    alt="avatar"
-                    src="https://i1.sndcdn.com/avatars-U0SzwN1Sc5v8nztz-mqhSUw-t240x240.jpg"
-                    sx={{ mr: 2, width: 44, height: 44 }}
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={comment.author}
-                  secondary={comment.content}
-                  primaryTypographyProps={{
-                    fontSize: 22,
-                  }}
-                  secondaryTypographyProps={{
-                    fontSize: 16,
-                  }}
-                  sx={{ mt: 2 }}
-                ></ListItemText>
-                <Typography sx={{ color: "text.secondary", mt: 1 }}>
-                  {comment.date}
-                </Typography>
-              </ListItem>
-              {idx !== comments.length - 1 ? <Divider /> : null}
-            </React.Fragment>
-          );
-        })}
-      </List>
+          <TextField
+            id="outlined-multiline-static"
+            label="Wpisz komentarz!"
+            multiline
+            value={commentContent}
+            onChange={(e: any) => setCommentContent(e.target.value)}
+            rows={3}
+            color="secondary"
+            autoFocus={false}
+            helperText="Pamiętaj o kulturze wypowiedzi, maksymalna długość komentarza to XXX znaków."
+            sx={{ width: "100%" }}
+          />
+          <Stack direction="row" justifyContent="end">
+            <Button
+              disableElevation
+              type="submit"
+              variant="outlined"
+              color="secondary"
+              sx={{
+                color: "text.primary",
+                borderColor: "secondary.main",
+                width: 200,
+                mt: 1,
+                mb: 3,
+              }}
+            >
+              Dodaj komentarz
+            </Button>
+          </Stack>
+        </Box>
+      ) : (
+        <Typography variant="body1" align="center" sx={{ fontSize: 28 }}>
+          <Link to="/logowanie">Zaloguj się aby dodać komentarz!</Link>
+        </Typography>
+      )}
+      {comments.length === 0 ? (
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" align="center" sx={{ fontSize: 28 }}>
+            Nikt jeszcze nie dodał komentarza.
+          </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ fontSize: 22, color: "secondary.main" }}
+          >
+            Zostań pierwszym komentującym!
+          </Typography>
+        </Box>
+      ) : (
+        <List sx={{ width: "100%", backgroundColor: "primary.main", my: 4 }}>
+          {comments.map((comment: CommentVM, idx) => {
+            return (
+              <React.Fragment key={idx}>
+                <ListItem key={idx} alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar
+                      alt="avatar"
+                      src="https://i1.sndcdn.com/avatars-U0SzwN1Sc5v8nztz-mqhSUw-t240x240.jpg"
+                      sx={{ mr: 2, width: 44, height: 44 }}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={comment.authorName}
+                    secondary={comment.comment}
+                    primaryTypographyProps={{
+                      fontSize: 22,
+                    }}
+                    secondaryTypographyProps={{
+                      fontSize: 16,
+                    }}
+                    sx={{ mt: 2 }}
+                  ></ListItemText>
+                  <Typography sx={{ color: "text.secondary", mt: 1 }}>
+                    {"21.05.2022"}
+                  </Typography>
+                </ListItem>
+                {idx !== comments.length - 1 ? <Divider /> : null}
+              </React.Fragment>
+            );
+          })}
+        </List>
+      )}
     </>
   );
 };
 
-export default Comments;
+export default withLoading(Comments, {
+  comments: loadCommentsByContentId, 
+});

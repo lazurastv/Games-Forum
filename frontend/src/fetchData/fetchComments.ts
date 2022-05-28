@@ -4,5 +4,12 @@ async function loadCommentsByContentId(id: number): Promise<CommentVM[]> {
     return comments.getCommentByArticleId({ id: id });
 }
 
-export { loadCommentsByContentId }
+async function uploadComment(comment: CommentAdd) {
+    const comments = new CommentControllerApi();
+    return comments
+    .addComment({commentAdd: comment}, { credentials: "include" })
+    .then((result) => comments.getAllComments());
+}
+
+export { loadCommentsByContentId, uploadComment }
 
