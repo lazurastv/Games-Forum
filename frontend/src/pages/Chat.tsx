@@ -10,7 +10,7 @@ const Chat = () => {
   const [chatKey, setChatKey] = useState<string>();
 
   if (!chatKey) {
-    fetch('http://localhost:8080/api/chat/key', { credentials: 'include' }).then(x => x.text()).then(
+    fetch('http://localhost:8080/api/chat/token', { credentials: 'include' }).then(x => x.text()).then(
       x => {
         console.log(x);
         setChatKey(x);
