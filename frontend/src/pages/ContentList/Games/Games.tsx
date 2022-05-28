@@ -8,6 +8,7 @@ import { GameSearchInfoVM } from "../../../api/api";
 import { ContentList } from "../ContentList.types";
 import useFilterData from "../../../hooks/useFilterData";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
+import { useAlert } from "../../../hooks/useAlert";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 interface GamesProps extends ContentList {
   games: GameSearchInfoVM[];
@@ -16,16 +17,18 @@ function Games(props: GamesProps) {
   const { games, edit, userName } = props;
   const filter = useFilterData(games, userName);
   const [page, setPage] = useState(1);
+  const { displayAlert } = useAlert();
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
-  const handleDeleteGame = (id: number) => {
-    deleteGame(id);
+  const handleDeleteGame = (id: number, title: string) => {
+    displayAlert("aAAAAAA");
+    // deleteGame(id).then(() => displayAlert(title));
     if (props.setReload) {
       props.setReload((r) => r + 1);
     }
   };
-  console.log(games);
+
   return (
     <Container maxWidth="xl">
       <GamesFilter sliderLabel="DATA PUBLIKACJI:" data={games} page={1} {...filter.filterControl} />
@@ -36,7 +39,7 @@ function Games(props: GamesProps) {
           <Grid container spacing={2}>
             {filter.data.map((x: any, i) => (
               <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                <EditMenuSupply edit={edit} position="left" onDelete={() => handleDeleteGame(x.id)}>
+                <EditMenuSupply edit={edit} position="left" onDelete={() => handleDeleteGame(x.id, x.title)}>
                   <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.png`} />
                 </EditMenuSupply>
               </Grid>
