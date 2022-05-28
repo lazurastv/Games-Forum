@@ -1,4 +1,5 @@
 apis/ArticleControllerApi.ts
+apis/ChatControllerApi.ts
 apis/CommentControllerApi.ts
 apis/GameControllerApi.ts
 apis/LikeControllerApi.ts
