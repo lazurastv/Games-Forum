@@ -11,23 +11,26 @@ import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
-import ArticleSavedPopup from "../../../components/ArticleSavedPopup";
+import ArticleSavedPopup from "../../../components/Popups/ArticleSavedPopup";
+import ArticleSaveErrorPopup from "../../../components/Popups/ArcicleSaveErrorPopup";
+
+export interface PopupsState {
+  ok: boolean;
+  error: boolean;
+}
 
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
   const handleSave = async () => {
     const article: ArticleAddUpdate = {
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
     };
-    //
-    // TODO obsługa błędów
-    //
-    uploadArticle(article);
+    uploadArticle(article).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -67,8 +70,11 @@ export default function CreateArticle() {
           </Button>
         </Box>
       </Box>
-      <ArticleSavedPopup open={isOpen} handleClose={function (): void {
-        setIsOpen(false);
+      <ArticleSavedPopup open={isOpen.ok} handleClose={function (): void {
+        setIsOpen({...isOpen, ok: false});
+      } } />
+      <ArticleSaveErrorPopup open={isOpen.error} handleClose={function (): void {
+        setIsOpen({...isOpen, error: false});
       } } />
     </Container>
   );
