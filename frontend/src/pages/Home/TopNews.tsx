@@ -49,7 +49,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
               .sort((a, b) => -compareDate(a.publishDate!, b.publishDate!))
               .slice(0, 4)
               .map((x, id) =>
-                <Grid item key={id} xs={12} md={id % 3 == 0 ? 8 : 3}>
+                <Grid item key={id} xs={12} md={id % 3 === 0 ? 8 : 4}>
                   <ArticleTile
                     articleId={x.id}
                     title={x.title}

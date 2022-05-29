@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserControllerApi, UserVM } from "../../api/api";
 import { AuthApi } from "../../api/api/apis/AuthApi";
-import Cookies from "js-cookie";
 
 export type Session = {
   user?: UserVM;
