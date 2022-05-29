@@ -3,12 +3,11 @@ package com.gamebroadcast.forum.files;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.Soundbank;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -47,9 +46,9 @@ public class FileService {
         }
 
     }
-    public void writeHtmlContent(String hash, String htmlContent) {
+    public void writeContent(String hash, String htmlContent) {
         createFolder(PATH + "\\" + hash);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(PATH + "\\" + hash + "\\" + "content.html"))) {
+        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(PATH + "\\" + hash + "\\" + "content.json"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
@@ -88,9 +87,38 @@ public class FileService {
         }
     }
 
+    public void saveFile(MultipartFile multipartFile, String hash) throws IOException {
+        String path = PATH + "\\images\\" + hash;
+        createFolder(path);
+
+        // TODO try with transferTo on nginx
+        InputStream initialStream = multipartFile.getInputStream();
+        byte[] buffer = new byte[initialStream.available()];
+        initialStream.read(buffer);
+
+        path = path + "\\" + "image1.png";
+        File file = new File(path);
+        try (OutputStream outStream = new FileOutputStream(file)) {
+            outStream.write(buffer);
+        }
+    }
+
     public String saveNewContent(String content, String username) {
         String hash = getUniqueName(username);
-        writeHtmlContent(hash, content);
+        writeContent(hash, content);
         return hash;
+    }
+
+    public String saveNewImage(MultipartFile image, String username) {
+        try {
+            String hash = getUniqueName(username);
+            saveFile(image, hash);
+            System.out.println("Coś się stało");
+            return hash;
+        } catch (IOException e) {
+            // TODO custom exception
+            System.out.println("Jest wyjątek");
+            throw new RuntimeException(e);
+        }
     }
 }
