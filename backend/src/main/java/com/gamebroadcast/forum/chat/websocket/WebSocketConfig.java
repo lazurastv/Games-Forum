@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.chat;
+package com.gamebroadcast.forum.chat.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;

@@ -1,4 +1,4 @@
-package com.gamebroadcast.forum.chat;
+package com.gamebroadcast.forum.chat.models;
 
 import java.security.Principal;
 

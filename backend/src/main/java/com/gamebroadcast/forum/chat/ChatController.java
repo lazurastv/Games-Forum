@@ -1,22 +1,32 @@
 package com.gamebroadcast.forum.chat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.gamebroadcast.forum.chat.models.ChatMessageVM;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.RandomGenerator;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping(path = "api/chat")
+@RequiredArgsConstructor
 public class ChatController {
     private static Map<String, AppUser> users = new HashMap<>();
     private static Map<String, String> knownKeys = new HashMap<>();
+
+    private final ChatService chatService;
 
     public AppUser pop(String key) {
         AppUser user = users.get(key);
@@ -76,5 +86,19 @@ public class ChatController {
     public String getToken() {
         removeToken();
         return addToken();
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    @Transactional
+    public List<ChatMessageVM> getAll() {
+        return chatService.getAll();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public void delete(@PathVariable("id") Long id) {
+        chatService.delete(id);
     }
 }

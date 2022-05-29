@@ -14,6 +14,7 @@ models/ArticleFullInfoVM.ts
 models/ArticleSearchInfoVM.ts
 models/ArticleVM.ts
 models/AuthorVM.ts
+models/ChatMessageVM.ts
 models/CommentAdd.ts
 models/CommentUpdate.ts
 models/CommentVM.ts
