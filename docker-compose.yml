@@ -4,8 +4,8 @@ services:
     build: backend
     expose:
       - 8080
-  nginx:
-    image: nginx
+  frontend:
+    build: frontend
     ports:
       - 443:443
     volumes:
@@ -14,6 +14,5 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/forum.crt:/etc/ssl/forum.crt
       - ./nginx/forum.key:/etc/ssl/forum.key
-      - ./frontend/build:/usr/src/app
     depends_on:
       - backend
