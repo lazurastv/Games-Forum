@@ -119,7 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        configuration.setAllowedOrigins(Arrays.asList("https://localhost"));
+        configuration.setAllowedOrigins(Arrays.asList("https://localhost", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
@@ -138,6 +138,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
 
         serializer.setCookieName(SESSION_COOKIE);
+        serializer.setSameSite("none");
+        serializer.setUseSecureCookie(true);
         serializer.setCookiePath("/");
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
 
