@@ -19,10 +19,13 @@ public class ChatService {
     private Date lastClear;
 
     public List<ChatMessageVM> getAll() {
-
         Date currentDate = new Date();
-        Date yesterday = new Date(currentDate.getTime() - 1000 * 60 * 60 * 24);
+        long milisecondsInDay = 24 * 60 * 60 * 1000;
+        Date yesterday = new Date(currentDate.getTime() - milisecondsInDay);
         if (lastClear == null || lastClear.before(yesterday)) {
+            if (lastClear == null) {
+                lastClear = currentDate;
+            }
             clearOldMessages();
         }
 

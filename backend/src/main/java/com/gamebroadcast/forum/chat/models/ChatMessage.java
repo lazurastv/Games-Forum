@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessage {
     @Id
-    @SequenceGenerator(name = "comment_sequence", sequenceName = "comment_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_sequence")
+    @SequenceGenerator(name = "chat_sequence", sequenceName = "chat_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_sequence")
     @Column(name = "id", updatable = false)
     private Long id;
 
@@ -30,7 +30,7 @@ public class ChatMessage {
     @Column(name = "message", nullable = false, length = 1024)
     private String message;
 
-    @Column(name = "last_used", nullable = false)
+    @Column(name = "publish_date", nullable = false)
     private Date publishDate;
 
     public void publish() {
