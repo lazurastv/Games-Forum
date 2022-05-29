@@ -140,6 +140,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         serializer.setCookieName(SESSION_COOKIE);
         serializer.setCookiePath("/");
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        serializer.setUseSecureCookie(true);
+        serializer.setSameSite("strict");
 
         return serializer;
     }
