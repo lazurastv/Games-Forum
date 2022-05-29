@@ -5,6 +5,7 @@ export * from './ArticleFullInfoVM';
 export * from './ArticleSearchInfoVM';
 export * from './ArticleVM';
 export * from './AuthorVM';
+export * from './ChatMessageVM';
 export * from './CommentAdd';
 export * from './CommentUpdate';
 export * from './CommentVM';

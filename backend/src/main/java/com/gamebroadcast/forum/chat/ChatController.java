@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.websocket.server.PathParam;
-
 import com.gamebroadcast.forum.chat.models.ChatMessageVM;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.RandomGenerator;
@@ -15,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -99,7 +98,7 @@ public class ChatController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void delete(@PathParam("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         chatService.delete(id);
     }
 }

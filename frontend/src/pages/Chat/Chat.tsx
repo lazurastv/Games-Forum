@@ -8,16 +8,24 @@ import ChatMessage from "./ChatMessage";
 import { ChatMessageVM } from "../../api/api/models/ChatMessageVM";
 import { ChatMessageAdd } from "../../api/api/models/ChatMessageAdd";
 import withLoading from "../../fetchData/withLoading";
-import { getChatToken } from "../../fetchData/fetchChat";
+import { getChatMessages, getChatToken } from "../../fetchData/fetchChat";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 const SOCKET_URL = "http://localhost:8080/chat";
 const RECV_PATH = "/topic/message";
 const SEND_PATH = "/app/send";
 
-const Chat = ({ token }: { token: string }) => {
+const Chat = ({ msgs }: { msgs: ChatMessageVM[] }) => {
   const [clientRef, setClientRef] = useState<any>();
-  const [messages, setMessages] = useState<ChatMessageVM[]>([]); // add initial loading of messages once implemented
+  const [messages, setMessages] = useState<ChatMessageVM[]>(msgs);
   const [message, setMessage] = useState<string>("");
+  const [loadingToken, setLoadingToken] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+
+  if (!token && !loadingToken) {
+    setLoadingToken(true);
+    getChatToken().then(x => setToken(x));
+  }
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     scrollToBottom();
@@ -36,7 +44,7 @@ const Chat = ({ token }: { token: string }) => {
   };
 
   const onMessageReceived = (msg: ChatMessageVM) => {
-    msg.publishDate = new Date(msg.publishDate);
+    msg.publishDate = new Date(msg.publishDate as Date);
     setMessages([...messages, msg]);
   };
 
@@ -48,15 +56,18 @@ const Chat = ({ token }: { token: string }) => {
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
-      <SockJsClient
-        url={SOCKET_URL}
-        headers={{ token: token }}
-        topics={[RECV_PATH]}
-        onConnect={onConnected}
-        // onDisconnect={console.log("Disconnected!")}
-        onMessage={(msg) => onMessageReceived(msg)}
-        ref={(client) => setClientRef(client)}
-      />
+      {
+        token &&
+        <SockJsClient
+          url={SOCKET_URL}
+          headers={{ token: token }}
+          topics={[RECV_PATH]}
+          onConnect={onConnected}
+          // onDisconnect={console.log("Disconnected!")}
+          onMessage={(msg) => onMessageReceived(msg)}
+          ref={(client) => setClientRef(client)}
+        />
+      }
       <Typography component="h1" variant="h4" color="secondary" sx={{ mb: 1 }}>
         Chat
       </Typography>
@@ -88,7 +99,7 @@ const Chat = ({ token }: { token: string }) => {
     </Container>
   );
 };
-export default withLoading(Chat, { token: getChatToken });
+export default withLoading(Chat, { msgs: getChatMessages });
 
 const ChatMessagesBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,

@@ -14,11 +14,71 @@
 
 
 import * as runtime from '../runtime';
+import {
+    ChatMessageVM,
+    ChatMessageVMFromJSON,
+    ChatMessageVMToJSON,
+} from '../models';
+
+export interface Delete1Request {
+    id: number;
+}
 
 /**
  * 
  */
 export class ChatControllerApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async delete1Raw(requestParameters: Delete1Request, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling delete1.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/chat/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async delete1(requestParameters: Delete1Request, initOverrides?: RequestInit): Promise<void> {
+        await this.delete1Raw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async getAllRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<ChatMessageVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/chat`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ChatMessageVMFromJSON));
+    }
+
+    /**
+     */
+    async getAll(initOverrides?: RequestInit): Promise<Array<ChatMessageVM>> {
+        const response = await this.getAllRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      */
