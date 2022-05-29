@@ -1,7 +1,7 @@
 package com.gamebroadcast.forum.chat.models;
 
 public class ChatMessageAdd {
-    private String message;
+    public String message;
 
     public ChatMessage toChatMessage() {
         ChatMessage chatMessage = new ChatMessage();

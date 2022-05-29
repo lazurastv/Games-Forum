@@ -26,6 +26,7 @@ public class WebSocketChatController {
             return;
         }
 
-        messagingTemplate.convertAndSend("/topic/message", chatService.add(chatMessageAdd));
+        messagingTemplate.convertAndSend("/topic/message",
+                chatService.add(chatMessageAdd, user.getId()));
     }
 }

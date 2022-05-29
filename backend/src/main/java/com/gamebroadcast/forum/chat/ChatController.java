@@ -12,6 +12,7 @@ import com.gamebroadcast.forum.utils.RandomGenerator;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(path = "api/chat")
 @RequiredArgsConstructor
 public class ChatController {
-    private Map<String, AppUser> users = new HashMap<>();
-    private Map<String, String> knownKeys = new HashMap<>();
+    private static Map<String, AppUser> users = new HashMap<>();
+    private static Map<String, String> knownKeys = new HashMap<>();
 
     private final ChatService chatService;
 
@@ -90,12 +91,14 @@ public class ChatController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
+    @Transactional
     public List<ChatMessageVM> getAll() {
         return chatService.getAll();
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public void delete(@PathParam("id") Long id) {
         chatService.delete(id);
     }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ChatMessageVM {
+    public Long id;
     public Long authorId;
     public String authorName;
     public String message;
@@ -12,12 +13,13 @@ public class ChatMessageVM {
     public String profilePicturePath;
 
     public ChatMessageVM(ChatMessage chat) {
+        this.id = chat.getId();
         this.authorId = chat.getAuthor().getId();
         this.authorName = chat.getAuthor().getUsername();
         this.message = chat.getMessage();
         this.publishDate = chat.getPublishDate();
         this.profilePicturePath = chat.getAuthor().getProfilePicturePath();
-    }                                                      
+    }
 
     public static List<ChatMessageVM> toChatMessageVMList(List<ChatMessage> chatMessages) {
         List<ChatMessageVM> chatMessageVMs = new ArrayList<>();

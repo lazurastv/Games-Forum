@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.*;
 
 import com.gamebroadcast.forum.user.schemas.AppUser;
-import com.gamebroadcast.forum.utils.SessionUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +32,8 @@ public class ChatMessage {
     @Column(name = "publish_date", nullable = false)
     private Date publishDate;
 
-    public void publish() {
-        this.author = SessionUtils.getUserFromSession();
+    public void publish(AppUser author) {
+        this.author = author;
         this.publishDate = new Date();
     }
 

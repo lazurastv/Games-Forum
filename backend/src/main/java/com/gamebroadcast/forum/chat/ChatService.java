@@ -7,15 +7,19 @@ import com.gamebroadcast.forum.chat.models.ChatMessage;
 import com.gamebroadcast.forum.chat.models.ChatMessageAdd;
 import com.gamebroadcast.forum.chat.models.ChatMessageVM;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
+import com.gamebroadcast.forum.user.UserService;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ChatService {
-    public final ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
+    private final UserService userService;
     private Date lastClear;
 
     public List<ChatMessageVM> getAll() {
@@ -24,7 +28,7 @@ public class ChatService {
         Date yesterday = new Date(currentDate.getTime() - milisecondsInDay);
         if (lastClear == null || lastClear.before(yesterday)) {
             if (lastClear == null) {
-                lastClear = currentDate;
+                lastClear = yesterday;
             }
             clearOldMessages();
         }
@@ -33,9 +37,10 @@ public class ChatService {
         return ChatMessageVM.toChatMessageVMList(chatMessages);
     }
 
-    public ChatMessageVM add(ChatMessageAdd chatMessageAdd) throws IllegalStateException {
+    public ChatMessageVM add(ChatMessageAdd chatMessageAdd, Long authorId) throws IllegalStateException {
         ChatMessage chatMessage = chatMessageAdd.toChatMessage();
-        chatMessage.publish();
+        AppUser user = userService.getUser(authorId);
+        chatMessage.publish(user);
         chatRepository.save(chatMessage);
         return new ChatMessageVM(chatMessage);
     }
@@ -50,6 +55,7 @@ public class ChatService {
                 .orElseThrow(() -> new ItemNotFoundException("Message", id));
     }
 
+    @Transactional
     private void clearOldMessages() {
         chatRepository.deleteByPublishDateLessThan(lastClear);
         lastClear = new Date();
