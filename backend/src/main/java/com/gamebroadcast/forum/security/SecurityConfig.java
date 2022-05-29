@@ -138,7 +138,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
 
         serializer.setCookieName(SESSION_COOKIE);
-        serializer.setCookiePath("/api/");
+        serializer.setCookiePath("/");
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
 
         return serializer;
