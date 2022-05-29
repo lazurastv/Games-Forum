@@ -10,7 +10,8 @@ import { ChatMessageAdd } from "../../api/api/models/ChatMessageAdd";
 import withLoading from "../../fetchData/withLoading";
 import { getChatMessages, getChatToken } from "../../fetchData/fetchChat";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
-const SOCKET_URL = "http://localhost:8080/chat";
+import { BASE_PATH } from "../../api/api";
+const SOCKET_URL = BASE_PATH + "/chat";
 const RECV_PATH = "/topic/message";
 const SEND_PATH = "/app/send";
 

@@ -1,21 +1,18 @@
-version: "3"
+version: "3.0"
 services:
   backend:
     build: backend
+    expose:
+      - 8080
+  frontend:
+    build: frontend
     ports:
-      - 8080:8080
-  nginx:
-    image: nginx
-    ports:
-      - 80:80
       - 443:443
     volumes:
       - ./nginx/user:/usr/src/app/user
       - ./nginx/content:/usr/src/app/content
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  frontend:
-    build: frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/usr/src/app
+      - ./nginx/forum.crt:/etc/ssl/forum.crt
+      - ./nginx/forum.key:/etc/ssl/forum.key
+    depends_on:
+      - backend
