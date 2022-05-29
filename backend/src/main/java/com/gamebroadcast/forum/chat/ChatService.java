@@ -30,10 +30,11 @@ public class ChatService {
         return ChatMessageVM.toChatMessageVMList(chatMessages);
     }
 
-    public void add(ChatMessageAdd chatMessageAdd) throws IllegalStateException {
+    public ChatMessageVM add(ChatMessageAdd chatMessageAdd) throws IllegalStateException {
         ChatMessage chatMessage = chatMessageAdd.toChatMessage();
         chatMessage.publish();
         chatRepository.save(chatMessage);
+        return new ChatMessageVM(chatMessage);
     }
 
     public void delete(Long id) throws IllegalStateException {
@@ -41,10 +42,9 @@ public class ChatService {
         chatRepository.delete(chatMessage);
     }
 
-
     public ChatMessage getChatMessage(Long id) {
         return chatRepository.findById(id)
-            .orElseThrow(() -> new ItemNotFoundException("Message", id));
+                .orElseThrow(() -> new ItemNotFoundException("Message", id));
     }
 
     private void clearOldMessages() {

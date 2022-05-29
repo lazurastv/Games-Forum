@@ -1,7 +1,8 @@
-package com.gamebroadcast.forum.chat;
+package com.gamebroadcast.forum.chat.websocket;
 
-import java.time.Instant;
-import java.util.Date;
+import com.gamebroadcast.forum.chat.ChatService;
+import com.gamebroadcast.forum.chat.models.ChatMessageAdd;
+import com.gamebroadcast.forum.chat.models.ChatUser;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSocketChatController {
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatService chatService;
 
     @MessageMapping("/send")
     public void sendMessage(@Payload ChatMessageAdd chatMessageAdd, StompHeaderAccessor headerAccessor) {
@@ -24,12 +26,6 @@ public class WebSocketChatController {
             return;
         }
 
-        ChatMessageVM chatMessageVM = new ChatMessageVM();
-        chatMessageVM.authorId = user.getId();
-        chatMessageVM.authorName = user.getName();
-        chatMessageVM.message = chatMessageAdd.message;
-        chatMessageVM.profilePicturePath = user.getProfilePicturePath();
-        chatMessageVM.publishDate = Date.from(Instant.now());
-        messagingTemplate.convertAndSend("/topic/message", chatMessageVM);
+        messagingTemplate.convertAndSend("/topic/message", chatService.add(chatMessageAdd));
     }
 }

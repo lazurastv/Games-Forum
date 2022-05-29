@@ -1,5 +1,7 @@
-package com.gamebroadcast.forum.chat;
+package com.gamebroadcast.forum.chat.websocket;
 
+import com.gamebroadcast.forum.chat.ChatController;
+import com.gamebroadcast.forum.chat.models.ChatUser;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 
 import org.springframework.messaging.Message;
