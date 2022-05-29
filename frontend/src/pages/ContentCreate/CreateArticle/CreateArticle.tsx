@@ -72,7 +72,8 @@ export default function CreateArticle() {
                     method: "POST",
                     body: image,
                     credentials: "include"
-                  }).then(res => console.log(res))
+                  }).then(res => res.json())
+                  .then(data => console.log(data))
                   .catch(err => alert(err));
                 });
               }

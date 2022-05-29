@@ -22,8 +22,8 @@ public class ImageController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @PreAuthorize("hasRole('EDITOR')")
-    public void uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
         String url = fileService.saveNewImage(file, SecurityContextHolder.getContext().getAuthentication().getName());
-        ResponseEntity.status(HttpStatus.CREATED).body("url");
+        return ResponseEntity.status(HttpStatus.CREATED).body("{\"url\": \"" + url + "\"}");
     }
 }
