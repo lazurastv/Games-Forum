@@ -3,14 +3,12 @@ package com.gamebroadcast.forum.files;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -56,39 +54,15 @@ public class FileService {
         }
     }
 
-    public String parseJson(String editorData) throws JsonProcessingException {
+    public String changeUrlInJson(String editorData, String url, Long imageNumber) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(editorData);
-        String pictureUrl = root.get("entityMap").get("0").get("data").get("src").textValue();
-        return pictureUrl;
+        ((ObjectNode)root.get("entityMap").get(imageNumber.toString()).get("data")).put("src", url);
+        return root.toString();
     }
 
-    public BufferedImage downloadImageFromUrl(String urlString) {
-        try {
-            System.out.println(urlString);
-            URL url = new URL(urlString);
-            System.out.println("Nie zrobiłem URLa");
-            BufferedImage image = ImageIO.read(url);
-            return image;
-        } catch (IOException e) {
-            // TODO add custom exception
-            System.out.println(e.getMessage());
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
-    public void saveImage(String path, BufferedImage image) {
-        try {
-            File out = new File(path);
-            ImageIO.write(image, "png", out);
-        } catch (IOException e) {
-            // TODO add custom exception
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
-    public void saveFile(MultipartFile multipartFile, String hash) throws IOException {
-        String path = PATH + "\\images\\" + hash;
+    public String saveImage(MultipartFile multipartFile, String hash, String imageName) throws IOException {
+        String path = PATH + "\\" + hash;
         createFolder(path);
 
         // TODO try with transferTo on nginx
@@ -96,11 +70,13 @@ public class FileService {
         byte[] buffer = new byte[initialStream.available()];
         initialStream.read(buffer);
 
-        path = path + "\\" + "image1.png";
+        path = path + "\\" + imageName;
         File file = new File(path);
         try (OutputStream outStream = new FileOutputStream(file)) {
             outStream.write(buffer);
         }
+
+        return path;
     }
 
     public String saveNewContent(String content, String username) {
@@ -109,16 +85,24 @@ public class FileService {
         return hash;
     }
 
-    public String saveNewImage(MultipartFile image, String username) {
+    public void saveNewContentFiles(String hash, String content, MultipartFile[] files, String username) {
         try {
-            String hash = getUniqueName(username);
-            saveFile(image, hash);
-            System.out.println("Coś się stało");
-            return hash;
+            for (long i = 0L; i < files.length; i++) {
+                String path = saveImage(files[(int)i], hash, "image" + i + ".png");
+                content = changeUrlInJson(content, path, i);
+            }
+            writeContent(hash, content);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            // TODO custom exception
-            System.out.println("Jest wyjątek");
             throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        String json = "{\"a\": \"aaa\", \"b\": \"bbb\", \"entityMap\": { \"0\": {\"data\": {\"src\": \"Ala ma kota\"}}} }";
+        FileService fileService = new FileService();
+        json = fileService.changeUrlInJson(json, "Ola ma psa", 0L);
+        System.out.println(json);
     }
 }

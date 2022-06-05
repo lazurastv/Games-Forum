@@ -59,24 +59,28 @@ export default function CreateArticle() {
                 md: "150px",
               },
             }}
-            onClick={() => {
+            onClick={async () => {
               let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+              let formData: FormData = new FormData();
+              let files: Array<Blob> = [];
               for (let key in list) {
                 console.log(list[key].data.src);
-                fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-                  let formData : FormData = new FormData();
-                  formData.append("file", blob);
-                  return formData
-                }).then(image => {
-                  fetch('http://localhost:8080/api/images/upload', {
-                    method: "POST",
-                    body: image,
-                    credentials: "include"
-                  }).then(res => res.json())
-                  .then(data => console.log(data))
-                  .catch(err => alert(err));
+                await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+                  files.push(blob);
+                  formData.append("files", blob);
                 });
               }
+
+              formData.append("content", editorToString(editorState));
+
+              fetch('http://localhost:8080/api/article/with-images', {
+                method: "POST",
+                body: formData,
+                credentials: "include"
+              }).then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => alert(err));
+
             }}
             type="submit"
             variant="contained"

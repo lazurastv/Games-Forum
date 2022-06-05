@@ -16,14 +16,25 @@ public class ImageController {
 
     private final FileService fileService;
 
-    @PostMapping(
-            path = "/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @PreAuthorize("hasRole('EDITOR')")
-    public ResponseEntity<String> uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
-        String url = fileService.saveNewImage(file, SecurityContextHolder.getContext().getAuthentication().getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body("{\"url\": \"" + url + "\"}");
-    }
+//    @PostMapping(
+//            path = "/upload",
+//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    @PreAuthorize("hasRole('EDITOR')")
+//    public ResponseEntity<String> uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
+//        String url = fileService.saveNewImage(file, SecurityContextHolder.getContext().getAuthentication().getName());
+//        return ResponseEntity.status(HttpStatus.CREATED).body("{\"url\": \"" + url + "\"}");
+//    }
+
+//    @PostMapping(
+//            path = "/upload",
+//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    @PreAuthorize("hasRole('EDITOR')")
+//    public ResponseEntity<String> uploadArticle(@RequestParam("file") MultipartFile file) {
+//        String url = fileService.saveNewImage(file, SecurityContextHolder.getContext().getAuthentication().getName());
+//        return ResponseEntity.status(HttpStatus.CREATED).body("{\"url\": \"" + url + "\"}");
+//    }
 }

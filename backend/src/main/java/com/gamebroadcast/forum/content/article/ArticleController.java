@@ -10,11 +10,13 @@ import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -60,13 +62,26 @@ public class ArticleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('EDITOR')")
+    public ResponseEntity<String> addArticle(@RequestBody ArticleAddUpdate newArticle) {
+        try {
+            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            Long id = articleService.addArticle(newArticle, path);
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"id\": \"" + id + "\"}");
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/upload_content-and-images/{articleId}")
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticle(@RequestBody ArticleAddUpdate newArticle) {
+    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam("files") MultipartFile[] files) {
         try {
-            String path = fileService.saveNewContent(newArticle.content,
+            ArticleVM article =  articleService.getArticleById(articleId);
+            String path = article.path;
+            fileService.saveNewContentFiles(path, content, files,
                     SecurityContextHolder.getContext().getAuthentication().getName());
-            articleService.addArticle(newArticle, path);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -99,6 +114,19 @@ public class ArticleController {
             throw new ApiRequestException(e.getMessage());
         }
     }
+
+//    @PostMapping(
+//            path = "/upload/{articleId}/{imageId}",
+//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    @PreAuthorize("hasRole('EDITOR')")
+//    public void uploadUserImage(@RequestParam("file") MultipartFile file,
+//                                       @PathVariable("articleId") Long articleId,
+//                                       @PathVariable("imageId") Long imageId) {
+//
+//        articleService.addImage(file, articleId, imageId);
+//    }
 
     private boolean sessionUserCanEditArticle(Long id) {
         return articleService.sessionUserIsOwner(id);
