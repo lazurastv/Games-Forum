@@ -29,6 +29,25 @@ export default function CreateArticle() {
     // TODO obsługa błędów
     //
     uploadArticle(article);
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+              let formData: FormData = new FormData();
+              for (let key in list) {
+                console.log(list[key].data.src);
+                await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+                  formData.append("files", blob);
+                });
+              }
+
+              formData.append("content", editorToString(editorState));
+
+              fetch('http://localhost:8080/api/article/with-images', {
+                method: "POST",
+                body: formData,
+                credentials: "include"
+              }).then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => alert(err));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -58,29 +77,6 @@ export default function CreateArticle() {
                 sm: "100%",
                 md: "150px",
               },
-            }}
-            onClick={async () => {
-              let list = convertToRaw(editorState.getCurrentContent()).entityMap;
-              let formData: FormData = new FormData();
-              let files: Array<Blob> = [];
-              for (let key in list) {
-                console.log(list[key].data.src);
-                await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-                  files.push(blob);
-                  formData.append("files", blob);
-                });
-              }
-
-              formData.append("content", editorToString(editorState));
-
-              fetch('http://localhost:8080/api/article/with-images', {
-                method: "POST",
-                body: formData,
-                credentials: "include"
-              }).then(res => res.json())
-                .then(data => console.log(data))
-                .catch(err => alert(err));
-
             }}
             type="submit"
             variant="contained"
