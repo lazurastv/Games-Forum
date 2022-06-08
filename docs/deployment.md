@@ -10,3 +10,9 @@ Z logów wynika że trzeba użyć bazy danych, użyjemy postgresql
 
 Logi serwera
 heroku logs --tail
+
+# Frontend
+git remote add origin https://git.heroku.com/forum-graczy.git
+
+npm run build
+Kopiujemy zawartośc build do nginx
