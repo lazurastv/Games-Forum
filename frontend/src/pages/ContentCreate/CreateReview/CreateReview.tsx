@@ -12,6 +12,12 @@ import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
 import OneLineInput from "../components/OneLineInput";
 import { ReviewAdd } from "../../../api/api";
+import SimplePopup from "../../../components/Popups/SimplePopup";
+
+export interface PopupsState {
+  ok: boolean;
+  error: boolean;
+}
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -20,6 +26,7 @@ export default function CreateReview() {
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
   const handleSave = async () => {
     //
     // TODO obsługa błędów
@@ -33,7 +40,7 @@ export default function CreateReview() {
       pluses: pluses,
       minuses: minuses,
     };
-    uploadReview(review);
+    uploadReview(review).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));;
     // .catch(
     //   (e) => console.error(e)
     // );
@@ -87,6 +94,12 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapizana."} handleClose={function (): void {
+        setIsOpen({...isOpen, ok: false});
+      } } />
+      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {
+        setIsOpen({...isOpen, error: false});
+      } } />
     </Container>
   );
 }

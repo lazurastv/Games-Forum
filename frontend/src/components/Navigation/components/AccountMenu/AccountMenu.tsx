@@ -30,7 +30,7 @@ const collapseButtons = [
     jsxElement: <ArticleIcon />,
   },
   {
-    path: "/dodaj/recenzj",
+    path: "/dodaj/recenzja",
     text: "Recenzję",
     jsxElement: <ReviewsIcon />,
   },
