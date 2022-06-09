@@ -115,7 +115,7 @@ public class AppUser implements UserDetails {
 
     public AppUser() {
         this.role = Role.USER.toString();
-        this.enabled = false;
+        this.enabled = true;
         this.locked = false;
         this.lastUsed = Timestamp.from(Instant.now());
     }
