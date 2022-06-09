@@ -1,0 +1,6 @@
+[submodule "frontend/deploy"]
+	path = frontend/deploy
+	url = https://git.heroku.com/forum-graczy.git
+[submodule "backend"]
+	path = backend
+	url = https://git.heroku.com/forum-graczy-backend.git
