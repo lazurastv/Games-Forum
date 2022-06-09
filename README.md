@@ -8,10 +8,5 @@ docker-compose up --build
 Opcja --build ponownie buduje kontenery. Nie trzeba używać jeżeli pliki nie uległy zmianie.  
 Żeby wygodnie edytować frontend robimy  
 npm start  
-w folderze frontend i przechodzimy na stronę  
-http://localhost:3000  
-Uwaga: http jest konieczne, inaczej nginx was przekieruje auutomatycznie na https  
-Teraz strona będzie się odświeżać po dokonaniu zmian.
-
-Na stronie https://localhost znajdziecie skompilowaną wersję frontu, taką jaka była w momencie  
-builda kontenerów. Warto czasem weryfikować czy skompilowana wersja pokrywa się z testową.
+w folderze frontend, potwierdzamy użycie innego portu i przechodzimy na stronę  
+localhost:3001  
