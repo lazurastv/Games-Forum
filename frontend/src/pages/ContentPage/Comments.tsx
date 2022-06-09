@@ -18,19 +18,29 @@ import { loadCommentsByContentId, uploadComment } from "../../fetchData/fetchCom
 import withLoading from "../../fetchData/withLoading";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import { Link } from "react-router-dom";
+import { convertDate } from "../../utils/convertDate";
 
-function Comments({ comments,contentId }: { comments: CommentVM[], contentId: number }) {
+
+function Comments({
+  comments,
+  contentId,
+}: {
+  comments: CommentVM[];
+  contentId: number;
+}) {
   const { session } = useSessionContext();
   const [commentContent, setCommentContent] = useState<string>("");
+  const [comments2, setComments2] = useState<CommentVM[]>(comments);
 
   const handleSave = async () => {
     const comment: CommentAdd = {
       contentId: contentId,
       comment: commentContent,
     };
-    uploadComment(comment);
+    uploadComment(comment).then(r => 
+    loadCommentsByContentId(contentId).then((x) => {setComments2(x)}));
+    setCommentContent("");
   };
-
 
   return (
     <>
@@ -77,7 +87,7 @@ function Comments({ comments,contentId }: { comments: CommentVM[], contentId: nu
           <Link to="/logowanie">Zaloguj się aby dodać komentarz!</Link>
         </Typography>
       )}
-      {comments.length === 0 ? (
+      {comments2.length === 0 ? (
         <Box sx={{ mb: 2 }}>
           <Typography variant="body1" align="center" sx={{ fontSize: 28 }}>
             Nikt jeszcze nie dodał komentarza.
@@ -92,7 +102,7 @@ function Comments({ comments,contentId }: { comments: CommentVM[], contentId: nu
         </Box>
       ) : (
         <List sx={{ width: "100%", backgroundColor: "primary.main", my: 4 }}>
-          {comments.map((comment: CommentVM, idx) => {
+          {comments2.map((comment: CommentVM, idx) => {
             return (
               <React.Fragment key={idx}>
                 <ListItem key={idx} alignItems="flex-start">
@@ -115,10 +125,10 @@ function Comments({ comments,contentId }: { comments: CommentVM[], contentId: nu
                     sx={{ mt: 2 }}
                   ></ListItemText>
                   <Typography sx={{ color: "text.secondary", mt: 1 }}>
-                    {"21.05.2022"}
+                    {convertDate(comment.publishDate)}
                   </Typography>
                 </ListItem>
-                {idx !== comments.length - 1 ? <Divider /> : null}
+                {idx !== comments2.length - 1 ? <Divider /> : null}
               </React.Fragment>
             );
           })}

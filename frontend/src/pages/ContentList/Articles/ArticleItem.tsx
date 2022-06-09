@@ -71,7 +71,7 @@ export default function ArticleItem(props: IArticle) {
                 <MultilineTruncatedText text={props.title} maxLine={isMD ? "2" : "1"} />
               </Box>
               <Box sx={{ my: 0.5, fontSize: { ...contentFontSize } }}>
-                <MultilineTruncatedText text={props.content} maxLine={isXS ? "4" : "2"} />
+                <MultilineTruncatedText text={props.content} maxLine={isXS ? "3" : "2"} />
               </Box>
             </Box>
             <Box component="div" color="text.secondary" sx={{ mb: 1.5, fontSize: { ...secondFontSize } }}>
