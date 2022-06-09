@@ -1,9 +1,17 @@
-FROM node
+FROM node as build-stage
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install
 
-ENTRYPOINT npm start
+COPY ./ ./
+
+RUN npm run build
+
+FROM nginx
+
+WORKDIR /usr/src/app
+
+COPY --from=build-stage /app/build/ ./

@@ -14,11 +14,11 @@ export default function UserContent() {
   const {
     session: { user },
   } = useSessionContext();
-  const [value, setValue] = useState<number>(0);
+  const [tab, setTab] = useState<number>(0);
   const { userName } = useParams();
   let edit = userName === user?.username;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTab(newValue);
   };
   return (
     <Box sx={{ mt: 6 }}>
@@ -39,7 +39,7 @@ export default function UserContent() {
           </Box>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
-              value={value}
+              value={tab}
               onChange={handleChange}
               textColor="secondary"
               indicatorColor="secondary"
@@ -52,13 +52,13 @@ export default function UserContent() {
           </Box>
         </Widget>
       </Container>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tab} index={0}>
         <Articles edit={edit} userName={userName} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tab} index={1}>
         <Reviews edit={edit} userName={userName} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tab} index={2}>
         <Games edit={edit} userName={userName} />
       </TabPanel>
     </Box>

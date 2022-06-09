@@ -5,11 +5,11 @@ import static com.gamebroadcast.forum.security.Role.EDITOR;
 import static com.gamebroadcast.forum.security.Role.USER;
 import static com.gamebroadcast.forum.utils.ResponseUtils.SESSION_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
@@ -33,24 +33,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserConfig userConfig;
     private final PersistentTokenBasedRememberMeServices rememberMeServices;
-
-    @Autowired
-    public SecurityConfig(
-            PasswordEncoder passwordEncoder,
-            UserConfig userConfig,
-            PersistentTokenBasedRememberMeServices rememberMeServices) {
-        this.passwordEncoder = passwordEncoder;
-        this.userConfig = userConfig;
-        this.rememberMeServices = rememberMeServices;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -62,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new LoginFilter(authenticationManager(), rememberMeServices))
                 .authorizeRequests()
                 .antMatchers(GET, "**").permitAll()
+                .antMatchers(POST, "**").permitAll()
                 .expressionHandler(webExpressionHandler())
                 .anyRequest()
                 .authenticated()
@@ -125,7 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("https://localhost", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
@@ -144,7 +138,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
 
         serializer.setCookieName(SESSION_COOKIE);
-        serializer.setCookiePath("/api/");
+        serializer.setSameSite("none");
+        serializer.setUseSecureCookie(true);
+        serializer.setCookiePath("/");
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
 
         return serializer;

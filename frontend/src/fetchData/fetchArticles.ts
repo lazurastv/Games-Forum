@@ -19,9 +19,5 @@ async function uploadArticle(article: ArticleAddUpdate) {
   const articles = new ArticleControllerApi();
   return articles
     .addArticle({ articleAddUpdate: article }, { credentials: "include" })
-    .then((result) => articles.getAllArticles())
-    .then((result) => {
-      result.forEach((x) => console.log(x));
-    });
 }
 export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle };

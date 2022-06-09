@@ -1,4 +1,5 @@
 apis/ArticleControllerApi.ts
+apis/ChatControllerApi.ts
 apis/CommentControllerApi.ts
 apis/GameControllerApi.ts
 apis/LikeControllerApi.ts
@@ -13,6 +14,7 @@ models/ArticleFullInfoVM.ts
 models/ArticleSearchInfoVM.ts
 models/ArticleVM.ts
 models/AuthorVM.ts
+models/ChatMessageVM.ts
 models/CommentAdd.ts
 models/CommentUpdate.ts
 models/CommentVM.ts

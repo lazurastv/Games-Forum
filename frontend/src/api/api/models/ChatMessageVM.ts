@@ -16,60 +16,67 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CommentVM
+ * @interface ChatMessageVM
  */
-export interface CommentVM {
+export interface ChatMessageVM {
     /**
      * 
      * @type {number}
-     * @memberof CommentVM
+     * @memberof ChatMessageVM
      */
     id?: number;
     /**
      * 
      * @type {number}
-     * @memberof CommentVM
+     * @memberof ChatMessageVM
      */
-    contentId?: number;
+    authorId?: number;
     /**
      * 
      * @type {string}
-     * @memberof CommentVM
+     * @memberof ChatMessageVM
      */
     authorName?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ChatMessageVM
+     */
+    message?: string;
+    /**
+     * 
      * @type {Date}
-     * @memberof CommentVM
+     * @memberof ChatMessageVM
      */
     publishDate?: Date;
     /**
      * 
      * @type {string}
-     * @memberof CommentVM
+     * @memberof ChatMessageVM
      */
-    comment?: string;
+    profilePicturePath?: string;
 }
 
-export function CommentVMFromJSON(json: any): CommentVM {
-    return CommentVMFromJSONTyped(json, false);
+export function ChatMessageVMFromJSON(json: any): ChatMessageVM {
+    return ChatMessageVMFromJSONTyped(json, false);
 }
 
-export function CommentVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): CommentVM {
+export function ChatMessageVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): ChatMessageVM {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
+        'authorId': !exists(json, 'authorId') ? undefined : json['authorId'],
         'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
         'publishDate': !exists(json, 'publishDate') ? undefined : (new Date(json['publishDate'])),
-        'comment': !exists(json, 'comment') ? undefined : json['comment'],
+        'profilePicturePath': !exists(json, 'profilePicturePath') ? undefined : json['profilePicturePath'],
     };
 }
 
-export function CommentVMToJSON(value?: CommentVM | null): any {
+export function ChatMessageVMToJSON(value?: ChatMessageVM | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -79,10 +86,11 @@ export function CommentVMToJSON(value?: CommentVM | null): any {
     return {
         
         'id': value.id,
-        'contentId': value.contentId,
+        'authorId': value.authorId,
         'authorName': value.authorName,
+        'message': value.message,
         'publishDate': value.publishDate === undefined ? undefined : (value.publishDate.toISOString()),
-        'comment': value.comment,
+        'profilePicturePath': value.profilePicturePath,
     };
 }
 
