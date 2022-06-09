@@ -11,8 +11,7 @@ import { editorToString } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
-import ArticleSavedPopup from "../../../components/Popups/ArticleSavedPopup";
-import ArticleSaveErrorPopup from "../../../components/Popups/ArcicleSaveErrorPopup";
+import SimplePopup from "../../../components/Popups/SimplePopup";
 
 // temp
 import { convertToRaw } from "draft-js";
@@ -93,12 +92,20 @@ export default function CreateArticle() {
           </Button>
         </Box>
       </Box>
+{/* <<<<<<< HEAD
       <ArticleSavedPopup open={isOpen.ok} handleClose={function (): void {
         setIsOpen({ ...isOpen, ok: false });
       }} />
       <ArticleSaveErrorPopup open={isOpen.error} handleClose={function (): void {
         setIsOpen({ ...isOpen, error: false });
       }} />
+======= */}
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Artykuł zoztał zapizany."} handleClose={function (): void {
+        setIsOpen({...isOpen, ok: false});
+      } } />
+      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Artykuł nie został zapisany."} handleClose={function (): void {
+        setIsOpen({...isOpen, error: false});
+      } } />
     </Container>
   );
 }

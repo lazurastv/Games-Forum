@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    AuthorVM,
+    AuthorVMFromJSON,
+    AuthorVMFromJSONTyped,
+    AuthorVMToJSON,
+} from './AuthorVM';
+
 /**
  * 
  * @export
@@ -33,10 +40,10 @@ export interface CommentVM {
     contentId?: number;
     /**
      * 
-     * @type {string}
+     * @type {AuthorVM}
      * @memberof CommentVM
      */
-    authorName?: string;
+    authorVM?: AuthorVM;
     /**
      * 
      * @type {Date}
@@ -63,7 +70,7 @@ export function CommentVMFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'contentId': !exists(json, 'contentId') ? undefined : json['contentId'],
-        'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
+        'authorVM': !exists(json, 'authorVM') ? undefined : AuthorVMFromJSON(json['authorVM']),
         'publishDate': !exists(json, 'publishDate') ? undefined : (new Date(json['publishDate'])),
         'comment': !exists(json, 'comment') ? undefined : json['comment'],
     };
@@ -80,7 +87,7 @@ export function CommentVMToJSON(value?: CommentVM | null): any {
         
         'id': value.id,
         'contentId': value.contentId,
-        'authorName': value.authorName,
+        'authorVM': AuthorVMToJSON(value.authorVM),
         'publishDate': value.publishDate === undefined ? undefined : (value.publishDate.toISOString()),
         'comment': value.comment,
     };

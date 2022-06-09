@@ -2,8 +2,8 @@ const convertDate = (date: Date | undefined) => {
   let year, month, day;
   if (date) {
     year = date.getFullYear();
-    month = date.getMonth();
-    day = date.getDay();
+    month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1): date.getMonth() + 1;
+    day = date.getDate() < 10 ? "0" + date.getDate(): date.getDate();
   }
   return date ? day + "." + month + "." + year : "unknown";
 };

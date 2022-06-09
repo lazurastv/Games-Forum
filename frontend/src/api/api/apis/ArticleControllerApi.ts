@@ -61,7 +61,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
+    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.JSONApiResponse<string>> {
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
             throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
         }

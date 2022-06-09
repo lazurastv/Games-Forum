@@ -62,3 +62,7 @@ build/
 .vs
 #Database files
 **/db/
+
+#Heroku
+backend/deploy
+frontend/deploy

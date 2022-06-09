@@ -8,10 +8,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 export interface SimpleDialogProps {
   open: boolean;
   handleClose: () => void;
+  title: string;
+  content: string;
 }
 
-export default function ArticleSaveErrorPopup(props: SimpleDialogProps) {
-  const { handleClose, open } = props;
+export default function SimplePopup(props: SimpleDialogProps) {
+  const { handleClose, open, title, content } = props;
 
   return (
     <Dialog
@@ -24,12 +26,12 @@ export default function ArticleSaveErrorPopup(props: SimpleDialogProps) {
       onClose={handleClose}
     >
       <DialogTitle>
-        {"Błąd zapisu"}
+        {title}
       </DialogTitle>
     
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Nie udzło się zapisać artykułu
+          {content}
         </DialogContentText>
       </DialogContent>
 
