@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl --output openapi.yaml https://localhost/data/v3/api-docs.yaml
+curl --output openapi.yaml http://localhost:8080/data/v3/api-docs.yaml
 res=$?
 
 if (( $res == 7 ))
