@@ -56,7 +56,7 @@ http {
 		}
 		
 		location /data/ {
-			proxy_pass https://backend;
+			proxy_pass https://backend/;
             proxy_ssl_name forum-graczy-backend.herokuapp.com;
 			proxy_set_header X-Forwarded-Host $host;
             proxy_set_header X-Real-IP $remote_addr;
