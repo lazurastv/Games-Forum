@@ -1,5 +1,6 @@
-rm -rf deploy/static
-xcopy build deploy /s /e /y
+rm -rf deploy/src
+xcopy src deploy\src\ /s /e
+xcopy pom.xml deploy /y
 cd deploy
 git add .
 git status
