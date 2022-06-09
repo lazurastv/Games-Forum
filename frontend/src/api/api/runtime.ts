@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "https://localhost/data".replace(/\/+$/, "");
+export const BASE_PATH = "https://forum-graczy.herokuapp.com/data".replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;
 

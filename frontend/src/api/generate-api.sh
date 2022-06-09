@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl --output openapi.yaml https://localhost/data/v3/api-docs.yaml
+curl --output openapi.yaml https://forum-graczy.herokuapp.com/data/v3/api-docs.yaml
 res=$?
 
 if (( $res == 7 ))
