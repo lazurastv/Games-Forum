@@ -9,6 +9,7 @@ import { loadArticle } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 import SimilarArticles from "./SimilarArticles";
+import Comments from "../Comments";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
@@ -18,7 +19,11 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
       <HeaderTile
         title={article.title}
         imgSrc={`${NGINX_URL}/${article.path}/horizontal.png`}
-        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(article.publishDate)}</Typography>}
+        caption={
+          <Typography sx={{ textAlign: "right" }}>
+            {convertDate(article.publishDate)}
+          </Typography>
+        }
       />
       <Container maxWidth="lg">
         <Box sx={{ pb: 6 }}>
@@ -29,6 +34,8 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         </Box>
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
+        <SectionHeader>Komentarze</SectionHeader>
+        <Comments contentId={article.id}/>
       </Container>
     </Box>
   );
