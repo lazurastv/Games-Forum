@@ -11,6 +11,7 @@ import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 import { articleDangerousHtml } from "../../../data-mock/editorData";
+import Comments from "../Comments";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
 function Review({ review }: { review: ReviewFullInfoVM }) {
@@ -19,7 +20,11 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
       <HeaderTile
         title={review.title}
         imgSrc={`${NGINX_URL}/${review.path}/horizontal.png`}
-        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
+        caption={
+          <Typography sx={{ textAlign: "right" }}>
+            {convertDate(review.publishDate)}
+          </Typography>
+        }
       />
       <Container maxWidth="lg">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
@@ -35,11 +40,20 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
               <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
             </StyledEditorContent>
           </Grid>
-          <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column" }}>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
             <Author authorData={review.author} />
             <ReviewRating
               sx={{ mb: 5 }}
-              score={review.score && isNaN(review.score) ? "?" : review.score?.toFixed(0)}
+              score={
+                review.score && isNaN(review.score)
+                  ? "?"
+                  : review.score?.toFixed(0)
+              }
               pluses={review.pluses}
               minuses={review.minuses}
             />
@@ -47,6 +61,8 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
         </Grid>
         <SectionHeader>Podobne recenzje</SectionHeader>
         <SimilarReviews />
+        <SectionHeader>Komentarze</SectionHeader>
+        <Comments contentId={review.id} />
       </Container>
     </Box>
   );

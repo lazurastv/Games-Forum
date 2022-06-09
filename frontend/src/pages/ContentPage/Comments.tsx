@@ -107,11 +107,13 @@ function Comments({
               <React.Fragment key={idx}>
                 <ListItem key={idx} alignItems="flex-start">
                   <ListItemAvatar>
+                    <Link to={`/profil/${comment.authorVM?.id}`}>
                     <Avatar
                       alt="avatar"
                       src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.png`}
-                      sx={{ mr: 2, width: 44, height: 44 }}
+                      sx={{ width: 44, height: 44 }}
                     />
+                    </Link>
                   </ListItemAvatar>
                   <ListItemText
                     primary={comment.authorVM?.name}
@@ -122,7 +124,7 @@ function Comments({
                     secondaryTypographyProps={{
                       fontSize: 16,
                     }}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, ml: 1 }}
                   ></ListItemText>
                   <Typography sx={{ color: "text.secondary", mt: 1 }}>
                     {convertDate(comment.publishDate)}
