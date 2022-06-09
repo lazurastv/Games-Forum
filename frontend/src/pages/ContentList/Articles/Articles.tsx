@@ -27,7 +27,6 @@ const Articles = (props: ArticlesProps) => {
       props.setReload((r) => r + 1);
     }
   };
-  //co z obrazkami?
   // string | undefined as string - czy to jest poprawnie czy dodać undefined do interfejsu, czy te dane mogą być undefined?
   return (
     <Container maxWidth="xl">
