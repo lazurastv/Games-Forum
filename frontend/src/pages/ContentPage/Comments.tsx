@@ -19,7 +19,7 @@ import withLoading from "../../fetchData/withLoading";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import { Link } from "react-router-dom";
 import { convertDate } from "../../utils/convertDate";
-
+const NGINX_URL = process.env.REACT_APP_NGINX_USER;
 
 function Comments({
   comments,
@@ -109,12 +109,12 @@ function Comments({
                   <ListItemAvatar>
                     <Avatar
                       alt="avatar"
-                      src="https://i1.sndcdn.com/avatars-U0SzwN1Sc5v8nztz-mqhSUw-t240x240.jpg"
+                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.png`}
                       sx={{ mr: 2, width: 44, height: 44 }}
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={comment.authorName}
+                    primary={comment.authorVM?.name}
                     secondary={comment.comment}
                     primaryTypographyProps={{
                       fontSize: 22,

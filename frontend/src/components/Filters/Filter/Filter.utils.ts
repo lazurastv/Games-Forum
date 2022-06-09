@@ -23,9 +23,9 @@ function filterData<T extends ContentData>(
         Object.values(value).every((v) => !v)
           ? a
           : {
-              ...a,
-              [key]: value,
-            },
+            ...a,
+            [key]: value,
+          },
       {}
     );
     if (Object.entries(activeCheckboxGroups).length !== 0) {
@@ -81,10 +81,10 @@ function sortData<T extends ContentData>(data: T[], sortValue: string): number[]
   } else {
     newSortOrder = data
       .sort((a, b) => {
-        if (!a.popularity) {
+        if (a.popularity === undefined) {
           return -1;
         }
-        if (!b.popularity) {
+        if (b.popularity === undefined) {
           return 1;
         }
         if (a.popularity > b.popularity) {
