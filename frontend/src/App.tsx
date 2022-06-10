@@ -23,12 +23,11 @@ import Article from "./pages/ContentPage/Article/Article";
 import Game from "./pages/ContentPage/Game/Game";
 import Review from "./pages/ContentPage/Review/Review";
 import Home from "./pages/Home/Home";
-import MyProfile from "./pages/Profile/MyProfile";
 import Profile from "./pages/Profile/Profile";
 import UserContent from "./pages/UserContent/UserContent";
 import getTheme from "./theme";
 
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 function App() {
   //theme
@@ -57,39 +56,35 @@ function App() {
     <BrowserRouter>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-            <Navigation />
-            <CssBaseline enableColorScheme />
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" />}>
-                <Route path="artykul" element={<CreateArticle />} />
-                <Route path="recenzja" element={<CreateReview />} />
-                <Route path="gra" element={<CreateGame />} />
-              </Route>
-              <Route
-                path="wpisy/:userName"
-                element={
-                  <ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" outlet={<UserContent />} />
-                }
-              />
-              <Route path="artykuly" element={<Articles />} />
-              <Route path="artykuly/:id" element={<Article />} />
-              <Route path="recenzje" element={<Reviews />} />
-              <Route path="recenzje/:id" element={<Review />} />
-              <Route path="gry" element={<Games />} />
-              <Route path="gry/:id" element={<Game />} />
-              <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
-              <Route
-                path="profil"
-                element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<MyProfile />} />}
-              />
-              <Route path="logowanie" element={<Login />} />
-              <Route path="profil/:id" element={<Profile />} />
-              <Route path="rejestracja" element={<Registration />} />
-              <Route path="*" element={<PageNotFoundError />} />
-            </Routes>
-            {alert}
+          <Navigation />
+          <CssBaseline enableColorScheme />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" />}>
+              <Route path="artykul" element={<CreateArticle />} />
+              <Route path="recenzja" element={<CreateReview />} />
+              <Route path="gra" element={<CreateGame />} />
+            </Route>
+            <Route
+              path="wpisy/:userName"
+              element={
+                <ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" outlet={<UserContent />} />
+              }
+            />
+            <Route path="artykuly" element={<Articles />} />
+            <Route path="artykuly/:id" element={<Article />} />
+            <Route path="recenzje" element={<Reviews />} />
+            <Route path="recenzje/:id" element={<Review />} />
+            <Route path="gry" element={<Games />} />
+            <Route path="gry/:id" element={<Game />} />
+            <Route path="chat" element={<ProtectedRoute {...defaultProtectedRouteProps} outlet={<Chat />} />} />
+            <Route path="logowanie" element={<Login />} />
+            <Route path="profil/:id" element={<Profile />} />
+            <Route path="rejestracja" element={<Registration />} />
+            <Route path="*" element={<PageNotFoundError />} />
+          </Routes>
+          {alert}
         </ThemeProvider>
       </ColorModeContext.Provider>
     </BrowserRouter>
