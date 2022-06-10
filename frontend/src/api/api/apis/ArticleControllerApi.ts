@@ -33,7 +33,7 @@ export interface AddArticleRequest {
     articleAddUpdate: ArticleAddUpdate;
 }
 
-export interface AddArticleWithImagesRequest {
+export interface AddArticleWithImages1Request {
     articleId: number;
     content: string;
     files?: Array<Blob>;
@@ -98,13 +98,13 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleWithImagesRaw(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async addArticleWithImages1Raw(requestParameters: AddArticleWithImages1Request, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addArticleWithImages.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addArticleWithImages1.');
         }
 
         if (requestParameters.content === null || requestParameters.content === undefined) {
-            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addArticleWithImages.');
+            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addArticleWithImages1.');
         }
 
         const queryParameters: any = {};
@@ -131,8 +131,8 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleWithImages(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.addArticleWithImagesRaw(requestParameters, initOverrides);
+    async addArticleWithImages1(requestParameters: AddArticleWithImages1Request, initOverrides?: RequestInit): Promise<void> {
+        await this.addArticleWithImages1Raw(requestParameters, initOverrides);
     }
 
     /**
