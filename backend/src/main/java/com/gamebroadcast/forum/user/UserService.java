@@ -3,6 +3,10 @@ package com.gamebroadcast.forum.user;
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
+import com.gamebroadcast.forum.exceptions.TokenInvalidException;
+import com.gamebroadcast.forum.mail.OnRegistrationCompleteEvent;
+import com.gamebroadcast.forum.mail.VerificationToken;
+import com.gamebroadcast.forum.mail.VerificationTokenRepository;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserRoleUpdate;
@@ -11,6 +15,11 @@ import com.gamebroadcast.forum.user.models.UserValidators;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
+import java.util.Calendar;
+
+import javax.servlet.ServletContext;
+
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +31,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VerificationTokenRepository tokenRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final ServletContext context;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(getUser(id));
@@ -58,6 +70,10 @@ public class UserService {
         userAdd.password = passwordEncoder.encode(userAdd.password);
         AppUser user = userAdd.toAppUser();
         userRepository.save(user);
+
+        
+        String appUrl = context.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, appUrl));
     }
 
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
@@ -113,6 +129,28 @@ public class UserService {
         AppUser user = getUser(id);
         user.setLocked(false);
         userRepository.save(user);
+    }
+
+    public void createVerificationToken(AppUser user, String token) {
+        VerificationToken userToken = new VerificationToken(user, token);
+        tokenRepository.save(userToken);
+    }
+
+    public void checkToken(String token) {
+        VerificationToken verificationToken = getVerificationToken(token);
+        Calendar cal = Calendar.getInstance();
+        if (verificationToken == null || 
+            (verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            throw new TokenInvalidException();
+        } else {
+            AppUser user = verificationToken.getUser();
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
+
+    public VerificationToken getVerificationToken(String VerificationToken) {
+        return tokenRepository.findByToken(VerificationToken);
     }
 
     public void delete(Long id) throws IllegalStateException {
