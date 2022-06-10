@@ -75,7 +75,9 @@ public class UserService {
             userUpdate.password = passwordEncoder.encode(userUpdate.password);
             requirePasswordConfirmation = true;
         }
-        UserValidators.checkShortDescription(userUpdate.shortDescription);
+        if (userUpdate.shortDescription != null) {
+            UserValidators.checkShortDescription(userUpdate.shortDescription);
+        }
 
         AppUser user = getUser(id);
 
