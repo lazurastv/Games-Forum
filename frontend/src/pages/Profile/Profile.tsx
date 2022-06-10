@@ -16,6 +16,7 @@ const Profile = ({ user }: { user: UserVM }) => {
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md="auto">
           <ProfileBox
+            id={user.id!}
             username={user.username!}
             role={user.role!}
             image={`${NGINX_URL}/${user.profilePicturePath}/profile.png`}

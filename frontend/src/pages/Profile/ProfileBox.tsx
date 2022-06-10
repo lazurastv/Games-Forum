@@ -1,9 +1,11 @@
 import { Avatar, Button, MenuItem, Select } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { useState } from "react";
+import { BanUserRequest, UpdateCredentialsRequest, UpdateRoleRequest, UserControllerApi, UserCredentialsUpdate, UserRoleUpdate } from "../../api/api";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 
 interface IProfileBox {
+  id: number;
   username: string;
   role: string;
   image: string;
@@ -21,6 +23,21 @@ export default function ProfileBox(props: IProfileBox) {
   const isAdmin = session?.role === "ADMIN";
 
   const [selectedRole, setSelectedRole] = useState(props.role);
+  const [changePasswordMode, setChangePasswordMode] = useState(false);
+  const changePassword = () => {
+    const userCredentials = {
+      username: session?.username,
+      email: session?.email,
+      password: "a",
+      shortDescription: session?.shortDescription,
+      currentPassword: "aa"
+    } as UserCredentialsUpdate;
+    new UserControllerApi().updateCredentials({ id: props.id, userCredentialsUpdate: userCredentials }, { credentials: "include" });
+  }
+  const deleteUser = () => new UserControllerApi()._delete({ id: props.id! }, { credentials: 'include' });
+  const banUser = () => new UserControllerApi().banUser({ id: props.id! }, { credentials: 'include' });
+  const unbanUser = () => new UserControllerApi().unbanUser({ id: props.id! }, { credentials: 'include' });
+  const changeRole = () => new UserControllerApi().updateRole({ id: props.id!, userRoleUpdate: { role: selectedRole } });
 
   return (
     <Box
@@ -59,6 +76,7 @@ export default function ProfileBox(props: IProfileBox) {
               Dodaj zdjęcie
             </Button>
             <Button
+              onClick={() => setChangePasswordMode(true)}
               disableElevation
               variant="outlined"
               color="secondary"
@@ -76,6 +94,7 @@ export default function ProfileBox(props: IProfileBox) {
           isAdmin &&
           <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
             <Button
+              onClick={() => deleteUser()}
               variant="contained"
               color="warning"
               sx={{
@@ -85,29 +104,17 @@ export default function ProfileBox(props: IProfileBox) {
             >
               Usuń użytkownika
             </Button>
-            {
-              props.banned ?
-                <Button
-                  variant="contained"
-                  color="warning"
-                  sx={{
-                    borderColor: "secondary.main",
-                    width: "45%",
-                  }}
-                >
-                  Odbanuj użytkownika
-                </Button> :
-                <Button
-                  variant="contained"
-                  color="warning"
-                  sx={{
-                    borderColor: "secondary.main",
-                    width: "45%",
-                  }}
-                >
-                  Zbanuj użytkownika
-                </Button>
-            }
+            <Button
+              onClick={props.banned ? () => unbanUser() : () => banUser()}
+              variant="contained"
+              color="warning"
+              sx={{
+                borderColor: "secondary.main",
+                width: "45%",
+              }}
+            >
+              {props.banned ? "Odbanuj" : "Zbanuj"}
+            </Button>
           </div>
         }
         {
@@ -116,13 +123,22 @@ export default function ProfileBox(props: IProfileBox) {
             <Select
               value={selectedRole}
               onChange={(val) => setSelectedRole(val.target.value)}
-              sx={{ width: "45%", height: "36.5px", textAlign: "center" }}
+              variant="outlined"
+              color="secondary"
+              sx={{
+                color: "text.primary",
+                borderColor: "secondary.main",
+                width: "45%",
+                height: "36.5px",
+                textAlign: "center"
+              }}
             >
               <MenuItem value="ADMIN">ADMIN</MenuItem>
               <MenuItem value="EDITOR">EDITOR</MenuItem>
               <MenuItem value="USER">USER</MenuItem>
             </Select>
             <Button
+              onClick={() => changeRole()}
               variant="contained"
               color="warning"
               sx={{
