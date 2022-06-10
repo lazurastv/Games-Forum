@@ -27,13 +27,16 @@ import {
     ArticleVM,
     ArticleVMFromJSON,
     ArticleVMToJSON,
-    ContentId,
-    ContentIdFromJSON,
-    ContentIdToJSON,
 } from '../models';
 
 export interface AddArticleRequest {
     articleAddUpdate: ArticleAddUpdate;
+}
+
+export interface AddArticleWithImagesRequest {
+    articleId: number;
+    content: string;
+    files?: Array<Blob>;
 }
 
 export interface DeleteArticleRequest {
@@ -64,7 +67,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ContentId>> {
+    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
             throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
         }
@@ -83,14 +86,53 @@ export class ArticleControllerApi extends runtime.BaseAPI {
             body: ArticleAddUpdateToJSON(requestParameters.articleAddUpdate),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ContentIdFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      */
-    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<ContentId> {
+    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<string> {
         const response = await this.addArticleRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     */
+    async addArticleWithImagesRaw(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addArticleWithImages.');
+        }
+
+        if (requestParameters.content === null || requestParameters.content === undefined) {
+            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addArticleWithImages.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.content !== undefined) {
+            queryParameters['content'] = requestParameters.content;
+        }
+
+        if (requestParameters.files) {
+            queryParameters['files'] = requestParameters.files;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/article/upload-content-and-images/{articleId}`.replace(`{${"articleId"}}`, encodeURIComponent(String(requestParameters.articleId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async addArticleWithImages(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addArticleWithImagesRaw(requestParameters, initOverrides);
     }
 
     /**
