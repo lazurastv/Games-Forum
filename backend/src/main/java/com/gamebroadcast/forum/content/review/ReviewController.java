@@ -1,5 +1,6 @@
 package com.gamebroadcast.forum.content.review;
 
+import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
@@ -7,13 +8,17 @@ import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
+import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,6 +28,7 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final FileService fileService;
 
     @GetMapping
     public List<ReviewVM> getAllReviews() {
@@ -60,9 +66,28 @@ public class ReviewController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addReview(@RequestBody ReviewAdd newReview) {
+    public Long addReview(@RequestBody ReviewAdd newReview) {
         try {
-            reviewService.addReview(newReview);
+            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            Long id = reviewService.addReview(newReview, path);
+            return id;
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/upload-content-and-images/{reviewId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('EDITOR')")
+    public void addArticleWithImages(@PathVariable("reviewId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        try {
+            System.out.println(content);
+            ReviewVM review =  reviewService.getReviewById(articleId);
+            String path = review.path;
+            fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

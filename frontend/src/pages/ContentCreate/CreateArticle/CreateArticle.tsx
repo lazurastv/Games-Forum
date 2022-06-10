@@ -34,7 +34,7 @@ export default function CreateArticle() {
     };
 
     let id:number = NaN;
-    await uploadArticle(article).then(obj => id = obj.id).then(() => setIsOpen({ ...isOpen, ok: true }))
+    await uploadArticle(article).then(obj => id = JSON.parse(obj).id).then(() => setIsOpen({ ...isOpen, ok: true }))
       .catch(err => console.log(err)).catch(() => setIsOpen({ ...isOpen, error: true }));
 
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;

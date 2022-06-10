@@ -86,7 +86,7 @@ public class FileService {
         return hash;
     }
 
-    public void saveNewContentFiles(String hash, String content, MultipartFile[] files, String username) {
+    public void saveNewContentFiles(String hash, String content, MultipartFile[] files) {
         try {
             if (files != null) {
                 for (long i = 0L; i < files.length; i++) {

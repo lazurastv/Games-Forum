@@ -54,12 +54,14 @@ public class ReviewService {
         return new ReviewFullInfoVM(review);
     }
 
-    public void addReview(ReviewAdd reviewAdd) {
+    public Long addReview(ReviewAdd reviewAdd, String path) {
         checkIfTitleIsUnique(reviewAdd.title);
         Game game = gameService.getGame(reviewAdd.gameId);
         Review review = reviewAdd.toReview(game);
+        review.setPath(path);
         review.publish();
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        return savedReview.getId();
     }
 
     @Transactional

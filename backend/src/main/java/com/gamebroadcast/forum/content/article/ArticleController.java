@@ -82,11 +82,9 @@ public class ArticleController {
     @PreAuthorize("hasRole('EDITOR')")
     public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            System.out.println(content);
             ArticleVM article =  articleService.getArticleById(articleId);
             String path = article.path;
-            fileService.saveNewContentFiles(path, content, files,
-                    SecurityContextHolder.getContext().getAuthentication().getName());
+            fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
