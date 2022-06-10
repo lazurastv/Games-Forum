@@ -7,6 +7,7 @@ interface IProfileBox {
   username: string;
   role: string;
   image: string;
+  banned: boolean;
 }
 
 export default function ProfileBox(props: IProfileBox) {
@@ -84,16 +85,29 @@ export default function ProfileBox(props: IProfileBox) {
             >
               Usuń użytkownika
             </Button>
-            <Button
-              variant="contained"
-              color="warning"
-              sx={{
-                borderColor: "secondary.main",
-                width: "45%",
-              }}
-            >
-              Zbanuj użytkownika
-            </Button>
+            {
+              props.banned ?
+                <Button
+                  variant="contained"
+                  color="warning"
+                  sx={{
+                    borderColor: "secondary.main",
+                    width: "45%",
+                  }}
+                >
+                  Odbanuj użytkownika
+                </Button> :
+                <Button
+                  variant="contained"
+                  color="warning"
+                  sx={{
+                    borderColor: "secondary.main",
+                    width: "45%",
+                  }}
+                >
+                  Zbanuj użytkownika
+                </Button>
+            }
           </div>
         }
         {

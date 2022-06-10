@@ -19,6 +19,7 @@ const Profile = ({ user }: { user: UserVM }) => {
             username={user.username!}
             role={user.role!}
             image={`${NGINX_URL}/${user.profilePicturePath}/profile.png`}
+            banned={user.banned!}
           />
         </Grid>
         <Grid item xs={12} sm={12} md sx={{ minWidth: 0 }}>
