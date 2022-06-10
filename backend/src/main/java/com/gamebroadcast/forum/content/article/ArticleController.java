@@ -10,6 +10,7 @@ import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,11 +74,15 @@ public class ArticleController {
         }
     }
 
-    @PostMapping(path = "/upload_content-and-images/{articleId}")
+    @PostMapping(path = "/upload-content-and-images/{articleId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam("files") MultipartFile[] files) {
+    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
+            System.out.println(content);
             ArticleVM article =  articleService.getArticleById(articleId);
             String path = article.path;
             fileService.saveNewContentFiles(path, content, files,
@@ -114,19 +119,6 @@ public class ArticleController {
             throw new ApiRequestException(e.getMessage());
         }
     }
-
-//    @PostMapping(
-//            path = "/upload/{articleId}/{imageId}",
-//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE
-//    )
-//    @PreAuthorize("hasRole('EDITOR')")
-//    public void uploadUserImage(@RequestParam("file") MultipartFile file,
-//                                       @PathVariable("articleId") Long articleId,
-//                                       @PathVariable("imageId") Long imageId) {
-//
-//        articleService.addImage(file, articleId, imageId);
-//    }
 
     private boolean sessionUserCanEditArticle(Long id) {
         return articleService.sessionUserIsOwner(id);

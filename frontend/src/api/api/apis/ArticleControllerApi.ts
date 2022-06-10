@@ -27,6 +27,9 @@ import {
     ArticleVM,
     ArticleVMFromJSON,
     ArticleVMToJSON,
+    ContentId,
+    ContentIdFromJSON,
+    ContentIdToJSON,
 } from '../models';
 
 export interface AddArticleRequest {
@@ -61,7 +64,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.JSONApiResponse<string>> {
+    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<ContentId>> {
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
             throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
         }
@@ -80,13 +83,14 @@ export class ArticleControllerApi extends runtime.BaseAPI {
             body: ArticleAddUpdateToJSON(requestParameters.articleAddUpdate),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ArticleVMFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ContentIdFromJSON(jsonValue));
     }
 
     /**
      */
-    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.addArticleRaw(requestParameters, initOverrides);
+    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<ContentId> {
+        const response = await this.addArticleRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

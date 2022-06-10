@@ -160,7 +160,7 @@ export default function CreateGame() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra zoztała zapizana."} handleClose={function (): void {
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra zoztała zapisana."} handleClose={function (): void {
         setIsOpen({...isOpen, ok: false});
       } } />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Gra nie została zapisana."} handleClose={function (): void {

@@ -9,6 +9,7 @@ export * from './ChatMessageVM';
 export * from './CommentAdd';
 export * from './CommentUpdate';
 export * from './CommentVM';
+export * from './ContentId';
 export * from './GameAddUpdate';
 export * from './GameFullInfoVM';
 export * from './GameSearchInfoVM';

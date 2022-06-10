@@ -94,7 +94,7 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapizana."} handleClose={function (): void {
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapisana."} handleClose={function (): void {
         setIsOpen({...isOpen, ok: false});
       } } />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {

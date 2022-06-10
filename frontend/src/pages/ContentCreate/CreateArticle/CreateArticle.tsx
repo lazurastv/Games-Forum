@@ -33,26 +33,23 @@ export default function CreateArticle() {
       content: editorToString(editorState),
     };
 
-    uploadArticle(article).then(() => setIsOpen({ ...isOpen, ok: true })).catch(() => setIsOpen({ ...isOpen, error: true }));
+    let id:number = NaN;
+    await uploadArticle(article).then(obj => id = obj.id).then(() => setIsOpen({ ...isOpen, ok: true }))
+      .catch(err => console.log(err)).catch(() => setIsOpen({ ...isOpen, error: true }));
 
-    // let list = convertToRaw(editorState.getCurrentContent()).entityMap;
-    // let formData: FormData = new FormData();
-    // for (let key in list) {
-    //   console.log(list[key].data.src);
-    //   await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-    //     formData.append("files", blob);
-    //   });
-    // }
-
-    // formData.append("content", editorToString(editorState));
-
-    // fetch('http://localhost:8080/api/article/with-images', {
-    //   method: "POST",
-    //   body: formData,
-    //   credentials: "include"
-    // }).then(res => res.json())
-    //   .then(data => console.log(data))
-    //   .catch(err => alert(err));
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+    fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
+      method: "POST",
+      body: formData,
+      credentials: "include"
+    }).catch(err => alert(err));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -92,15 +89,7 @@ export default function CreateArticle() {
           </Button>
         </Box>
       </Box>
-{/* <<<<<<< HEAD
-      <ArticleSavedPopup open={isOpen.ok} handleClose={function (): void {
-        setIsOpen({ ...isOpen, ok: false });
-      }} />
-      <ArticleSaveErrorPopup open={isOpen.error} handleClose={function (): void {
-        setIsOpen({ ...isOpen, error: false });
-      }} />
-======= */}
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Artykuł zoztał zapizany."} handleClose={function (): void {
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Artykuł zoztał zapisany."} handleClose={function (): void {
         setIsOpen({...isOpen, ok: false});
       } } />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Artykuł nie został zapisany."} handleClose={function (): void {

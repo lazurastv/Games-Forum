@@ -14,7 +14,6 @@ import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,9 +53,10 @@ public class ArticleService {
     public Long addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
         Article article = articleAdd.toArticle();
+        article.setPath(path);
         article.publish();
         Article savedArticle = articleRepository.save(article);
-        return article.getId();
+        return savedArticle.getId();
     }
 
     @Transactional

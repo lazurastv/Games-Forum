@@ -15,7 +15,8 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class FileService {
     //@Value("${fileservice.path}")
-    private final String PATH = "src\\main\\resources\\content";
+    private final String DRIVE_PATH = "src\\main\\resources\\static\\content";
+    private final String URL_PATH = "http://localhost:8080/content";
 
     public String getUniqueName(String username) {
         String phrase = username + System.currentTimeMillis();
@@ -45,8 +46,8 @@ public class FileService {
 
     }
     public void writeContent(String hash, String htmlContent) {
-        createFolder(PATH + "\\" + hash);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(PATH + "\\" + hash + "\\" + "content.json"))) {
+        createFolder(DRIVE_PATH + "\\" + hash);
+        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(DRIVE_PATH + "\\" + hash + "\\" + "content.json"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
@@ -62,7 +63,7 @@ public class FileService {
     }
 
     public String saveImage(MultipartFile multipartFile, String hash, String imageName) throws IOException {
-        String path = PATH + "\\" + hash;
+        String path = DRIVE_PATH + "\\" + hash;
         createFolder(path);
 
         // TODO try with transferTo on nginx
@@ -76,7 +77,7 @@ public class FileService {
             outStream.write(buffer);
         }
 
-        return path;
+        return URL_PATH + "/" + hash + "/" + imageName;
     }
 
     public String saveNewContent(String content, String username) {
@@ -87,9 +88,11 @@ public class FileService {
 
     public void saveNewContentFiles(String hash, String content, MultipartFile[] files, String username) {
         try {
-            for (long i = 0L; i < files.length; i++) {
-                String path = saveImage(files[(int)i], hash, "image" + i + ".png");
-                content = changeUrlInJson(content, path, i);
+            if (files != null) {
+                for (long i = 0L; i < files.length; i++) {
+                    String path = saveImage(files[(int) i], hash, "image" + i + ".png");
+                    content = changeUrlInJson(content, path, i);
+                }
             }
             writeContent(hash, content);
         } catch (JsonProcessingException e) {
@@ -97,12 +100,5 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) throws JsonProcessingException {
-        String json = "{\"a\": \"aaa\", \"b\": \"bbb\", \"entityMap\": { \"0\": {\"data\": {\"src\": \"Ala ma kota\"}}} }";
-        FileService fileService = new FileService();
-        json = fileService.changeUrlInJson(json, "Ola ma psa", 0L);
-        System.out.println(json);
     }
 }
