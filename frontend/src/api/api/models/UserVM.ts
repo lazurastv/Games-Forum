@@ -61,6 +61,12 @@ export interface UserVM {
      * @memberof UserVM
      */
     commentCount?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserVM
+     */
+    banned?: boolean;
 }
 
 export function UserVMFromJSON(json: any): UserVM {
@@ -80,6 +86,7 @@ export function UserVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): Us
         'profilePicturePath': !exists(json, 'profilePicturePath') ? undefined : json['profilePicturePath'],
         'role': !exists(json, 'role') ? undefined : json['role'],
         'commentCount': !exists(json, 'commentCount') ? undefined : json['commentCount'],
+        'banned': !exists(json, 'banned') ? undefined : json['banned'],
     };
 }
 
@@ -99,6 +106,7 @@ export function UserVMToJSON(value?: UserVM | null): any {
         'profilePicturePath': value.profilePicturePath,
         'role': value.role,
         'commentCount': value.commentCount,
+        'banned': value.banned,
     };
 }
 
