@@ -1,8 +1,10 @@
 import { Avatar, Button, MenuItem, Select } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { useState } from "react";
-import { BanUserRequest, UpdateCredentialsRequest, UpdateRoleRequest, UserControllerApi, UserCredentialsUpdate, UserRoleUpdate } from "../../api/api";
+import { UserControllerApi } from "../../api/api";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
+import PasswordPopup from "./PasswordPopup";
+import 'reactjs-popup/dist/index.css';
 
 interface IProfileBox {
   id: number;
@@ -98,19 +100,7 @@ export default function ProfileBox(props: IProfileBox) {
             <Button variant="contained" component="span" color="secondary" sx={{ width: "45%" }}>
               Dodaj zdjęcie
             </Button>
-            <Button
-              onClick={() => setChangePasswordInfo({ ...changePasswordInfo, editing: true })}
-              disableElevation
-              variant="outlined"
-              color="secondary"
-              sx={{
-                color: "text.primary",
-                borderColor: "secondary.main",
-                width: "45%",
-              }}
-            >
-              Zmień hasło
-            </Button>
+            <PasswordPopup id={props.id} />
           </div>
         }
         {

@@ -1,6 +1,5 @@
-import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import Container from "@mui/material/Container";
-import MultilineTruncatedText from "../../components/MultilineTruncatedText";
 import { styled } from "@mui/material/styles";
 import { loadUser } from "../../fetchData/fetchUser";
 import { UserVM } from "../../api/api";
