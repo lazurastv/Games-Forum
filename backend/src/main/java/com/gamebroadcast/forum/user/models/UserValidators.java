@@ -4,8 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
-
-import org.springframework.context.support.BeanDefinitionDsl.Role;
+import com.gamebroadcast.forum.security.Role;
 
 public class UserValidators {
 

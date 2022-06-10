@@ -23,6 +23,7 @@ export default function ProfileBox(props: IProfileBox) {
   const isAdmin = session?.role === "ADMIN";
 
   const [selectedRole, setSelectedRole] = useState(props.role);
+
   const [changePasswordMode, setChangePasswordMode] = useState(false);
   const changePassword = () => {
     const userCredentials = {
@@ -34,10 +35,22 @@ export default function ProfileBox(props: IProfileBox) {
     } as UserCredentialsUpdate;
     new UserControllerApi().updateCredentials({ id: props.id, userCredentialsUpdate: userCredentials }, { credentials: "include" });
   }
-  const deleteUser = () => new UserControllerApi()._delete({ id: props.id! }, { credentials: 'include' });
-  const banUser = () => new UserControllerApi().banUser({ id: props.id! }, { credentials: 'include' });
-  const unbanUser = () => new UserControllerApi().unbanUser({ id: props.id! }, { credentials: 'include' });
-  const changeRole = () => new UserControllerApi().updateRole({ id: props.id!, userRoleUpdate: { role: selectedRole } });
+  const deleteUser = async () => {
+    await new UserControllerApi()._delete({ id: props.id }, { credentials: 'include' });
+    window.location.replace("http://localhost:3000/");
+  }
+  const banUser = async () => {
+    await new UserControllerApi().banUser({ id: props.id }, { credentials: 'include' });
+    window.location.reload();
+  };
+  const unbanUser = async () => {
+    await new UserControllerApi().unbanUser({ id: props.id }, { credentials: 'include' });
+    window.location.reload();
+  };
+  const changeRole = async () => {
+    await new UserControllerApi().updateRole({ id: props.id, userRoleUpdate: { role: selectedRole } }, { credentials: 'include' });
+    window.location.reload();
+  }
 
   return (
     <Box
