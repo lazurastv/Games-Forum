@@ -1,6 +1,6 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -51,6 +51,8 @@ function App() {
     role: session.user?.role,
     authenticationPath: "/logowanie",
   };
+
+  useEffect(() => { document.title = "Forum Graczy" }, []);
 
   return (
     <BrowserRouter>
