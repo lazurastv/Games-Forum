@@ -62,15 +62,15 @@ public class UserService {
 
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
         boolean requirePasswordConfirmation = false;
-        if (userUpdate.username != "") {
+        if (userUpdate.username != null) {
             UserValidators.checkUsername(userUpdate.username);
             requirePasswordConfirmation = true;
         }
-        if (userUpdate.username != "") {
+        if (userUpdate.email != null) {
             UserValidators.checkEmail(userUpdate.email);
             requirePasswordConfirmation = true;
         }
-        if (userUpdate.password != "") {
+        if (userUpdate.password != null) {
             UserValidators.checkPassword(userUpdate.password);
             userUpdate.password = passwordEncoder.encode(userUpdate.password);
             requirePasswordConfirmation = true;
@@ -79,9 +79,11 @@ public class UserService {
 
         AppUser user = getUser(id);
 
-        if(requirePasswordConfirmation && !SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {  // should be changed to a better solution
-            if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword()))
-            {
+        if (requirePasswordConfirmation && !SessionUtils.getUserFromSession().getRole().equals("ADMIN")) { // should be
+                                                                                                           // changed to
+                                                                                                           // a better
+                                                                                                           // solution
+            if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword())) {
                 throw new InvalidInputException("Current password doesn't match.");
             }
         }

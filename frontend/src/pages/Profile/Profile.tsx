@@ -25,6 +25,7 @@ const Profile = ({ user }: { user: UserVM }) => {
         </Grid>
         <Grid item xs={12} sm={12} md sx={{ minWidth: 0 }}>
           <ProfileDataBox
+            id={user.id!}
             username={user.username!}
             email={user.email!}
             numberOfComments={user.commentCount!}

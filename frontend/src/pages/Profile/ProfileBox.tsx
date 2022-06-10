@@ -12,6 +12,13 @@ interface IProfileBox {
   banned: boolean;
 }
 
+interface IChangePasswordInfo {
+  editing: boolean;
+  oldPassword: string;
+  newPassword: string;
+  newPasswordRepeat: string;
+}
+
 export default function ProfileBox(props: IProfileBox) {
   const usernameFontSize = { xs: 24, sm: 32, md: 30 };
   const roleFontSize = { xs: 16, sm: 18, md: 18 };
@@ -24,33 +31,36 @@ export default function ProfileBox(props: IProfileBox) {
 
   const [selectedRole, setSelectedRole] = useState(props.role);
 
-  const [changePasswordMode, setChangePasswordMode] = useState(false);
+  const [changePasswordInfo, setChangePasswordInfo] = useState<IChangePasswordInfo>({ editing: false, oldPassword: "", newPassword: "", newPasswordRepeat: "" });
   const changePassword = () => {
-    const userCredentials = {
-      username: session?.username,
-      email: session?.email,
-      password: "a",
-      shortDescription: session?.shortDescription,
-      currentPassword: "aa"
-    } as UserCredentialsUpdate;
-    new UserControllerApi().updateCredentials({ id: props.id, userCredentialsUpdate: userCredentials }, { credentials: "include" });
-  }
+    new UserControllerApi().updateCredentials({
+      id: props.id,
+      userCredentialsUpdate: {
+        password: changePasswordInfo.newPassword,
+        currentPassword: changePasswordInfo.oldPassword
+      }
+    }, { credentials: "include" });
+  };
+
   const deleteUser = async () => {
     await new UserControllerApi()._delete({ id: props.id }, { credentials: 'include' });
     window.location.replace("http://localhost:3000/");
-  }
+  };
+
   const banUser = async () => {
     await new UserControllerApi().banUser({ id: props.id }, { credentials: 'include' });
     window.location.reload();
   };
+
   const unbanUser = async () => {
     await new UserControllerApi().unbanUser({ id: props.id }, { credentials: 'include' });
     window.location.reload();
   };
+
   const changeRole = async () => {
     await new UserControllerApi().updateRole({ id: props.id, userRoleUpdate: { role: selectedRole } }, { credentials: 'include' });
     window.location.reload();
-  }
+  };
 
   return (
     <Box
@@ -89,7 +99,7 @@ export default function ProfileBox(props: IProfileBox) {
               Dodaj zdjęcie
             </Button>
             <Button
-              onClick={() => setChangePasswordMode(true)}
+              onClick={() => setChangePasswordInfo({ ...changePasswordInfo, editing: true })}
               disableElevation
               variant="outlined"
               color="secondary"
