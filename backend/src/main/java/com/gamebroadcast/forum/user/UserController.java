@@ -2,7 +2,6 @@ package com.gamebroadcast.forum.user;
 
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
-import com.gamebroadcast.forum.mail.VerificationToken;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserRoleUpdate;
@@ -76,6 +75,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/regitrationConfirm/{token}")
+    @ResponseStatus(value = HttpStatus.OK)
     public void confirmRegistration(@PathVariable("token") String token) {
 
         try {

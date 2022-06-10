@@ -1,7 +1,7 @@
 package com.gamebroadcast.forum.exceptions;
 
 public class TokenInvalidException extends RuntimeException {
-    TokenInvalidException() {
+    public TokenInvalidException() {
         super("Token is invalid.");
     }
     

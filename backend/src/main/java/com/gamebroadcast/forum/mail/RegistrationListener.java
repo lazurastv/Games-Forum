@@ -2,6 +2,7 @@ package com.gamebroadcast.forum.mail;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class RegistrationListener implements 
   ApplicationListener<OnRegistrationCompleteEvent> {
  
+    @Autowired
     private UserService service;
+    @Autowired
     private JavaMailSender mailSender;
 
     @Override
@@ -33,14 +36,13 @@ public class RegistrationListener implements
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
         String confirmationUrl 
-          = event.getAppUrl() + "/regitrationConfirm?token=" + token;
-        String message = "";
+          = event.getAppUrl() + "/api/user/regitrationConfirm/" + token;
         
         SimpleMailMessage email = new SimpleMailMessage();
         email.setFrom("noreply@gmail.com");
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setText("http://localhost:8080" + confirmationUrl);
         mailSender.send(email);
     }
 }

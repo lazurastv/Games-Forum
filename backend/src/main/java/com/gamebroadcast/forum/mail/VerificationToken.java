@@ -16,10 +16,14 @@ import javax.persistence.SequenceGenerator;
 
 import com.gamebroadcast.forum.user.schemas.AppUser;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class VerificationToken {
     private static final int EXPIRATION = 60 * 24;
 
@@ -29,12 +33,14 @@ public class VerificationToken {
     @Column(updatable = false)
     private Long id;
     
+    @Column(nullable = false)
     private String token;
   
     @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private AppUser user;
     
+    @Column(nullable = false)
     private Date expiryDate;
    
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
