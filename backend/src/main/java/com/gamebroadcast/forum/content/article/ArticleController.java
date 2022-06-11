@@ -63,7 +63,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
     public Long addArticle(@RequestBody ArticleAddUpdate newArticle) {
         try {

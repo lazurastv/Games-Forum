@@ -62,7 +62,7 @@ public class GameController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
     public Long addGame(@RequestBody GameAddUpdate newGame) {
         try {
@@ -74,15 +74,15 @@ public class GameController {
         }
     }
 
-    @PostMapping(path = "/upload-content-and-images/{articleId}",
+    @PostMapping(path = "/upload-content-and-images/{gameId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addGameContentWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+    public void addGameContentWithImages(@PathVariable("gameId") Long gameId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            GameVM game =  gameService.getGameById(articleId);
+            GameVM game =  gameService.getGameById(gameId);
             String path = game.path;
             fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {

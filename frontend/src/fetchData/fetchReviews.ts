@@ -20,7 +20,7 @@ async function deleteReview(id: number) {
 }
 async function uploadReview(review: ReviewAdd, files: FormData) {
   const reviews = new ReviewControllerApi();
-  const id: number = await reviews.addReview({ reviewAdd: review }, { credentials: "include" })
+  const id: number = await reviews.addReview({ reviewAdd: review }, { credentials: "include" });
   fetch(`http://localhost:8080/api/review/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,

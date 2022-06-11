@@ -1,5 +1,6 @@
 import { Avatar, Button } from "@mui/material";
 import { Box, styled } from "@mui/system";
+import { useState } from "react";
 
 interface IProfileBox {
   username: string;
@@ -12,6 +13,18 @@ export default function ProfileBox(props: IProfileBox) {
   const roleFontSize = { xs: 16, sm: 18, md: 18 };
   const imageSize = { xs: 150, sm: 250, md: 250 };
   const profileBoxWidth = { xs: "auto", sm: "auto", md: 500 };
+
+  const [file, setFile] = useState(null);
+
+  const handelFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleUpload = () => {
+    let formData = new FormData();
+    formData.append("")
+  };
+
   return (
     <Box
       sx={{

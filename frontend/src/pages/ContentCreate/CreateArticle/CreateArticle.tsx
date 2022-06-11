@@ -42,7 +42,7 @@ export default function CreateArticle() {
       });
     }
 
-    await uploadArticle(article, formData).then(() => setIsOpen({ ...isOpen, ok: true }))
+    uploadArticle(article, formData).then(() => setIsOpen({ ...isOpen, ok: true }))
       .catch(err => console.log(err)).catch(() => setIsOpen({ ...isOpen, error: true }));
   };
   return (

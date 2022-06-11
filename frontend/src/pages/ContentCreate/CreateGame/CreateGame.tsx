@@ -15,6 +15,9 @@ import DatePicker from "../components/DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
 import { game } from "../../../data-mock/gameDataDictionary";
 import SimplePopup from "../../../components/Popups/SimplePopup";
+// temp
+import { convertToRaw } from "draft-js";
+
 const checkboxGroup = [
   {
     name: "Gatunek",
@@ -69,8 +72,17 @@ export default function CreateGame() {
     //
     // TODO obsługa błędów
     //
-    console.log(game);
-    uploadGame(game).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+
+    uploadGame(game, formData).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
