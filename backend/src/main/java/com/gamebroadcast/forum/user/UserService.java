@@ -11,8 +11,11 @@ import com.gamebroadcast.forum.user.models.UserValidators;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EntityManager entityManager;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(getUser(id));
@@ -107,10 +111,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void banUser(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
         user.setLocked(true);
         userRepository.save(user);
+        logoutUser(user.getUsername());
     }
 
     public void unbanUser(Long id) throws IllegalStateException {
@@ -119,9 +125,18 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void delete(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
+        logoutUser(user.getUsername());
         userRepository.delete(user);
+    }
+
+    private void logoutUser(String username) {
+        entityManager
+                .createNativeQuery("delete from spring_session where principal_name = :username")
+                .setParameter("username", username)
+                .executeUpdate();
     }
 
     public boolean sessionUserIsOwner(Long id) {
