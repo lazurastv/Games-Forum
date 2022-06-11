@@ -76,10 +76,11 @@ public class UserController {
 
     @GetMapping(path = "/regitrationConfirm/{token}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void confirmRegistration(@PathVariable("token") String token) {
+    public String confirmRegistration(@PathVariable("token") String token) {
 
         try {
             userService.checkToken(token);
+            return("Account activated");
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
