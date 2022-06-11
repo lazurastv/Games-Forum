@@ -132,6 +132,13 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    private void logoutUser(String username) {
+        entityManager
+                .createNativeQuery("delete from spring_session where principal_name = :username")
+                .setParameter("username", username)
+                .executeUpdate();
+    }
+
     public boolean sessionUserIsOwner(Long id) {
         return getUser(id).equals(SessionUtils.getUserFromSession());
     }
@@ -139,13 +146,6 @@ public class UserService {
     public AppUser getUser(Long id) {
         return (userRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException("User", "id", Long.toString(id))));
-    }
-
-    private void logoutUser(String username) {
-        entityManager
-                .createNativeQuery("delete from spring_session where principal_name = :username")
-                .setParameter("username", username)
-                .executeUpdate();
     }
 
     private boolean usernameExists(String username) {
