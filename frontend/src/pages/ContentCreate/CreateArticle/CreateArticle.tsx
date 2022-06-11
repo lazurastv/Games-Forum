@@ -33,10 +33,6 @@ export default function CreateArticle() {
       content: editorToString(editorState),
     };
 
-    let id:number = NaN;
-    await uploadArticle(article).then(obj => id = JSON.parse(obj).id).then(() => setIsOpen({ ...isOpen, ok: true }))
-      .catch(err => console.log(err)).catch(() => setIsOpen({ ...isOpen, error: true }));
-
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
@@ -45,11 +41,9 @@ export default function CreateArticle() {
         formData.append("files", blob);
       });
     }
-    fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
-      method: "POST",
-      body: formData,
-      credentials: "include"
-    }).catch(err => alert(err));
+
+    await uploadArticle(article, formData).then(() => setIsOpen({ ...isOpen, ok: true }))
+      .catch(err => console.log(err)).catch(() => setIsOpen({ ...isOpen, error: true }));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>

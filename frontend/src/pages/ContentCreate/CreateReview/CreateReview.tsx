@@ -14,6 +14,9 @@ import OneLineInput from "../components/OneLineInput";
 import { ReviewAdd } from "../../../api/api";
 import SimplePopup from "../../../components/Popups/SimplePopup";
 
+// temp
+import { convertToRaw } from "draft-js";
+
 export interface PopupsState {
   ok: boolean;
   error: boolean;
@@ -28,9 +31,6 @@ export default function CreateReview() {
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
   const handleSave = async () => {
-    //
-    // TODO obsługa błędów
-    // //
     const review: ReviewAdd = {
       gameId: 7,
       title: title,
@@ -40,11 +40,17 @@ export default function CreateReview() {
       pluses: pluses,
       minuses: minuses,
     };
-    uploadReview(review).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));;
-    // .catch(
-    //   (e) => console.error(e)
-    // );
-    // const rev:any = await loadReview(12);
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+
+    uploadReview(review, formData).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>

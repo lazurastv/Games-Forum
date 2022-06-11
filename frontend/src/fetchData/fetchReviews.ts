@@ -18,13 +18,13 @@ async function deleteReview(id: number) {
   const reviews = new ReviewControllerApi();
   return reviews.deleteReview({ reviewId: id }, { credentials: "include" });
 }
-async function uploadReview(review: ReviewAdd) {
+async function uploadReview(review: ReviewAdd, files: FormData) {
   const reviews = new ReviewControllerApi();
-  return reviews
-    .addReview({ reviewAdd: review }, { credentials: "include" })
-    .then((result) => reviews.getAllReviews())
-    .then((result) => {
-      result.forEach((x) => console.log(x));
-    });
+  const id: number = await reviews.addReview({ reviewAdd: review }, { credentials: "include" })
+  fetch(`http://localhost:8080/api/review/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
 }
 export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews, deleteReview };

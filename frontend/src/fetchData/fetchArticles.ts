@@ -15,9 +15,13 @@ async function deleteArticle(id: number): Promise<void> {
   const articles = new ArticleControllerApi();
   return articles.deleteArticle({ articleId: id }, { credentials: "include" });
 }
-async function uploadArticle(article: ArticleAddUpdate) {
+async function uploadArticle(article: ArticleAddUpdate, files: FormData) {
   const articles = new ArticleControllerApi();
-  return articles
-    .addArticle({ articleAddUpdate: article }, { credentials: "include" })
+  const id = await articles.addArticle({ articleAddUpdate: article }, { credentials: "include" })
+  fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
 }
 export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle };

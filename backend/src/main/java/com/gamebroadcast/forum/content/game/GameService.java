@@ -50,11 +50,13 @@ public class GameService {
         return new GameFullInfoVM(game);
     }
 
-    public void addGame(GameAddUpdate gameAdd) {
+    public Long addGame(GameAddUpdate gameAdd, String path) {
         checkIfTitleIsUnique(gameAdd.title);
         Game game = gameAdd.toGame();
+        game.setPath(path);
         game.publish();
-        gameRepository.save(game);
+        Game savedGame = gameRepository.save(game);
+        return savedGame.getId();
     }
 
     @Transactional

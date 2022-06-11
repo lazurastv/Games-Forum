@@ -63,12 +63,13 @@ public class ArticleController {
     }
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('EDITOR')")
-    public ResponseEntity<String> addArticle(@RequestBody ArticleAddUpdate newArticle) {
+    public Long addArticle(@RequestBody ArticleAddUpdate newArticle) {
         try {
             String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
             Long id = articleService.addArticle(newArticle, path);
-            return ResponseEntity.status(HttpStatus.CREATED).body("{\"id\": \"" + id + "\"}");
+            return id;
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

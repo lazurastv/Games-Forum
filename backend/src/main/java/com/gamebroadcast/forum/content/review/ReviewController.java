@@ -1,6 +1,5 @@
 package com.gamebroadcast.forum.content.review;
 
-import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
@@ -82,9 +81,8 @@ public class ReviewController {
     )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticleWithImages(@PathVariable("reviewId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+    public void addReviewWithImages(@PathVariable("reviewId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            System.out.println(content);
             ReviewVM review =  reviewService.getReviewById(articleId);
             String path = review.path;
             fileService.saveNewContentFiles(path, content, files);

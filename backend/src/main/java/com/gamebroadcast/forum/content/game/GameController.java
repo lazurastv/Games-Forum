@@ -6,13 +6,17 @@ import com.gamebroadcast.forum.content.game.models.GameSearchInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
+import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class GameController {
 
     private final GameService gameService;
+    private final FileService fileService;
 
     @GetMapping
     public List<GameVM> getAllGames() {
@@ -57,11 +62,29 @@ public class GameController {
     }
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('EDITOR')")
+    public Long addGame(@RequestBody GameAddUpdate newGame) {
+        try {
+            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            Long id = gameService.addGame(newGame, path);
+            return id;
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/upload-content-and-images/{articleId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addGame(@RequestBody GameAddUpdate newGame) {
+    public void addGameContentWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            gameService.addGame(newGame);
+            GameVM game =  gameService.getGameById(articleId);
+            String path = game.path;
+            fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
