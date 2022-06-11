@@ -108,7 +108,7 @@ function Game({ game }: { game: GameFullInfoPlusContent }) {
                     ...styles.score,
                   }}
                 >
-                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(0)}/10
+                  {game.userScore && isNaN(game.editorScore!) ? "?" : game.editorScore?.toFixed(0)}/10
                 </Typography>
               </Box>
               <Box>

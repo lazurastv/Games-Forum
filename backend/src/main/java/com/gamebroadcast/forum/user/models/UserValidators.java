@@ -4,8 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
-
-import org.springframework.context.support.BeanDefinitionDsl.Role;
+import com.gamebroadcast.forum.security.Role;
 
 public class UserValidators {
 
@@ -13,7 +12,7 @@ public class UserValidators {
         final String USERNAME_PATTERN = "^[\\p{L}]+([\\p{L}0-9_-]+)$";
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
         Matcher matcher = pattern.matcher(username);
-        if (username == null) {
+        if (username == "") {
             throw new InvalidInputException("Username is required.");
         } else if (username.length() > 60) {
             throw new InvalidInputException("Username is too long.");
@@ -27,7 +26,7 @@ public class UserValidators {
                 + "[a-zA-Z0-9][a-zA-Z0-9-]*(\\.[a-zA-Z0-9_+-]+)+$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
-        if (email == null) {
+        if (email == "") {
             throw new InvalidInputException("Email is required.");
         } else if (email.length() > 254) {
             throw new InvalidInputException("Email is too long.");
@@ -41,7 +40,7 @@ public class UserValidators {
                 + "(?=.*[@#$^&%+=\\-_?!*(){}<>,\\./\\\\\\[\\]])(?=\\S+$).{8,}$"; // /
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
-        if (password == null) {
+        if (password == "") {
             throw new InvalidInputException("Password is required.");
         } else if (!matcher.matches()) {
             throw new InvalidInputException("Invalid password.");
