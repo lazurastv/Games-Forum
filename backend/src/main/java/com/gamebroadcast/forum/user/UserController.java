@@ -138,7 +138,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('EDITOR')")
+    @PreAuthorize("hasRole('USER')")
     public void addUserImage(@PathVariable("userId") Long userId, @RequestParam(value = "image") MultipartFile profilePicture) {
         try {
             System.out.println(profilePicture);

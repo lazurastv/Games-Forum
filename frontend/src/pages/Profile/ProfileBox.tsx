@@ -50,12 +50,16 @@ export default function ProfileBox(props: IProfileBox) {
     //await setProfileImage(event.target.file[0]);
     let formData: FormData = new FormData();
     //formData.append("image", event.target.value);
-    formData.append("image", "jfdsljadsfladsjlkfjdslf");
+    let file = event.target.files[0];
+    formData.append("image", file, file.name);
+
+    console.log(file);
+    
     fetch(`http://localhost:8080/api/user/upload-profile-picture/${props.id}`, {
       method: "POST",
       body: formData,
       credentials: "include"
-    })
+    });
   };
 
   const deleteUser = async () => {
@@ -110,16 +114,18 @@ export default function ProfileBox(props: IProfileBox) {
         {
           isSessionProfile &&
           <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-            {/* <Input accept="image/*" multiple type="file" />
-            <Button variant="contained" component="span" color="secondary" sx={{ width: "45%" }}>
+            {/* <Button variant="contained" component="span" >
               Dodaj zdjęcie
+              <Input accept="image/*" multiple type="file" />
             </Button> */}
-            <label htmlFor="contained-button-file" style={{ width: "45%", marginRight: 5 }}>
-              <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={changeFile}/>
-              <Button variant="contained" component="span" color="secondary" sx={{ width: "100%" }}>
-                Dodaj zdjęcie
-              </Button>
-            </label>
+            <Button variant="contained" component="label" color="secondary" sx={{ width: "45%" }}>
+              Dodaj zdjęcie
+              <input
+                type="file"
+                hidden
+                onChange={changeFile}
+              />
+            </Button>
             <PasswordPopup id={props.id} />
           </div>
         }
