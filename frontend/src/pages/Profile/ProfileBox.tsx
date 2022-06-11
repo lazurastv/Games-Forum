@@ -5,6 +5,7 @@ import { UserControllerApi } from "../../api/api";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import PasswordPopup from "./PasswordPopup";
 import 'reactjs-popup/dist/index.css';
+import { HOME_PATH } from "../../App";
 
 interface IProfileBox {
   id: number;
@@ -46,7 +47,7 @@ export default function ProfileBox(props: IProfileBox) {
 
   const deleteUser = async () => {
     await new UserControllerApi()._delete({ id: props.id }, { credentials: 'include' });
-    window.location.replace("http://localhost:3000/");
+    window.location.replace(HOME_PATH);
   };
 
   const banUser = async () => {

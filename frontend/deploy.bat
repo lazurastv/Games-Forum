@@ -1,6 +1,6 @@
 rm -rf deploy/static
 rm -rf build
-start npm run build
+call npm run build
 xcopy build deploy /s /e /y
 cd deploy
 git add .

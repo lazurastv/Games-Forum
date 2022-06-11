@@ -29,6 +29,8 @@ import getTheme from "./theme";
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
+export const HOME_PATH = "https://forum-graczy.herokuapp.com"
+
 function App() {
   //theme
   const [mode, setMode] = React.useState<"light" | "dark">("dark");
