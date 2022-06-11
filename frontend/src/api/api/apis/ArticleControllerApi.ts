@@ -33,7 +33,7 @@ export interface AddArticleRequest {
     articleAddUpdate: ArticleAddUpdate;
 }
 
-export interface AddArticleWithImages1Request {
+export interface AddArticleWithImagesRequest {
     articleId: number;
     content: string;
     files?: Array<Blob>;
@@ -67,7 +67,7 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
+    async addArticleRaw(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<number>> {
         if (requestParameters.articleAddUpdate === null || requestParameters.articleAddUpdate === undefined) {
             throw new runtime.RequiredError('articleAddUpdate','Required parameter requestParameters.articleAddUpdate was null or undefined when calling addArticle.');
         }
@@ -91,20 +91,20 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<string> {
+    async addArticle(requestParameters: AddArticleRequest, initOverrides?: RequestInit): Promise<number> {
         const response = await this.addArticleRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async addArticleWithImages1Raw(requestParameters: AddArticleWithImages1Request, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async addArticleWithImagesRaw(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addArticleWithImages1.');
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addArticleWithImages.');
         }
 
         if (requestParameters.content === null || requestParameters.content === undefined) {
-            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addArticleWithImages1.');
+            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addArticleWithImages.');
         }
 
         const queryParameters: any = {};
@@ -131,8 +131,8 @@ export class ArticleControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addArticleWithImages1(requestParameters: AddArticleWithImages1Request, initOverrides?: RequestInit): Promise<void> {
-        await this.addArticleWithImages1Raw(requestParameters, initOverrides);
+    async addArticleWithImages(requestParameters: AddArticleWithImagesRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addArticleWithImagesRaw(requestParameters, initOverrides);
     }
 
     /**
