@@ -133,14 +133,15 @@ public class UserController {
         }
     }
 
-    @PostMapping(path = "/upload-content-and-images/{userId}",
+    @PostMapping(path = "/upload-profile-picture/{userId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addUserImage(@PathVariable("userId") Long userId, @RequestParam(value = "files") MultipartFile profilePicture) {
+    public void addUserImage(@PathVariable("userId") Long userId, @RequestParam(value = "image") MultipartFile profilePicture) {
         try {
+            System.out.println(profilePicture);
             AppUser user =  userService.getUser(userId);
             String path = user.getProfilePicturePath();
             fileService.saveProfilePicture(path, profilePicture);

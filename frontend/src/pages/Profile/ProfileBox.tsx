@@ -5,6 +5,7 @@ import { UserControllerApi } from "../../api/api";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import PasswordPopup from "./PasswordPopup";
 import 'reactjs-popup/dist/index.css';
+import { fromJS } from "immutable";
 
 interface IProfileBox {
   id: number;
@@ -42,6 +43,19 @@ export default function ProfileBox(props: IProfileBox) {
         currentPassword: changePasswordInfo.oldPassword
       }
     }, { credentials: "include" });
+  };
+
+  //const [profileImage, setProfileImage] = useState(null);
+  const changeFile = async (event) => {
+    //await setProfileImage(event.target.file[0]);
+    let formData: FormData = new FormData();
+    //formData.append("image", event.target.value);
+    formData.append("image", "jfdsljadsfladsjlkfjdslf");
+    fetch(`http://localhost:8080/api/user/upload-profile-picture/${props.id}`, {
+      method: "POST",
+      body: formData,
+      credentials: "include"
+    })
   };
 
   const deleteUser = async () => {
@@ -96,10 +110,16 @@ export default function ProfileBox(props: IProfileBox) {
         {
           isSessionProfile &&
           <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-            <Input accept="image/*" multiple type="file" />
+            {/* <Input accept="image/*" multiple type="file" />
             <Button variant="contained" component="span" color="secondary" sx={{ width: "45%" }}>
               Dodaj zdjęcie
-            </Button>
+            </Button> */}
+            <label htmlFor="contained-button-file" style={{ width: "45%", marginRight: 5 }}>
+              <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={changeFile}/>
+              <Button variant="contained" component="span" color="secondary" sx={{ width: "100%" }}>
+                Dodaj zdjęcie
+              </Button>
+            </label>
             <PasswordPopup id={props.id} />
           </div>
         }
