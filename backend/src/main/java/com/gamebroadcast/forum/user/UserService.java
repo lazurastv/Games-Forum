@@ -11,8 +11,13 @@ import com.gamebroadcast.forum.user.models.UserValidators;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +27,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(getUser(id));
@@ -107,10 +115,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void banUser(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
         user.setLocked(true);
         userRepository.save(user);
+        logoutUser(user.getUsername());
     }
 
     public void unbanUser(Long id) throws IllegalStateException {
@@ -119,8 +129,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void delete(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
+        logoutUser(user.getUsername());
         userRepository.delete(user);
     }
 
@@ -131,6 +143,13 @@ public class UserService {
     public AppUser getUser(Long id) {
         return (userRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException("User", "id", Long.toString(id))));
+    }
+
+    private void logoutUser(String username) {
+        entityManager
+                .createNativeQuery("delete from spring_session where principal_name = :username")
+                .setParameter("username", username)
+                .executeUpdate();
     }
 
     private boolean usernameExists(String username) {
