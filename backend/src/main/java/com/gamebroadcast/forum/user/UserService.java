@@ -12,7 +12,6 @@ import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @PersistenceContext
     private final EntityManager entityManager;
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
@@ -115,7 +112,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void banUser(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
         user.setLocked(true);
@@ -129,7 +126,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void delete(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
         logoutUser(user.getUsername());
