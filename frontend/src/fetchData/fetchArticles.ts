@@ -15,13 +15,13 @@ async function deleteArticle(id: number): Promise<void> {
   const articles = new ArticleControllerApi();
   return articles.deleteArticle({ articleId: id }, { credentials: "include" });
 }
-async function uploadArticle(article: ArticleAddUpdate) {
+async function uploadArticle(article: ArticleAddUpdate, files: FormData) {
   const articles = new ArticleControllerApi();
-  return articles
-    .addArticle({ articleAddUpdate: article }, { credentials: "include" })
-    .then((result) => articles.getAllArticles())
-    .then((result) => {
-      result.forEach((x) => console.log(x));
-    });
+  const id: number = await articles.addArticle({ articleAddUpdate: article }, { credentials: "include" })
+  return fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
 }
 export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle };

@@ -4,16 +4,17 @@ import Author from "../../../components/Author";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 import SectionHeader from "../../../components/SectionHeader";
 import HeaderTile from "../../../components/Tile/HeaderTile";
-import { articleDangerousHtml } from "../../../data-mock/editorData";
 import { loadArticle } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 import SimilarArticles from "./SimilarArticles";
 import Comments from "../Comments";
+import { stringToHtml } from "../../../components/Editor/dataConversion";
+import { ArticleFullInfoPlusContent } from "../../../api/api/models/ArticleFullInfoPlusContent";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
-function Article({ article }: { article: ArticleFullInfoVM }) {
+function Article({ article }: { article: ArticleFullInfoPlusContent }) {
   return (
     <Box>
       <HeaderTile
@@ -29,7 +30,7 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         <Box sx={{ pb: 6 }}>
           <Author sx={{ maxWidth: "550px" }} authorData={article.author} />
           <StyledEditorContent>
-            <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+            <div dangerouslySetInnerHTML={{ __html: article.content !== undefined ? stringToHtml(article.content): "" }} />
           </StyledEditorContent>
         </Box>
         <SectionHeader>Podobne artykuły</SectionHeader>
@@ -41,5 +42,12 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
   );
 }
 export default withLoading(Article, {
-  article: loadArticle,
+  article: async (id) => {
+      let art = await loadArticle(id);
+      let content = await fetch(`http://localhost:8080/content/${art.path}/content.json`)
+        .then(res => res.json()).then(data => JSON.stringify(data));
+      let articleWithContent:ArticleFullInfoPlusContent = art;
+      articleWithContent.content = content;
+      return articleWithContent;
+    },
 });

@@ -2,26 +2,22 @@ package com.gamebroadcast.forum.user;
 
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
+import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserRoleUpdate;
 import com.gamebroadcast.forum.user.models.UserVM;
+import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "api/user")
@@ -30,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserService userService;
+    private final FileService fileService;
 
     @GetMapping(path = "/{id}")
     public UserVM getById(@PathVariable("id") Long id) {
@@ -68,7 +65,8 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void add(@RequestBody UserAdd userAdd) {
         try {
-            userService.add(userAdd);
+            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            userService.add(userAdd, path);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -142,6 +140,23 @@ public class UserController {
     public void unbanUser(@PathVariable("id") Long id) {
         try {
             userService.unbanUser(id);
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/upload-profile-picture/{userId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('USER')")
+    public void addUserImage(@PathVariable("userId") Long userId, @RequestParam(value = "image") MultipartFile profilePicture) {
+        try {
+            System.out.println(profilePicture);
+            AppUser user =  userService.getUser(userId);
+            String path = user.getProfilePicturePath();
+            fileService.saveProfilePicture(path, profilePicture);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

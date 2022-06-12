@@ -61,7 +61,7 @@ public class UserService {
         return new UserVM(user);
     }
 
-    public void add(UserAdd userAdd) {
+    public void add(UserAdd userAdd, String path) {
         UserValidators.checkUsername(userAdd.username);
         UserValidators.checkEmail(userAdd.email);
         UserValidators.checkPassword(userAdd.password);
@@ -72,6 +72,7 @@ public class UserService {
 
         userAdd.password = passwordEncoder.encode(userAdd.password);
         AppUser user = userAdd.toAppUser();
+        user.setProfilePicturePath(path);
         userRepository.save(user);
 
         String appUrl = context.getContextPath();
