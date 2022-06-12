@@ -29,7 +29,7 @@ export default function CreateReview() {
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
+  const [isOpen, setIsOpen] = useState<PopupsState>({ ok: false, error: false });
   const handleSave = async () => {
     const review: ReviewAdd = {
       gameId: 7,
@@ -50,7 +50,7 @@ export default function CreateReview() {
       });
     }
 
-    uploadReview(review, formData).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
+    uploadReview(review, formData).then(() => setIsOpen({ ...isOpen, ok: true })).catch(() => setIsOpen({ ...isOpen, error: true }));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -100,12 +100,12 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja została zapisana."} handleClose={function (): void {
+        setIsOpen({ ...isOpen, ok: false });
+      }} />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
+        setIsOpen({ ...isOpen, error: false });
+      }} />
     </Container>
   );
 }

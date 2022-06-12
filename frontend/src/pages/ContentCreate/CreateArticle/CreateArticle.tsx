@@ -83,12 +83,12 @@ export default function CreateArticle() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Artykuł zoztał zapisany."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Artykuł został zapisany."} handleClose={function (): void {
+        setIsOpen({ ...isOpen, ok: false });
+      }} />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Artykuł nie został zapisany."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
+        setIsOpen({ ...isOpen, error: false });
+      }} />
     </Container>
   );
 }

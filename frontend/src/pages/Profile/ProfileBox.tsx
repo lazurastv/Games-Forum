@@ -53,13 +53,11 @@ export default function ProfileBox(props: IProfileBox) {
     let file = event.target.files[0];
     formData.append("image", file, file.name);
 
-    console.log(file);
-    
     fetch(`http://localhost:8080/api/user/upload-profile-picture/${props.id}`, {
       method: "POST",
       body: formData,
       credentials: "include"
-    });
+    }).then(() => setTimeout(() => window.location.reload(), 500));
   };
 
   const deleteUser = async () => {

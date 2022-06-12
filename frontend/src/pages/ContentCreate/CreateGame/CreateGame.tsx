@@ -55,7 +55,7 @@ export default function CreateGame() {
   const [genres, setGenres] = useState<string[]>([checkboxGroup[0].checkboxLabels[0]]);
   const [platforms, setPlatforms] = useState<string[]>([checkboxGroup[1].checkboxLabels[0]]);
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
-  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
+  const [isOpen, setIsOpen] = useState<PopupsState>({ ok: false, error: false });
 
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -82,7 +82,7 @@ export default function CreateGame() {
       });
     }
 
-    uploadGame(game, formData).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
+    uploadGame(game, formData).then(() => setIsOpen({ ...isOpen, ok: true })).catch(() => setIsOpen({ ...isOpen, error: true }));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -124,7 +124,7 @@ export default function CreateGame() {
             sx={{
               display: "flex",
               gap: 1,
-              columnGap:2,
+              columnGap: 2,
               flexDirection: { xs: "column", md: "row" },
             }}
           >
@@ -172,12 +172,12 @@ export default function CreateGame() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra zoztała zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
+      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra została zapisana."} handleClose={function (): void {
+        setIsOpen({ ...isOpen, ok: false });
+      }} />
       <SimplePopup open={isOpen.error} title={"Błąd"} content={"Gra nie została zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
+        setIsOpen({ ...isOpen, error: false });
+      }} />
     </Container>
   );
 }
