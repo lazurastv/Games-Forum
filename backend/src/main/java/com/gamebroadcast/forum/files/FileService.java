@@ -27,7 +27,7 @@ public class FileService {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(phrase.getBytes());
             byte[] digest = md.digest();
-            name = Base64Utils.encodeToString(digest).substring(0,8);
+            name = Base64Utils.encodeToString(digest).substring(0,8).replace('/', '-');
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
