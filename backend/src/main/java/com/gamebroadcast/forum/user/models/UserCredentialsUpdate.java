@@ -10,13 +10,13 @@ public class UserCredentialsUpdate {
     public String currentPassword;
 
     public void updateCredentials(AppUser user) {
-        if (username != "") {
+        if (username != null) {
             user.setUsername(username);
         }
-        if (email != "") {
+        if (email != null) {
             user.setEmail(email);
         }
-        if (password != "") {
+        if (password != null) {
             user.setPassword(password);
         }
         user.setShortDescription(shortDescription);

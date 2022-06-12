@@ -72,7 +72,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }) {
                   sx={{ mr: 2, ml: -1, width: 32, height: 32 }}
                 />
               }
-              path="/profil"
+              path={"/profil/" + session.user?.id}
               text={session.user?.username ?? "unknown"}
             />
             <Divider key="divider" sx={{ my: 1 }} />

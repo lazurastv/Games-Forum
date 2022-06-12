@@ -20,6 +20,8 @@ public class UserVM {
 
     public int commentCount;
 
+    public boolean banned;
+
     public UserVM(AppUser appUser) {
         this.id = appUser.getId();
         this.username = appUser.getUsername();
@@ -28,5 +30,6 @@ public class UserVM {
         this.profilePicturePath = appUser.getProfilePicturePath();
         this.role = appUser.getRole();
         this.commentCount = appUser.getComments().size();
+        this.banned = !appUser.isAccountNonLocked();
     }
 }
