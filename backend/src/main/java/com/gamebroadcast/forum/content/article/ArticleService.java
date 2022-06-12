@@ -50,11 +50,13 @@ public class ArticleService {
         return new ArticleFullInfoVM(article);
     }
 
-    public void addArticle(ArticleAddUpdate articleAdd, String path) {
+    public Long addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
         Article article = articleAdd.toArticle();
+        article.setPath(path);
         article.publish();
-        articleRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
+        return savedArticle.getId();
     }
 
     @Transactional

@@ -6,13 +6,18 @@ import com.gamebroadcast.forum.content.article.models.ArticleSearchInfoVM;
 import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.exceptions.ApiRequestException;
 import com.gamebroadcast.forum.exceptions.NoEditRightsException;
+import com.gamebroadcast.forum.files.FileService;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +27,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final FileService fileService;
 
     @GetMapping
     public List<ArticleVM> getAllArticles() {
@@ -59,9 +65,27 @@ public class ArticleController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticle(@RequestBody ArticleAddUpdate newArticle) {
+    public Long addArticle(@RequestBody ArticleAddUpdate newArticle) {
         try {
-            articleService.addArticle(newArticle, newArticle.content);
+            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            Long id = articleService.addArticle(newArticle, path);
+            return id;
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/upload-content-and-images/{articleId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('EDITOR')")
+    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        try {
+            ArticleVM article =  articleService.getArticleById(articleId);
+            String path = article.path;
+            fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
