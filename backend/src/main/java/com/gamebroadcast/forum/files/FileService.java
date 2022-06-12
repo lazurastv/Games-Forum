@@ -107,7 +107,7 @@ public class FileService {
 
     public void saveProfilePicture(String hash, MultipartFile profilePicture) {
         try {
-            saveImage(profilePicture, USER_DRIVE_PATH + hash, "profile.png");
+            saveImage(profilePicture, USER_DRIVE_PATH + "\\" + hash, "profile.png");
         } catch (IOException e) {
             // TODO add custom exception
             throw new RuntimeException(e);
