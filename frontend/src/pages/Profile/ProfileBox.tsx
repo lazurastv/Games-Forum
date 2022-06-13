@@ -62,7 +62,7 @@ export default function ProfileBox(props: IProfileBox) {
 
   const deleteUser = async () => {
     await new UserControllerApi()._delete({ id: props.id }, { credentials: 'include' });
-    window.location.replace("http://localhost:3000/");
+    window.location.replace("/");
   };
 
   const banUser = async () => {
