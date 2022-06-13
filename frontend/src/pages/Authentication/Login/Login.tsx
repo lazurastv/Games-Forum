@@ -27,8 +27,7 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const username = data.get("username") as string;
     const password = data.get("password") as string;
-    console.log(session.isAuthenticated);
-    login(username, password).catch(err => err.json()).then(() => displayAlert("Nieprawidłowy login lub hasło", true));
+    login(username, password).catch(() => displayAlert("Nieprawidłowy login lub hasło", true));
   };
 
   return session.isAuthenticated ? (
