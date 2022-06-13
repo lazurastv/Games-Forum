@@ -3,8 +3,8 @@ import { Box, Button, Grid, InputAdornment, Collapse, TextField } from "@mui/mat
 import { styled } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
-import { sliderConf, sortValues } from "./Filter.conf";
-import { filterData, sortData } from "./Filter.utils";
+import { sliderConf, sortValues } from "../Filter/Filter.conf";
+import { filterData, sortData } from "../Filter/Filter.utils";
 export default function UserFilter(props: any) {
     const {
         data,
