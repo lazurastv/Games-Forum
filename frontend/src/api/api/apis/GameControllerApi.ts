@@ -34,7 +34,7 @@ export interface AddGameRequest {
 }
 
 export interface AddGameContentWithImagesRequest {
-    articleId: number;
+    gameId: number;
     content: string;
     files?: Array<Blob>;
 }
@@ -99,8 +99,8 @@ export class GameControllerApi extends runtime.BaseAPI {
     /**
      */
     async addGameContentWithImagesRaw(requestParameters: AddGameContentWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
-            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addGameContentWithImages.');
+        if (requestParameters.gameId === null || requestParameters.gameId === undefined) {
+            throw new runtime.RequiredError('gameId','Required parameter requestParameters.gameId was null or undefined when calling addGameContentWithImages.');
         }
 
         if (requestParameters.content === null || requestParameters.content === undefined) {
@@ -120,7 +120,7 @@ export class GameControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/game/upload-content-and-images/{articleId}`.replace(`{${"articleId"}}`, encodeURIComponent(String(requestParameters.articleId))),
+            path: `/api/game/upload-content-and-images/{gameId}`.replace(`{${"gameId"}}`, encodeURIComponent(String(requestParameters.gameId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

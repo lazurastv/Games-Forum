@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserVM> getAll() {
+    public List<UserVM> getAllUsers() {
         try {
             return userService.getAll();
         } catch (RuntimeException e) {
