@@ -11,7 +11,6 @@ import com.gamebroadcast.forum.content.game.models.GameAddUpdate;
 import com.gamebroadcast.forum.content.game.models.GameFullInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameSearchInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameVM;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
@@ -81,7 +80,7 @@ public class GameService {
     private void checkIfTitleIsUnique(String title) {
         Optional<Game> game = gameRepository.findByTitle(title);
         if (game.isPresent()) {
-            throw new ItemAlreadyExistsException("game");
+            throw new RuntimeException("Istnieje już gra o takim samym tytule");
         }
     }
 

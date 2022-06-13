@@ -14,7 +14,6 @@ import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
@@ -86,7 +85,7 @@ public class ReviewService {
     private void checkIfTitleIsUnique(String title) {
         Optional<Review> review = reviewRepository.findByTitle(title);
         if (review.isPresent()) {
-            throw new ItemAlreadyExistsException("review");
+            throw new RuntimeException("Istnieje już recenzja o takim samym tytule");
         }
     }
 
