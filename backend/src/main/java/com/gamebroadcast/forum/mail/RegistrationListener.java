@@ -15,34 +15,33 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class RegistrationListener implements 
-  ApplicationListener<OnRegistrationCompleteEvent> {
- 
-    @Autowired
-    private UserService service;
-    @Autowired
-    private JavaMailSender mailSender;
+public class RegistrationListener implements
+    ApplicationListener<OnRegistrationCompleteEvent> {
 
-    @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
-        this.confirmRegistration(event);
-    }
+  @Autowired
+  private UserService service;
+  @Autowired
+  private JavaMailSender mailSender;
 
-    private void confirmRegistration(OnRegistrationCompleteEvent event) {
-        AppUser user = event.getUser();
-        String token = UUID.randomUUID().toString();
-        service.createVerificationToken(user, token);
-        
-        String recipientAddress = user.getEmail();
-        String subject = "Registration Confirmation";
-        String confirmationUrl 
-          = event.getAppUrl() + "/api/user/regitrationConfirm/" + token;
-        
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("noreply@gmail.com");
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText("http://localhost:8080" + confirmationUrl);
-        mailSender.send(email);
-    }
+  @Override
+  public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    this.confirmRegistration(event);
+  }
+
+  private void confirmRegistration(OnRegistrationCompleteEvent event) {
+    AppUser user = event.getUser();
+    String token = UUID.randomUUID().toString();
+    service.createVerificationToken(user, token);
+
+    String recipientAddress = user.getEmail();
+    String subject = "Potwierdzenie tożsamości";
+    String confirmationUrl = event.getAppUrl() + "/api/user/regitrationConfirm/" + token;
+
+    SimpleMailMessage email = new SimpleMailMessage();
+    email.setFrom("noreply@gmail.com");
+    email.setTo(recipientAddress);
+    email.setSubject(subject);
+    email.setText("Aby potwierdzić swoją tożsamość, wejdź na poniższy link.\nhttp://localhost:8080" + confirmationUrl);
+    mailSender.send(email);
+  }
 }
