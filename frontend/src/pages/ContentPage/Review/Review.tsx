@@ -10,10 +10,10 @@ import { stringToHtml } from "../../../components/Editor/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
-import { articleDangerousHtml } from "../../../data-mock/editorData";
+import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
-function Review({ review }: { review: ReviewFullInfoVM }) {
+function Review({ review }: { review: ReviewFullInfoPlusContent }) {
   return (
     <Box>
       <HeaderTile
@@ -32,7 +32,7 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+              <div dangerouslySetInnerHTML={{ __html: review.content !== undefined ? stringToHtml(review.content): "" }} />
             </StyledEditorContent>
           </Grid>
           <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column" }}>
@@ -52,5 +52,12 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
   );
 }
 export default withLoading(Review, {
-  review: loadReview,
+  review: async (id) => {
+    let rev = await loadReview(id);
+    let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+      .then(res => res.json()).then(data => JSON.stringify(data));
+    let articleWithContent:ReviewFullInfoPlusContent = rev;
+    articleWithContent.content = content;
+    return articleWithContent;
+  },
 });

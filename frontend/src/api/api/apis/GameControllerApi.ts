@@ -33,6 +33,12 @@ export interface AddGameRequest {
     gameAddUpdate: GameAddUpdate;
 }
 
+export interface AddGameContentWithImagesRequest {
+    articleId: number;
+    content: string;
+    files?: Array<Blob>;
+}
+
 export interface DeleteGameRequest {
     gameId: number;
 }
@@ -61,7 +67,7 @@ export class GameControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addGameRaw(requestParameters: AddGameRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async addGameRaw(requestParameters: AddGameRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<number>> {
         if (requestParameters.gameAddUpdate === null || requestParameters.gameAddUpdate === undefined) {
             throw new runtime.RequiredError('gameAddUpdate','Required parameter requestParameters.gameAddUpdate was null or undefined when calling addGame.');
         }
@@ -80,13 +86,53 @@ export class GameControllerApi extends runtime.BaseAPI {
             body: GameAddUpdateToJSON(requestParameters.gameAddUpdate),
         }, initOverrides);
 
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async addGame(requestParameters: AddGameRequest, initOverrides?: RequestInit): Promise<number> {
+        const response = await this.addGameRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async addGameContentWithImagesRaw(requestParameters: AddGameContentWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.articleId === null || requestParameters.articleId === undefined) {
+            throw new runtime.RequiredError('articleId','Required parameter requestParameters.articleId was null or undefined when calling addGameContentWithImages.');
+        }
+
+        if (requestParameters.content === null || requestParameters.content === undefined) {
+            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addGameContentWithImages.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.content !== undefined) {
+            queryParameters['content'] = requestParameters.content;
+        }
+
+        if (requestParameters.files) {
+            queryParameters['files'] = requestParameters.files;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/game/upload-content-and-images/{articleId}`.replace(`{${"articleId"}}`, encodeURIComponent(String(requestParameters.articleId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
         return new runtime.VoidApiResponse(response);
     }
 
     /**
      */
-    async addGame(requestParameters: AddGameRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.addGameRaw(requestParameters, initOverrides);
+    async addGameContentWithImages(requestParameters: AddGameContentWithImagesRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addGameContentWithImagesRaw(requestParameters, initOverrides);
     }
 
     /**

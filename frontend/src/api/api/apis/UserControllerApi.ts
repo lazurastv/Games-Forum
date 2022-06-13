@@ -37,6 +37,11 @@ export interface AddRequest {
     userAdd: UserAdd;
 }
 
+export interface AddUserImageRequest {
+    userId: number;
+    files: Blob;
+}
+
 export interface BanUserRequest {
     id: number;
 }
@@ -127,6 +132,58 @@ export class UserControllerApi extends runtime.BaseAPI {
      */
     async add(requestParameters: AddRequest, initOverrides?: RequestInit): Promise<void> {
         await this.addRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async addUserImageRaw(requestParameters: AddUserImageRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addUserImage.');
+        }
+
+        if (requestParameters.files === null || requestParameters.files === undefined) {
+            throw new runtime.RequiredError('files','Required parameter requestParameters.files was null or undefined when calling addUserImage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters.files !== undefined) {
+            formParams.append('files', requestParameters.files as any);
+        }
+
+        const response = await this.request({
+            path: `/api/user/upload-content-and-images/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async addUserImage(requestParameters: AddUserImageRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addUserImageRaw(requestParameters, initOverrides);
     }
 
     /**
