@@ -41,7 +41,9 @@ public class RegistrationListener implements
     email.setFrom("noreply@gmail.com");
     email.setTo(recipientAddress);
     email.setSubject(subject);
-    email.setText("Aby potwierdzić swoją tożsamość, wejdź na poniższy link.\nhttp://localhost:8080" + confirmationUrl);
+    email.setText(
+        "Aby potwierdzić swoją tożsamość, wejdź na poniższy link.\nhttps://forum-graczy-backend.herokuapp.com/"
+            + confirmationUrl);
     mailSender.send(email);
   }
 }

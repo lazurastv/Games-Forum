@@ -36,7 +36,7 @@ export default function Home() {
 //   const sendHandler = (e: any) => {
 //     const formData = new FormData();
 //     formData.append("file", images[0]);
-//     fetch("http://localhost:8080/api/images/upload",
+//     fetch("https://forum-graczy-backend.herokuapp.com/api/images/upload",
 //       {
 //         method: 'POST',
 //         mode: 'cors',
@@ -52,7 +52,7 @@ export default function Home() {
 //       console.log(error);
 //     })
 
-//     // axios.post("http://localhost:8080/api/images/upload",
+//     // axios.post("https://forum-graczy-backend.herokuapp.com/api/images/upload",
 //     //     formData,
 //     //     {
 //     //       headers: {

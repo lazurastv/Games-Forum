@@ -137,7 +137,7 @@ function Game({ game }: { game: GameFullInfoPlusContent }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: game.content !== undefined ? stringToHtml(game.content): "" }} />
+              <div dangerouslySetInnerHTML={{ __html: game.content !== undefined ? stringToHtml(game.content) : "" }} />
             </StyledEditorContent>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -166,12 +166,12 @@ const styles = {
     borderRadius: "10px",
   },
 };
-export default withLoading(Game, { 
+export default withLoading(Game, {
   game: async (id) => {
     let rev = await loadGame(id);
-    let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+    let content = await fetch(`https://forum-graczy-backend.herokuapp.com/content/${rev.path}/content.json`)
       .then(res => res.json()).then(data => JSON.stringify(data));
-    let articleWithContent:GameFullInfoPlusContent = rev;
+    let articleWithContent: GameFullInfoPlusContent = rev;
     articleWithContent.content = content;
     return articleWithContent;
   },

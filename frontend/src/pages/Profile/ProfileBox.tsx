@@ -54,7 +54,7 @@ export default function ProfileBox(props: IProfileBox) {
     let file = event.target.files[0];
     formData.append("image", file, file.name);
 
-    fetch(`http://localhost:8080/api/user/upload-profile-picture/${props.id}`, {
+    fetch(`https://forum-graczy-backend.herokuapp.com/api/user/upload-profile-picture/${props.id}`, {
       method: "POST",
       body: formData,
       credentials: "include"

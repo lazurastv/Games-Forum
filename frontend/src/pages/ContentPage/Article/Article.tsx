@@ -30,24 +30,24 @@ function Article({ article }: { article: ArticleFullInfoPlusContent }) {
         <Box sx={{ pb: 6 }}>
           <Author sx={{ maxWidth: "550px" }} authorData={article.author} />
           <StyledEditorContent>
-            <div dangerouslySetInnerHTML={{ __html: article.content !== undefined ? stringToHtml(article.content): "" }} />
+            <div dangerouslySetInnerHTML={{ __html: article.content !== undefined ? stringToHtml(article.content) : "" }} />
           </StyledEditorContent>
         </Box>
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
         <SectionHeader>Komentarze</SectionHeader>
-        <Comments contentId={article.id}/>
+        <Comments contentId={article.id} />
       </Container>
     </Box>
   );
 }
 export default withLoading(Article, {
   article: async (id) => {
-      let art = await loadArticle(id);
-      let content = await fetch(`http://localhost:8080/content/${art.path}/content.json`)
-        .then(res => res.json()).then(data => JSON.stringify(data));
-      let articleWithContent:ArticleFullInfoPlusContent = art;
-      articleWithContent.content = content;
-      return articleWithContent;
-    },
+    let art = await loadArticle(id);
+    let content = await fetch(`https://forum-graczy-backend.herokuapp.com/content/${art.path}/content.json`)
+      .then(res => res.json()).then(data => JSON.stringify(data));
+    let articleWithContent: ArticleFullInfoPlusContent = art;
+    articleWithContent.content = content;
+    return articleWithContent;
+  },
 });

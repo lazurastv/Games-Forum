@@ -15,10 +15,10 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class FileService {
     private final String CONTENT_DRIVE_PATH = "src\\main\\resources\\static\\content";
-    private final String CONTENT_URL_PATH = "http://localhost:8080/content";
+    private final String CONTENT_URL_PATH = "https://forum-graczy-backend.herokuapp.com/content";
 
     private final String USER_DRIVE_PATH = "src\\main\\resources\\static\\user";
-    private final String USER_URL_PATH = "http://localhost:8080/user";
+    private final String USER_URL_PATH = "https://forum-graczy-backend.herokuapp.com/user";
 
     public String getUniqueName(String username) {
         String phrase = username + System.currentTimeMillis();
@@ -27,7 +27,7 @@ public class FileService {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(phrase.getBytes());
             byte[] digest = md.digest();
-            name = Base64Utils.encodeToString(digest).substring(0,8).replace('/', '-');
+            name = Base64Utils.encodeToString(digest).substring(0, 8).replace('/', '-');
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -47,9 +47,11 @@ public class FileService {
         }
 
     }
+
     public void writeContent(String hash, String htmlContent) {
         createFolder(CONTENT_DRIVE_PATH + "\\" + hash);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(CONTENT_DRIVE_PATH + "\\" + hash + "\\" + "content.json"))) {
+        try (BufferedWriter buffer = new BufferedWriter(
+                new FileWriter(CONTENT_DRIVE_PATH + "\\" + hash + "\\" + "content.json"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
@@ -60,7 +62,7 @@ public class FileService {
     public String changeUrlInJson(String editorData, String url, Long imageNumber) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(editorData);
-        ((ObjectNode)root.get("entityMap").get(imageNumber.toString()).get("data")).put("src", url);
+        ((ObjectNode) root.get("entityMap").get(imageNumber.toString()).get("data")).put("src", url);
         return root.toString();
     }
 

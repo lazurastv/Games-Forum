@@ -32,7 +32,7 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: review.content !== undefined ? stringToHtml(review.content): "" }} />
+              <div dangerouslySetInnerHTML={{ __html: review.content !== undefined ? stringToHtml(review.content) : "" }} />
             </StyledEditorContent>
           </Grid>
           <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column" }}>
@@ -54,9 +54,9 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
 export default withLoading(Review, {
   review: async (id) => {
     let rev = await loadReview(id);
-    let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+    let content = await fetch(`https://forum-graczy-backend.herokuapp.com/content/${rev.path}/content.json`)
       .then(res => res.json()).then(data => JSON.stringify(data));
-    let articleWithContent:ReviewFullInfoPlusContent = rev;
+    let articleWithContent: ReviewFullInfoPlusContent = rev;
     articleWithContent.content = content;
     return articleWithContent;
   },
