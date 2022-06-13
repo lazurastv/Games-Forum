@@ -14,9 +14,9 @@ import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../components/DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
 import { game } from "../../../data-mock/gameDataDictionary";
-import SimplePopup from "../../../components/Popups/SimplePopup";
 // temp
 import { convertToRaw } from "draft-js";
+import { useAlert } from "../../../hooks/useAlert";
 
 const checkboxGroup = [
   {
@@ -40,11 +40,6 @@ const date =
   "-" +
   String(today.getDate()).padStart(2, "0");
 
-export interface PopupsState {
-  ok: boolean;
-  error: boolean;
-}
-
 export default function CreateGame() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
@@ -55,7 +50,7 @@ export default function CreateGame() {
   const [genres, setGenres] = useState<string[]>([checkboxGroup[0].checkboxLabels[0]]);
   const [platforms, setPlatforms] = useState<string[]>([checkboxGroup[1].checkboxLabels[0]]);
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
-  const [isOpen, setIsOpen] = useState<PopupsState>({ ok: false, error: false });
+  const { displayAlert } = useAlert();
 
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -82,7 +77,10 @@ export default function CreateGame() {
       });
     }
 
-    uploadGame(game, formData).then(() => setIsOpen({ ...isOpen, ok: true })).catch(() => setIsOpen({ ...isOpen, error: true }));
+    uploadGame(game, formData)
+      .then(() => { return { message: "Gra została zapisana" } })
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, x.status));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -172,12 +170,6 @@ export default function CreateGame() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra została zapisana."} handleClose={function (): void {
-        setIsOpen({ ...isOpen, ok: false });
-      }} />
-      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Gra nie została zapisana."} handleClose={function (): void {
-        setIsOpen({ ...isOpen, error: false });
-      }} />
     </Container>
   );
 }

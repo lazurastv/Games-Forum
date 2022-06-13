@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadReview, uploadReview } from "../../../fetchData/fetchReviews";
+import { loadAllReviews, loadReview, uploadReview } from "../../../fetchData/fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
@@ -16,11 +16,8 @@ import SimplePopup from "../../../components/Popups/SimplePopup";
 
 // temp
 import { convertToRaw } from "draft-js";
+import { useAlert } from "../../../hooks/useAlert";
 
-export interface PopupsState {
-  ok: boolean;
-  error: boolean;
-}
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -29,7 +26,7 @@ export default function CreateReview() {
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [isOpen, setIsOpen] = useState<PopupsState>({ ok: false, error: false });
+  const { displayAlert } = useAlert();
   const handleSave = async () => {
     const review: ReviewAdd = {
       gameId: 7,
@@ -50,7 +47,10 @@ export default function CreateReview() {
       });
     }
 
-    uploadReview(review, formData).then(() => setIsOpen({ ...isOpen, ok: true })).catch(() => setIsOpen({ ...isOpen, error: true }));
+    uploadReview(review, formData)
+      .then(() => { return { message: "Recenzja została zapisana" } })
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, x.status));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -100,12 +100,6 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja została zapisana."} handleClose={function (): void {
-        setIsOpen({ ...isOpen, ok: false });
-      }} />
-      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {
-        setIsOpen({ ...isOpen, error: false });
-      }} />
     </Container>
   );
 }
