@@ -23,10 +23,7 @@ export default function Registration() {
     const username = data.get('username') as string;
     const email = data.get('email') as string;
     const password = data.get('password') as string;
-
-    register(username, email, password)
-      .catch(err => err.json())
-      .then(x => displayAlert(x.message, true));
+    register(username, email, password).catch(err => err.json()).then(x => displayAlert(x.message, true));
   };
 
   return (
