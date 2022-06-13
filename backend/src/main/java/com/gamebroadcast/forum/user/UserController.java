@@ -10,6 +10,8 @@ import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +28,16 @@ public class UserController {
 
     private final UserService userService;
     private final FileService fileService;
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserVM> getAll() {
+        try {
+            return userService.getAll();
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
 
     @GetMapping(path = "/{id}")
     public UserVM getById(@PathVariable("id") Long id) {

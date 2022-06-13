@@ -1,6 +1,7 @@
 package com.gamebroadcast.forum.user;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
@@ -35,6 +36,10 @@ public class UserService {
     private final ApplicationEventPublisher eventPublisher;
     private final ServletContext context;
     private final EntityManager entityManager;
+
+    public List<UserVM> getAll() throws IllegalStateException {
+        return UserVM.toUserVMList(userRepository.findAll());
+    }
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(getUser(id));
