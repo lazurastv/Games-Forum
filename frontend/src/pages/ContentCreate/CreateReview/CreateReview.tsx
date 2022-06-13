@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadReview, uploadReview } from "../../../fetchData/fetchReviews";
+import { loadAllReviews, loadReview, uploadReview } from "../../../fetchData/fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
@@ -14,10 +14,10 @@ import OneLineInput from "../components/OneLineInput";
 import { ReviewAdd } from "../../../api/api";
 import SimplePopup from "../../../components/Popups/SimplePopup";
 
-export interface PopupsState {
-  ok: boolean;
-  error: boolean;
-}
+// temp
+import { convertToRaw } from "draft-js";
+import { useAlert } from "../../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -26,11 +26,9 @@ export default function CreateReview() {
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
+  const { displayAlert } = useAlert();
+  const navigate = useNavigate();
   const handleSave = async () => {
-    //
-    // TODO obsługa błędów
-    // //
     const review: ReviewAdd = {
       gameId: 7,
       title: title,
@@ -40,11 +38,20 @@ export default function CreateReview() {
       pluses: pluses,
       minuses: minuses,
     };
-    uploadReview(review).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));;
-    // .catch(
-    //   (e) => console.error(e)
-    // );
-    // const rev:any = await loadReview(12);
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+
+    uploadReview(review, formData)
+      .then(id => navigate(`/recenzje/${id}`))
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, x.status));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -94,12 +101,6 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapizana."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
-      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
     </Container>
   );
 }

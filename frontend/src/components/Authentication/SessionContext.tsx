@@ -57,9 +57,7 @@ const SessionContextProvider: React.FC = (props) => {
   }, []);
   const register = (username: string, email: string, password: string): Promise<void> => {
     return auth
-      .register(username, email, password)
-      .then(() => user.getByUsername({ username: username }))
-      .then((res) => setSession({ ...session, isAuthenticated: true, user: res }));
+      .register(username, email, password).then()
   };
   const login = (username: string, password: string): Promise<void> => {
     return auth

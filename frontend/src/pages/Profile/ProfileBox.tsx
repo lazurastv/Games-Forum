@@ -6,6 +6,7 @@ import { useSessionContext } from "../../components/Authentication/SessionContex
 import PasswordPopup from "./PasswordPopup";
 import 'reactjs-popup/dist/index.css';
 import { HOME_PATH } from "../../App";
+import { fromJS } from "immutable";
 
 interface IProfileBox {
   id: number;
@@ -45,9 +46,24 @@ export default function ProfileBox(props: IProfileBox) {
     }, { credentials: "include" });
   };
 
+  //const [profileImage, setProfileImage] = useState(null);
+  const changeFile = async (event) => {
+    //await setProfileImage(event.target.file[0]);
+    let formData: FormData = new FormData();
+    //formData.append("image", event.target.value);
+    let file = event.target.files[0];
+    formData.append("image", file, file.name);
+
+    fetch(`http://localhost:8080/api/user/upload-profile-picture/${props.id}`, {
+      method: "POST",
+      body: formData,
+      credentials: "include"
+    }).then(() => setTimeout(() => window.location.reload(), 500));
+  };
+
   const deleteUser = async () => {
     await new UserControllerApi()._delete({ id: props.id }, { credentials: 'include' });
-    window.location.replace(HOME_PATH);
+    window.location.replace("/");
   };
 
   const banUser = async () => {
@@ -97,9 +113,17 @@ export default function ProfileBox(props: IProfileBox) {
         {
           isSessionProfile &&
           <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-            <Input accept="image/*" multiple type="file" />
-            <Button variant="contained" component="span" color="secondary" sx={{ width: "45%" }}>
+            {/* <Button variant="contained" component="span" >
               Dodaj zdjęcie
+              <Input accept="image/*" multiple type="file" />
+            </Button> */}
+            <Button variant="contained" component="label" color="secondary" sx={{ width: "45%" }}>
+              Dodaj zdjęcie
+              <input
+                type="file"
+                hidden
+                onChange={changeFile}
+              />
             </Button>
             <PasswordPopup id={props.id} />
           </div>
