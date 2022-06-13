@@ -10,8 +10,14 @@ interface ChatMessageProps {
 }
 export default function ChatMessage({ isMyMessage, message }: ChatMessageProps) {
   const publishDate = message.publishDate as Date;
-  const hour = publishDate.getHours();
-  const minute = publishDate.getMinutes();
+  let hour = publishDate.getHours().toString();
+  let minute = publishDate.getMinutes().toString();
+  if (hour.length < 2) {
+    hour = "0" + hour;
+  }
+  if (minute.length < 2) {
+    minute = "0" + minute;
+  }
 
   return (
     <Box
