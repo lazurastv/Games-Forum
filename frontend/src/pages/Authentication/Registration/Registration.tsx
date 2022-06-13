@@ -11,9 +11,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useSessionContext } from '../../../components/Authentication/SessionContext';
+import { useAlert } from '../../../hooks/useAlert';
 
 export default function Registration() {
   const { register } = useSessionContext();
+  const { displayAlert } = useAlert()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -21,8 +23,10 @@ export default function Registration() {
     const username = data.get('username') as string;
     const email = data.get('email') as string;
     const password = data.get('password') as string;
-    console.log([username, email, password].join(', '));
-    register(username, email, password).catch(err => console.error(err));
+
+    register(username, email, password)
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, true));
   };
 
   return (
