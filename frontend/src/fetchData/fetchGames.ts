@@ -23,5 +23,6 @@ async function uploadGame(game: GameAddUpdate, files: FormData) {
     body: files,
     credentials: "include"
   });
+  return id;
 }
 export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame };

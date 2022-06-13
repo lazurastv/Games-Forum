@@ -17,6 +17,7 @@ import { game } from "../../../data-mock/gameDataDictionary";
 // temp
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 const checkboxGroup = [
   {
@@ -51,6 +52,7 @@ export default function CreateGame() {
   const [platforms, setPlatforms] = useState<string[]>([checkboxGroup[1].checkboxLabels[0]]);
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
   const { displayAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -78,7 +80,7 @@ export default function CreateGame() {
     }
 
     uploadGame(game, formData)
-      .then(() => { return { message: "Gra została zapisana" } })
+      .then(id => navigate(`/gry/${id}`))
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };

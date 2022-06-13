@@ -18,10 +18,11 @@ async function deleteArticle(id: number): Promise<void> {
 async function uploadArticle(article: ArticleAddUpdate, files: FormData) {
   const articles = new ArticleControllerApi();
   const id: number = await articles.addArticle({ articleAddUpdate: article }, { credentials: "include" })
-  return fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
+  fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include"
   });
+  return id;
 }
 export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle };

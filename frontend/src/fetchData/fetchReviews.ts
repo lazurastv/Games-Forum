@@ -26,5 +26,6 @@ async function uploadReview(review: ReviewAdd, files: FormData) {
     body: files,
     credentials: "include"
   });
+  return id;
 }
 export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews, deleteReview };
