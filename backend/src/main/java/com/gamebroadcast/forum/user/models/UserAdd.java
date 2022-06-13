@@ -14,6 +14,7 @@ public class UserAdd {
         user.setPassword(password);
         user.setShortDescription("");
         user.setProfilePicturePath("");
+        user.setEnabled(false);
         return user;
     }
 }
