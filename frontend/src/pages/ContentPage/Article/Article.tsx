@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { ArticleFullInfoVM } from "../../../api/api";
 import Author from "../../../components/Author";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
@@ -10,7 +10,7 @@ import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 import SimilarArticles from "./SimilarArticles";
 import Comments from "../Comments";
-
+import ContentLikes from "../ContentLikes";
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
 function Article({ article }: { article: ArticleFullInfoVM }) {
@@ -20,9 +20,14 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         title={article.title}
         imgSrc={`${NGINX_URL}/${article.path}/horizontal.png`}
         caption={
-          <Typography sx={{ textAlign: "right" }}>
-            {convertDate(article.publishDate)}
-          </Typography>
+          <Grid container direction="row" justifyContent="space-between">
+            <Grid item><ContentLikes contentId={article.id as number}/></Grid>
+            <Grid item>
+              <Typography sx={{ textAlign: "right" }}>
+                {convertDate(article.publishDate)}
+              </Typography>
+            </Grid>
+          </Grid>
         }
       />
       <Container maxWidth="lg">
@@ -35,7 +40,7 @@ function Article({ article }: { article: ArticleFullInfoVM }) {
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
         <SectionHeader>Komentarze</SectionHeader>
-        <Comments contentId={article.id}/>
+        <Comments contentId={article.id} />
       </Container>
     </Box>
   );
