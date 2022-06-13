@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gamebroadcast.forum.exceptions.InvalidInputException;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.exceptions.TokenInvalidException;
 import com.gamebroadcast.forum.mail.OnRegistrationCompleteEvent;
@@ -67,7 +65,7 @@ public class UserService {
         UserValidators.checkPassword(userAdd.password);
 
         if (usernameExists(userAdd.username) || emailExists(userAdd.email)) {
-            throw new ItemAlreadyExistsException("user");
+            throw new RuntimeException("Nazwa użytkownika lub adres email są już przypisane do innego konta");
         }
 
         userAdd.password = passwordEncoder.encode(userAdd.password);
@@ -105,13 +103,13 @@ public class UserService {
                                                                                                            // a better
                                                                                                            // solution
             if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword())) {
-                throw new InvalidInputException("Current password doesn't match.");
+                throw new RuntimeException("Niepoprawne hasło");
             }
         }
 
         if ((usernameExists(userUpdate.username) && !isCurrentUsername(userUpdate.username, id))
                 || (emailExists(userUpdate.email) && !isCurrentEmail(userUpdate.email, id))) {
-            throw new ItemAlreadyExistsException("user");
+            throw new RuntimeException("Nazwa użytkownika lub adres email są już przypisane do innego konta");
         }
 
         userUpdate.updateCredentials(user);
