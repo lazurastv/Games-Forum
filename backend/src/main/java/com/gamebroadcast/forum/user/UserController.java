@@ -13,7 +13,6 @@ import com.gamebroadcast.forum.utils.SessionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -65,8 +64,20 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void add(@RequestBody UserAdd userAdd) {
         try {
-            String path = fileService.getUniqueName(SecurityContextHolder.getContext().getAuthentication().getName());
+            String path = fileService.getUniqueName(userAdd.username);
             userService.add(userAdd, path);
+        } catch (RuntimeException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/regitrationConfirm/{token}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String confirmRegistration(@PathVariable("token") String token) {
+
+        try {
+            userService.checkToken(token);
+            return ("Account activated");
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
@@ -133,16 +144,14 @@ public class UserController {
         }
     }
 
-    @PostMapping(path = "/upload-profile-picture/{userId}",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(path = "/upload-profile-picture/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('USER')")
-    public void addUserImage(@PathVariable("userId") Long userId, @RequestParam(value = "image") MultipartFile profilePicture) {
+    public void addUserImage(@PathVariable("userId") Long userId,
+            @RequestParam(value = "image") MultipartFile profilePicture) {
         try {
             System.out.println(profilePicture);
-            AppUser user =  userService.getUser(userId);
+            AppUser user = userService.getUser(userId);
             String path = user.getProfilePicturePath();
             fileService.saveProfilePicture(path, profilePicture);
         } catch (RuntimeException e) {

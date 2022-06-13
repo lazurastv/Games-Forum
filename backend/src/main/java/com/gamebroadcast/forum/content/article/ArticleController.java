@@ -11,7 +11,6 @@ import com.gamebroadcast.forum.utils.SessionUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -75,15 +74,13 @@ public class ArticleController {
         }
     }
 
-    @PostMapping(path = "/upload-content-and-images/{articleId}",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(path = "/upload-content-and-images/{articleId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+    public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content,
+            @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            ArticleVM article =  articleService.getArticleById(articleId);
+            ArticleVM article = articleService.getArticleById(articleId);
             String path = article.path;
             fileService.saveNewContentFiles(path, content, files);
         } catch (RuntimeException e) {
