@@ -22,7 +22,6 @@ const maxLine = { xs: "3", sm: "3", md: "2" };
 interface IUser {
     id: number;
     username: string;
-    email: string;
     shortDescription: string;
     image: string;
     role: string;
@@ -62,6 +61,9 @@ export default function UserItem(props: IUser) {
                             <Box sx={{ my: 0.5, fontSize: { ...contentFontSize } }}>
                                 <MultilineTruncatedText text={props.shortDescription} maxLine={isXS ? "3" : "2"} />
                             </Box>
+                        </Box>
+                        <Box component="div" color="text.secondary" sx={{ mb: 1.5, fontSize: { ...secondFontSize } }}>
+                            {props.role}
                         </Box>
                     </Box>
                 </Box>

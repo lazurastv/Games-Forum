@@ -44,7 +44,8 @@ function filterData<T extends ContentData>(
     (d) =>
       (d.title && match(d.title, searchValue)) ||
       (d.introduction && match(d.introduction, searchValue)) ||
-      (d.authorName && match(d.authorName, searchValue))
+      (d.authorName && match(d.authorName, searchValue)) ||
+      ((d as any).username) && match((d as any).username, searchValue)
   );
   console.log(dataToKeep);
   dataToKeep = dataToKeep.filter((d) => {

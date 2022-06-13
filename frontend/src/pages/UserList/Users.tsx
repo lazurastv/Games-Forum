@@ -1,10 +1,11 @@
 
 import { Box, Container } from "@mui/material";
 import { UserVM } from "../../api/api";
-import Filter from "../../components/Filters/Filter/Filter";
+import UserFilter from "../../components/Filters/Filter/UserFilter";
 import { loadAllUsers } from "../../fetchData/fetchUser";
 import withLoading from "../../fetchData/withLoading";
 import useFilterData from "../../hooks/useFilterData";
+import { ContentList } from "../ContentList/ContentList.types";
 import UserItem from "./UserItem";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_USER;
@@ -15,12 +16,11 @@ interface UsersProps {
 
 const Users = (props: UsersProps) => {
   const { users } = props;
-  let username: any = undefined;
-  const filter = useFilterData(users, username);
+  const filter = useFilterData(users);
 
   return (
     <Container maxWidth="xl">
-      <Filter sliderLabel="DATA PUBLIKACJI:" data={users} {...filter.filterControl} />
+      <UserFilter data={users} {...filter.filterControl} />
       <Box sx={{ minHeight: "100vh" }}>
         {filter.Feedback
           ? filter.Feedback
@@ -31,7 +31,6 @@ const Users = (props: UsersProps) => {
               username={a.username}
               shortDescription={a.shortDescription}
               image={`${NGINX_URL}/${a.profilePicturePath}/profile.png`}
-              email={a.email}
               role={a.role}
             />
           ))}
