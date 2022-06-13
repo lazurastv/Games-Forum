@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -16,6 +16,7 @@ import { useAlert } from '../../../hooks/useAlert';
 export default function Registration() {
   const { register } = useSessionContext();
   const { displayAlert } = useAlert()
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -23,7 +24,10 @@ export default function Registration() {
     const username = data.get('username') as string;
     const email = data.get('email') as string;
     const password = data.get('password') as string;
-    register(username, email, password).catch(err => err.json()).then(x => displayAlert(x.message, true));
+    register(username, email, password)
+      .then(() => navigate("../rejestracja/mail-powiadomienie", { replace: true }))
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, true));
   };
 
   return (
