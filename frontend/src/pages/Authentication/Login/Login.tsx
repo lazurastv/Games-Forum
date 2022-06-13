@@ -27,7 +27,17 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const username = data.get("username") as string;
     const password = data.get("password") as string;
-    login(username, password).catch(() => displayAlert("Nieprawidłowy login lub hasło", true));
+    login(username, password).catch(err => err.json()).then(x => {
+      if (x === undefined) {
+        return;
+      } else if (x.errorMessage === "Wrong username or password") {
+        displayAlert("Nieprawidłowy login lub hasło", true);
+      } else if (x.errorMessage === "User has not verified") {
+        displayAlert("Konto nie zostało zweryfikowane. Sprawdź skrzynkę pocztową", true);
+      } else {
+        displayAlert(x.errorMessage, true);
+      }
+    });
   };
 
   return session.isAuthenticated ? (
