@@ -26,6 +26,7 @@ import Review from "./pages/ContentPage/Review/Review";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
 import UserContent from "./pages/UserContent/UserContent";
+import Users from "./pages/UserList/Users";
 import getTheme from "./theme";
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
@@ -86,6 +87,7 @@ function App() {
             <Route path="profil/:id" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
             <Route path="rejestracja/mail-powiadomienie" element={<AccountCreatedMessage />} />
+            <Route path="uzytkownicy" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="ADMIN" outlet={<Users />} />} />
             <Route path="*" element={<PageNotFoundError />} />
           </Routes>
           {alert}

@@ -5,4 +5,7 @@ const userController = new UserControllerApi();
 async function loadUser(id: number) {
     return userController.getById({ id: id });
 }
-export { loadUser };
+async function loadAllUsers() {
+    return userController.getAllUsers({ credentials: "include" });
+}
+export { loadUser, loadAllUsers };

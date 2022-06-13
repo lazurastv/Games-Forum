@@ -39,11 +39,15 @@ export interface AddRequest {
 
 export interface AddUserImageRequest {
     userId: number;
-    files: Blob;
+    image: Blob;
 }
 
 export interface BanUserRequest {
     id: number;
+}
+
+export interface ConfirmRegistrationRequest {
+    token: string;
 }
 
 export interface GetByEmailRequest {
@@ -141,8 +145,8 @@ export class UserControllerApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addUserImage.');
         }
 
-        if (requestParameters.files === null || requestParameters.files === undefined) {
-            throw new runtime.RequiredError('files','Required parameter requestParameters.files was null or undefined when calling addUserImage.');
+        if (requestParameters.image === null || requestParameters.image === undefined) {
+            throw new runtime.RequiredError('image','Required parameter requestParameters.image was null or undefined when calling addUserImage.');
         }
 
         const queryParameters: any = {};
@@ -165,12 +169,12 @@ export class UserControllerApi extends runtime.BaseAPI {
             formParams = new URLSearchParams();
         }
 
-        if (requestParameters.files !== undefined) {
-            formParams.append('files', requestParameters.files as any);
+        if (requestParameters.image !== undefined) {
+            formParams.append('image', requestParameters.image as any);
         }
 
         const response = await this.request({
-            path: `/api/user/upload-content-and-images/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/api/user/upload-profile-picture/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -211,6 +215,58 @@ export class UserControllerApi extends runtime.BaseAPI {
      */
     async banUser(requestParameters: BanUserRequest, initOverrides?: RequestInit): Promise<void> {
         await this.banUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async confirmRegistrationRaw(requestParameters: ConfirmRegistrationRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.token === null || requestParameters.token === undefined) {
+            throw new runtime.RequiredError('token','Required parameter requestParameters.token was null or undefined when calling confirmRegistration.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user/regitrationConfirm/{token}`.replace(`{${"token"}}`, encodeURIComponent(String(requestParameters.token))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async confirmRegistration(requestParameters: ConfirmRegistrationRequest, initOverrides?: RequestInit): Promise<string> {
+        const response = await this.confirmRegistrationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getAllUsersRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<UserVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserVMFromJSON));
+    }
+
+    /**
+     */
+    async getAllUsers(initOverrides?: RequestInit): Promise<Array<UserVM>> {
+        const response = await this.getAllUsersRaw(initOverrides);
+        return await response.value();
     }
 
     /**
