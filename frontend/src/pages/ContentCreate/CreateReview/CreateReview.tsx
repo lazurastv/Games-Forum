@@ -17,7 +17,7 @@ import SimplePopup from "../../../components/Popups/SimplePopup";
 // temp
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
-
+import { useNavigate } from "react-router-dom";
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -27,6 +27,7 @@ export default function CreateReview() {
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const { displayAlert } = useAlert();
+  const navigate = useNavigate();
   const handleSave = async () => {
     const review: ReviewAdd = {
       gameId: 7,
@@ -48,7 +49,7 @@ export default function CreateReview() {
     }
 
     uploadReview(review, formData)
-      .then(() => { return { message: "Recenzja została zapisana" } })
+      .then(id => navigate(`/recenzje/${id}`))
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };

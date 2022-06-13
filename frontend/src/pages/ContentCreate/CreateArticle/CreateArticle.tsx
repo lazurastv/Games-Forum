@@ -15,12 +15,14 @@ import StyledEditorContent from "../../../components/Editor/StyledEditorContent"
 // temp
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateArticle() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const { displayAlert } = useAlert();
+  const navigate = useNavigate();
   const handleSave = async () => {
     const article: ArticleAddUpdate = {
       title: title,
@@ -38,7 +40,7 @@ export default function CreateArticle() {
     }
 
     uploadArticle(article, formData)
-      .then(() => { return { message: "Artykuł został zapisany" } })
+      .then(id => navigate(`/artykuly/${id}`))
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };
