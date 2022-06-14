@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { GameFullInfoPlusContent } from "../../../api/api/models/GameFullInfoPlusContent";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate, convertDateToComponent } from "../../../utils/convertDate";
+import Label from "../components/Label";
 
 const checkboxGroup = [
   {
@@ -56,6 +57,9 @@ function CreateGame({ game }: { game?: GameFullInfoPlusContent }) {
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
+  const [picture, setPicture] = useState(null);
+  const [pictureName, setPictureName] = useState<string>("");
+
   const handleSave = async () => {
     const addGame: GameAddUpdate = {
       title: title,
@@ -75,6 +79,9 @@ function CreateGame({ game }: { game?: GameFullInfoPlusContent }) {
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
+    if (picture != null) {
+      formData.append("mainPicture", picture);
+    }
     for (let key in list) {
       await fetch(list[key].data.src)
         .then((res) => res.blob())
@@ -109,6 +116,12 @@ function CreateGame({ game }: { game?: GameFullInfoPlusContent }) {
       }
     }
   }, [game]);
+
+  const handlePictureChange = (event) => {
+    setPicture(event.target.files[0]);
+    setPictureName(event.target.files[0].name);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj grę</SectionHeader>
@@ -127,6 +140,13 @@ function CreateGame({ game }: { game?: GameFullInfoPlusContent }) {
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
+          </Box>
+          <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
+            <Button variant="contained" component="label" color="secondary" >
+              Dodaj obraz
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg,.jpg" hidden />
+            </Button>
+            <Label>{pictureName}</Label>
           </Box>
           <Box
             sx={{

@@ -21,13 +21,14 @@ public class FileService {
     private final String USER_URL_PATH = "http://localhost:8080/user";
 
     public String getUniqueName(String username) {
-        String phrase = username + System.currentTimeMillis();
-        String name = null;
+        String name = username + System.currentTimeMillis();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(phrase.getBytes());
-            byte[] digest = md.digest();
-            name = Base64Utils.encodeToString(digest).substring(0, 8).replace('/', '-');
+            do {
+                md.update(name.getBytes());
+                byte[] digest = md.digest();
+                name = Base64Utils.encodeToString(digest).substring(0, 8).replace('/', '-');
+            } while (isPathExists(CONTENT_DRIVE_PATH + "/" + name));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -86,8 +87,12 @@ public class FileService {
         return hash;
     }
 
-    public void saveNewContentFiles(String hash, String content, MultipartFile[] files) {
+    public void saveNewContentFiles(String hash, String content, MultipartFile mainPicture, MultipartFile[] files) {
         try {
+            if (mainPicture != null) {
+                String path = CONTENT_DRIVE_PATH + "/" + hash;
+                saveImage(mainPicture, path, "horizontal.jpg");
+            }
             if (files != null) {
                 for (long i = 0L; i < files.length; i++) {
                     String path = CONTENT_DRIVE_PATH + "/" + hash;

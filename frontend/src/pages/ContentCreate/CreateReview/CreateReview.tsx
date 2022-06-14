@@ -1,27 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
-import SectionHeader from "../../../components/SectionHeader";
-import { loadAllReviews, loadReview, updateReview, uploadReview } from "../../../fetchData/fetchReviews";
-import DraftEditor from "../../../components/Editor/DraftEditor";
+import { Label } from "@mui/icons-material";
+import { Container, Box, Select, MenuItem, Button } from "@mui/material";
+import { EditorState, convertToRaw } from "draft-js";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { GameSearchInfoVM, ReviewAdd } from "../../../api/api";
+import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
 import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
+import DraftEditor from "../../../components/Editor/DraftEditor";
+import SectionHeader from "../../../components/SectionHeader";
+import { loadAllGames } from "../../../fetchData/fetchGames";
+import { updateReview, uploadReview, loadReview } from "../../../fetchData/fetchReviews";
+import withLoading from "../../../fetchData/withLoading";
+import { useAlert } from "../../../hooks/useAlert";
+import OneLineInput from "../components/OneLineInput";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
-import OneLineInput from "../components/OneLineInput";
-import { ReviewAdd } from "../../../api/api";
-import SimplePopup from "../../../components/Popups/SimplePopup";
 
-// temp
-import { convertToRaw } from "draft-js";
-import { useAlert } from "../../../hooks/useAlert";
-import { useNavigate } from "react-router-dom";
-import withLoading from "../../../fetchData/withLoading";
-import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
-
-function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
+function CreateReview({ games, review }: { games: GameSearchInfoVM[], review?: ReviewFullInfoPlusContent }) {
+  const [gameId, setGameId] = useState<number>(7);
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [score, setScore] = useState<number | null>(null);
@@ -30,9 +26,12 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
+  const [picture, setPicture] = useState(null);
+  const [pictureName, setPictureName] = useState<string>("");
+
   const handleSave = async () => {
     const addReview: ReviewAdd = {
-      gameId: 7,
+      gameId: gameId,
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
@@ -44,6 +43,9 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
+    if (picture != null) {
+      formData.append("mainPicture", picture);
+    }
     for (let key in list) {
       await fetch(list[key].data.src)
         .then((res) => res.blob())
@@ -75,6 +77,12 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
       }
     }
   }, [review]);
+
+  const handlePictureChange = (event) => {
+    setPicture(event.target.files[0]);
+    setPictureName(event.target.files[0].name);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
@@ -87,12 +95,41 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
       >
         <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
           <Box>
+            <Select
+              value={gameId}
+              onChange={(val) => setGameId(val.target.value as number)}
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "secondary.dark",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "secondary.main",
+                  },
+                }
+              }}
+            >
+              {
+                games.map(x => <MenuItem key={x.id} value={x.id}>{x.title}</MenuItem>)
+              }
+            </Select>
             <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
             <OneLineInput
               label="Wprowadzenie"
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
+          </Box>
+          <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
+            <Button variant="contained" component="label" color="secondary" >
+              Dodaj obraz
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg,.jpg" hidden />
+            </Button>
+            <Label>{pictureName}</Label>
           </Box>
           <PlusMinus pluses={pluses} setPluses={setPluses} minuses={minuses} setMinuses={setMinuses} />
         </Box>
@@ -129,6 +166,7 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
 export default withLoading(
   CreateReview,
   {
+    games: loadAllGames,
     review: async (id) => {
       let rev = await loadReview(id);
       let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
