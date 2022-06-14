@@ -35,7 +35,7 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteArticle(a.id, a.title)}>
+              <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/artykul/${a.id}`} onDelete={() => handleDeleteArticle(a.id, a.title)}>
                 <ArticleItem
                   articleId={a.id}
                   content={a.introduction}
