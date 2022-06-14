@@ -18,6 +18,7 @@ import { game } from "../../../data-mock/gameDataDictionary";
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
 import { useNavigate } from "react-router-dom";
+import Label from "../components/Label";
 
 const checkboxGroup = [
   {
@@ -53,6 +54,8 @@ export default function CreateGame() {
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
+  const [picture, setPicture] = useState(null);
+  const [pictureName, setPictureName] = useState<string>("");
 
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -73,6 +76,9 @@ export default function CreateGame() {
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
+    if (picture != null) {
+      formData.append("mainPicture", picture);
+    }
     for (let key in list) {
       await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
         formData.append("files", blob);
@@ -84,6 +90,12 @@ export default function CreateGame() {
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };
+
+  const handlePictureChange = (event) => {
+    setPicture(event.target.files[0]);
+    setPictureName(event.target.files[0].name);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj grę</SectionHeader>
@@ -102,6 +114,13 @@ export default function CreateGame() {
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
+          </Box>
+          <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
+            <Button variant="contained" component="label" color="secondary" >
+              Dodaj obraz
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg" hidden />
+            </Button>
+            <Label>{pictureName}</Label>
           </Box>
           <Box
             sx={{

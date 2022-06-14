@@ -18,6 +18,7 @@ import SimplePopup from "../../../components/Popups/SimplePopup";
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
 import { useNavigate } from "react-router-dom";
+import Label from "../components/Label";
 
 export default function CreateReview() {
   const [title, setTitle] = useState<string>("");
@@ -28,6 +29,9 @@ export default function CreateReview() {
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
+  const [picture, setPicture] = useState(null);
+  const [pictureName, setPictureName] = useState<string>("");
+
   const handleSave = async () => {
     const review: ReviewAdd = {
       gameId: 7,
@@ -42,6 +46,9 @@ export default function CreateReview() {
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
+    if (picture != null) {
+      formData.append("mainPicture", picture);
+    }
     for (let key in list) {
       await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
         formData.append("files", blob);
@@ -53,6 +60,12 @@ export default function CreateReview() {
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };
+
+  const handlePictureChange = (event) => {
+    setPicture(event.target.files[0]);
+    setPictureName(event.target.files[0].name);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
@@ -71,6 +84,13 @@ export default function CreateReview() {
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
+          </Box>
+          <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
+            <Button variant="contained" component="label" color="secondary" >
+              Dodaj obraz
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg" hidden />
+            </Button>
+            <Label>{pictureName}</Label>
           </Box>
           <PlusMinus pluses={pluses} setPluses={setPluses} minuses={minuses} setMinuses={setMinuses} />
         </Box>

@@ -14,10 +14,10 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 public class FileService {
-    private final String CONTENT_DRIVE_PATH = "src\\main\\resources\\static\\content";
+    private final String CONTENT_DRIVE_PATH = "src/main/resources/static/content";
     private final String CONTENT_URL_PATH = "http://localhost:8080/content";
 
-    private final String USER_DRIVE_PATH = "src\\main\\resources\\static\\user";
+    private final String USER_DRIVE_PATH = "src/main/resources/static/user";
     private final String USER_URL_PATH = "http://localhost:8080/user";
 
     public String getUniqueName(String username) {
@@ -49,7 +49,7 @@ public class FileService {
     }
     public void writeContent(String hash, String htmlContent) {
         createFolder(CONTENT_DRIVE_PATH + "\\" + hash);
-        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(CONTENT_DRIVE_PATH + "\\" + hash + "\\" + "content.json"))) {
+        try (BufferedWriter buffer = new BufferedWriter(new FileWriter(CONTENT_DRIVE_PATH + "/" + hash + "/" + "content.json"))) {
             buffer.write(htmlContent);
         } catch (IOException e) {
             // TODO add custom exception
@@ -84,11 +84,15 @@ public class FileService {
         return hash;
     }
 
-    public void saveNewContentFiles(String hash, String content, MultipartFile[] files) {
+    public void saveNewContentFiles(String hash, String content, MultipartFile mainPicture, MultipartFile[] files) {
         try {
+            if (mainPicture != null) {
+                String path = CONTENT_DRIVE_PATH + "/" + hash;
+                saveImage(mainPicture, path, "horizontal.png");
+            }
             if (files != null) {
                 for (long i = 0L; i < files.length; i++) {
-                    String path = CONTENT_DRIVE_PATH + "\\" + hash;
+                    String path = CONTENT_DRIVE_PATH + "/" + hash;
                     String imageName = "image" + i + ".png";
                     saveImage(files[(int) i], path, imageName);
                     path = CONTENT_URL_PATH + "/" + hash + "/" + imageName;
@@ -107,7 +111,7 @@ public class FileService {
 
     public void saveProfilePicture(String hash, MultipartFile profilePicture) {
         try {
-            saveImage(profilePicture, USER_DRIVE_PATH + "\\" + hash, "profile.png");
+            saveImage(profilePicture, USER_DRIVE_PATH + "/" + hash, "profile.png");
         } catch (IOException e) {
             // TODO add custom exception
             throw new RuntimeException(e);

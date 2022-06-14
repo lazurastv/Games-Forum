@@ -80,11 +80,13 @@ public class GameController {
     )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addGameContentWithImages(@PathVariable("gameId") Long gameId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+    public void addGameContentWithImages(@PathVariable("gameId") Long gameId, @RequestParam("content") String content,
+                                         @RequestParam(value = "mainPicture", required = false) MultipartFile mainPicture,
+                                         @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
             GameVM game =  gameService.getGameById(gameId);
             String path = game.path;
-            fileService.saveNewContentFiles(path, content, files);
+            fileService.saveNewContentFiles(path, content, mainPicture, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
