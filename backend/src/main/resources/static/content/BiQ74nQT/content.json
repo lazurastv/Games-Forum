@@ -1,1 +1,145 @@
-{"blocks":[{"key":"13ei4","text":"Aktualnie żeby grać w najnowsze gry, trzeba wyłożyć kilka tysięcy złotych na komputer, który będzie w stanie uruchomić tytuł w przyzwoitych ustawieniach jakości i ze stabilną liczbą klatek na sekundę. Co jednak zrobić, gdy nie posiadamy takich funduszy? Konsole obecnej generacji pozwalają na granie w nowości przy mniejszych zasobach finansowych i wśród nich niską ceną wyróżnia się Xbox Series S.\n\nSam posiadam go już ponad rok i przetestowałem garść gier, żeby sprawdzić, jak sprzęt poradzi sobie z, wydawałoby się, tytułami z najwyższej półki. Czy pozwoli na stabilną rozgrywkę przy zadowalającym kompromisie wizualnym? Zapraszam do lektury.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"345kb","text":"Cyberpunk 2077","type":"header-four","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"bm7s7","text":" ","type":"atomic","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}],"data":{"text-align":"center"}},{"key":"3q26e","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{"text-align":"center"}},{"key":"7ct49","text":"Cyberpunk 2077 był grą niemal całkowicie niegrywalną na konsolach poprzedniej generacji, chyba że mieliśmy Xboksa One X. Xbox Series S jest urządzeniem o wiele tańszym i nie obsługuje 4K. Jak więc produkcja działa na sprzęcie za niecałe 1400 złotych? Bardzo dobrze. Przez cały okres grania miałem stabilne 30 fps (również przed patchem 1.5) i nawet większe eksplozje nie wywoływały  przycinania obrazu. ","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1c1ms","text":"\nGra wygląda na okolice średnich ustawień z komputerów, ruch uliczny jest mocno ograniczony, a samochody oglądane z daleka to zwykłe sprite'y 2D, które zanikają, gdy zbliżamy się do teoretycznego korka. Nie spotkamy również dużej liczby przechodniów. Patch 1.5 nic nie zmienił w tej kwestii i jedyne, co poprawił, to działanie menusów – te funkcjonują teraz płynniej.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1h0bt","text":"Red Dead Redemption 2 ","type":"header-four","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"9jnen","text":" ","type":"atomic","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":1}],"data":{"text-align":"center"}},{"key":"f9tfn","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{"text-align":"center"}},{"key":"dqh46","text":"Red Dead Redemption 2 w dniu premiery był uznawany przez wiele osób za najpiękniejszą grę, jaka kiedykolwiek wyszła, i stał się swoistym wzorem dla przyszłych projektów. Na Xboksie Series S gra wciąż wygląda niesamowicie i utrzymuje stabilne 30 fps.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"a6lui","text":"\nZasięg rysowania tekstur jest wysoki i spokojnie możemy podziwiać widoki. Niższa jakość grafiki jest dostrzegalna przede wszystkim na włosach ludzi i sierści zwierząt. Również poszarpane krawędzie rzucają się w oczy, sugerując brak dobrego ich wygładzania. Mimo to gra się przyjemnie i napady na pociągi, pościgi konne czy nawet śnieżyce nie wywołują spadku jakości działania gry.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"http://localhost:8080/content/BiQ74nQT/image0.jpg","height":"auto","width":"auto","alt":""}},"1":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"http://localhost:8080/content/BiQ74nQT/image1.jpg","height":"auto","width":"auto","alt":""}}}}
+{
+    "blocks": [
+        {
+            "key": "13ei4",
+            "text": "Aktualnie żeby grać w najnowsze gry, trzeba wyłożyć kilka tysięcy złotych na komputer, który będzie w stanie uruchomić tytuł w przyzwoitych ustawieniach jakości i ze stabilną liczbą klatek na sekundę. Co jednak zrobić, gdy nie posiadamy takich funduszy? Konsole obecnej generacji pozwalają na granie w nowości przy mniejszych zasobach finansowych i wśród nich niską ceną wyróżnia się Xbox Series S.\n\nSam posiadam go już ponad rok i przetestowałem garść gier, żeby sprawdzić, jak sprzęt poradzi sobie z, wydawałoby się, tytułami z najwyższej półki. Czy pozwoli na stabilną rozgrywkę przy zadowalającym kompromisie wizualnym? Zapraszam do lektury.",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "345kb",
+            "text": "Cyberpunk 2077",
+            "type": "header-four",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "bm7s7",
+            "text": " ",
+            "type": "atomic",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [
+                {
+                    "offset": 0,
+                    "length": 1,
+                    "key": 0
+                }
+            ],
+            "data": {
+                "text-align": "center"
+            }
+        },
+        {
+            "key": "3q26e",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {
+                "text-align": "center"
+            }
+        },
+        {
+            "key": "7ct49",
+            "text": "Cyberpunk 2077 był grą niemal całkowicie niegrywalną na konsolach poprzedniej generacji, chyba że mieliśmy Xboksa One X. Xbox Series S jest urządzeniem o wiele tańszym i nie obsługuje 4K. Jak więc produkcja działa na sprzęcie za niecałe 1400 złotych? Bardzo dobrze. Przez cały okres grania miałem stabilne 30 fps (również przed patchem 1.5) i nawet większe eksplozje nie wywoływały  przycinania obrazu. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "1c1ms",
+            "text": "\nGra wygląda na okolice średnich ustawień z komputerów, ruch uliczny jest mocno ograniczony, a samochody oglądane z daleka to zwykłe sprite'y 2D, które zanikają, gdy zbliżamy się do teoretycznego korka. Nie spotkamy również dużej liczby przechodniów. Patch 1.5 nic nie zmienił w tej kwestii i jedyne, co poprawił, to działanie menusów – te funkcjonują teraz płynniej.",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "1h0bt",
+            "text": "Red Dead Redemption 2 ",
+            "type": "header-four",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "9jnen",
+            "text": " ",
+            "type": "atomic",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [
+                {
+                    "offset": 0,
+                    "length": 1,
+                    "key": 1
+                }
+            ],
+            "data": {
+                "text-align": "center"
+            }
+        },
+        {
+            "key": "f9tfn",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {
+                "text-align": "center"
+            }
+        },
+        {
+            "key": "dqh46",
+            "text": "Red Dead Redemption 2 w dniu premiery był uznawany przez wiele osób za najpiękniejszą grę, jaka kiedykolwiek wyszła, i stał się swoistym wzorem dla przyszłych projektów. Na Xboksie Series S gra wciąż wygląda niesamowicie i utrzymuje stabilne 30 fps.",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        },
+        {
+            "key": "a6lui",
+            "text": "\nZasięg rysowania tekstur jest wysoki i spokojnie możemy podziwiać widoki. Niższa jakość grafiki jest dostrzegalna przede wszystkim na włosach ludzi i sierści zwierząt. Również poszarpane krawędzie rzucają się w oczy, sugerując brak dobrego ich wygładzania. Mimo to gra się przyjemnie i napady na pociągi, pościgi konne czy nawet śnieżyce nie wywołują spadku jakości działania gry.",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }
+    ],
+    "entityMap": {
+        "0": {
+            "type": "IMAGE",
+            "mutability": "MUTABLE",
+            "data": {
+                "src": "https://forum-graczy-backend.herokuapp.com/content/BiQ74nQT/image0.jpg",
+                "height": "auto",
+                "width": "auto",
+                "alt": ""
+            }
+        },
+        "1": {
+            "type": "IMAGE",
+            "mutability": "MUTABLE",
+            "data": {
+                "src": "https://forum-graczy-backend.herokuapp.com/content/BiQ74nQT/image1.jpg",
+                "height": "auto",
+                "width": "auto",
+                "alt": ""
+            }
+        }
+    }
+}

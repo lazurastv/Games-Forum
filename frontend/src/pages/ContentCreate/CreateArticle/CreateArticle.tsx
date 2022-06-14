@@ -128,7 +128,7 @@ export default withLoading(
   {
     article: async (id) => {
       let art = await loadArticle(id);
-      let content = await fetch(`http://localhost:8080/content/${art.path}/content.json`)
+      let content = await fetch(`https://forum-graczy-backend.herokuapp.com/content/${art.path}/content.json`)
         .then((res) => res.json())
         .then((data) => JSON.stringify(data));
       let articleWithContent: ArticleFullInfoPlusContent = art;
