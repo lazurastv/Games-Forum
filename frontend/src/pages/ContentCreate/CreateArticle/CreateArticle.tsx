@@ -43,7 +43,7 @@ function CreateArticle({ article }: { article?: ArticleFullInfoPlusContent }) {
         });
     }
     if (article && article.id) {
-      updateArticle(article.id, addArticle)
+      updateArticle(article.id, addArticle, formData)
         .then(() => navigate(`/artykuly/${article.id}`))
         .catch((err) => err.json())
         .then((x) => displayAlert(x.message, x.status));

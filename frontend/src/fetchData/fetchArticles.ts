@@ -25,8 +25,13 @@ async function uploadArticle(article: ArticleAddUpdate, files: FormData) {
   });
   return id;
 }
-async function updateArticle(id: number, article: ArticleAddUpdate) {
+async function updateArticle(id: number, article: ArticleAddUpdate, files: FormData) {
   const articles = new ArticleControllerApi();
+  fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include",
+  });
   return articles.updateArticle(
     {
       articleId: id,
