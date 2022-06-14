@@ -9,6 +9,6 @@ async function loadAllUsers() {
     return userController.getAllUsers({ credentials: "include" });
 }
 async function confirmRegistration(token: string) {
-    return userController.confirmRegistration({token: token}, { credentials: "include" });
+    return await userController.confirmRegistration({ token: token }, { credentials: "include" });
 }
 export { loadUser, loadAllUsers, confirmRegistration };
