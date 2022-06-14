@@ -10,21 +10,19 @@ import { stringToHtml } from "../../../components/Editor/dataConversion";
 import ReviewRating from "./ReviewRating";
 import SimilarReviews from "./SimilarReviews";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
-import { articleDangerousHtml } from "../../../data-mock/editorData";
 import Comments from "../Comments";
+import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
+import Game from "../../../components/Game";
+
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
-function Review({ review }: { review: ReviewFullInfoVM }) {
+function Review({ review }: { review: ReviewFullInfoPlusContent }) {
   return (
     <Box>
       <HeaderTile
         title={review.title}
-        imgSrc={`${NGINX_URL}/${review.path}/horizontal.png`}
-        caption={
-          <Typography sx={{ textAlign: "right" }}>
-            {convertDate(review.publishDate)}
-          </Typography>
-        }
+        imgSrc={`${NGINX_URL}/${review.path}/horizontal.jpg`}
+        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
       <Container maxWidth="lg">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
@@ -37,7 +35,7 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+              <div dangerouslySetInnerHTML={{ __html: review.content !== undefined ? stringToHtml(review.content) : "" }} />
             </StyledEditorContent>
           </Grid>
           <Grid
@@ -47,6 +45,7 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
             sx={{ display: "flex", flexDirection: "column" }}
           >
             <Author authorData={review.author} />
+            <Game gameData={review.game!} />
             <ReviewRating
               sx={{ mb: 5 }}
               score={
@@ -68,5 +67,12 @@ function Review({ review }: { review: ReviewFullInfoVM }) {
   );
 }
 export default withLoading(Review, {
-  review: loadReview,
+  review: async (id) => {
+    let rev = await loadReview(id);
+    let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+      .then(res => res.json()).then(data => JSON.stringify(data));
+    let articleWithContent: ReviewFullInfoPlusContent = rev;
+    articleWithContent.content = content;
+    return articleWithContent;
+  },
 });

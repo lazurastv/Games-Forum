@@ -17,7 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.gamebroadcast.forum.content.article.models.Article;
+import com.gamebroadcast.forum.chat.models.ChatMessage;
+import com.gamebroadcast.forum.content.content.Content;
 import com.gamebroadcast.forum.interaction.comment.models.Comment;
 import com.gamebroadcast.forum.interaction.like.models.Like;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
@@ -66,7 +67,7 @@ public class AppUser implements UserDetails {
     private String role;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
-    private List<Article> articles;
+    private List<Content> contents;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
@@ -76,6 +77,9 @@ public class AppUser implements UserDetails {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<ChatMessage> chatMessages;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
@@ -115,7 +119,7 @@ public class AppUser implements UserDetails {
 
     public AppUser() {
         this.role = Role.USER.toString();
-        this.enabled = false;
+        this.enabled = true;
         this.locked = false;
         this.lastUsed = Timestamp.from(Instant.now());
     }

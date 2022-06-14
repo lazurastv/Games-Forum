@@ -11,7 +11,6 @@ import com.gamebroadcast.forum.content.article.models.ArticleAddUpdate;
 import com.gamebroadcast.forum.content.article.models.ArticleFullInfoVM;
 import com.gamebroadcast.forum.content.article.models.ArticleSearchInfoVM;
 import com.gamebroadcast.forum.content.article.models.ArticleVM;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
@@ -50,11 +49,13 @@ public class ArticleService {
         return new ArticleFullInfoVM(article);
     }
 
-    public void addArticle(ArticleAddUpdate articleAdd, String path) {
+    public Long addArticle(ArticleAddUpdate articleAdd, String path) {
         checkIfTitleIsUnique(articleAdd.title);
         Article article = articleAdd.toArticle();
+        article.setPath(path);
         article.publish();
-        articleRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
+        return savedArticle.getId();
     }
 
     @Transactional
@@ -79,7 +80,7 @@ public class ArticleService {
     private void checkIfTitleIsUnique(String title) {
         Optional<Article> article = articleRepository.findByTitle(title);
         if (article.isPresent()) {
-            throw new ItemAlreadyExistsException("article");
+            throw new RuntimeException("Istnieje już artykuł o takim samym tytule");
         }
     }
 

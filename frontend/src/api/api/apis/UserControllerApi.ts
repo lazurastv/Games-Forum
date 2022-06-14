@@ -37,8 +37,17 @@ export interface AddRequest {
     userAdd: UserAdd;
 }
 
+export interface AddUserImageRequest {
+    userId: number;
+    image: Blob;
+}
+
 export interface BanUserRequest {
     id: number;
+}
+
+export interface ConfirmRegistrationRequest {
+    token: string;
 }
 
 export interface GetByEmailRequest {
@@ -131,6 +140,58 @@ export class UserControllerApi extends runtime.BaseAPI {
 
     /**
      */
+    async addUserImageRaw(requestParameters: AddUserImageRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling addUserImage.');
+        }
+
+        if (requestParameters.image === null || requestParameters.image === undefined) {
+            throw new runtime.RequiredError('image','Required parameter requestParameters.image was null or undefined when calling addUserImage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const consumes: runtime.Consume[] = [
+            { contentType: 'multipart/form-data' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters.image !== undefined) {
+            formParams.append('image', requestParameters.image as any);
+        }
+
+        const response = await this.request({
+            path: `/api/user/upload-profile-picture/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: formParams,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async addUserImage(requestParameters: AddUserImageRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addUserImageRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
     async banUserRaw(requestParameters: BanUserRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling banUser.');
@@ -154,6 +215,58 @@ export class UserControllerApi extends runtime.BaseAPI {
      */
     async banUser(requestParameters: BanUserRequest, initOverrides?: RequestInit): Promise<void> {
         await this.banUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async confirmRegistrationRaw(requestParameters: ConfirmRegistrationRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.token === null || requestParameters.token === undefined) {
+            throw new runtime.RequiredError('token','Required parameter requestParameters.token was null or undefined when calling confirmRegistration.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user/regitrationConfirm/{token}`.replace(`{${"token"}}`, encodeURIComponent(String(requestParameters.token))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async confirmRegistration(requestParameters: ConfirmRegistrationRequest, initOverrides?: RequestInit): Promise<string> {
+        const response = await this.confirmRegistrationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getAllUsersRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<UserVM>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserVMFromJSON));
+    }
+
+    /**
+     */
+    async getAllUsers(initOverrides?: RequestInit): Promise<Array<UserVM>> {
+        const response = await this.getAllUsersRaw(initOverrides);
+        return await response.value();
     }
 
     /**

@@ -1,38 +1,39 @@
-import React, { useState } from "react";
-import { EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Container from "@mui/material/Container";
+import { Button, MenuItem, Select } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
-import SectionHeader from "../../../components/SectionHeader";
-import { loadReview, uploadReview } from "../../../fetchData/fetchReviews";
-import DraftEditor from "../../../components/Editor/DraftEditor";
+import Container from "@mui/material/Container";
+import { EditorState } from "draft-js";
+import { useState } from "react";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { GameSearchInfoVM, ReviewAdd } from "../../../api/api";
 import { editorToString } from "../../../components/Editor/dataConversion";
+import DraftEditor from "../../../components/Editor/DraftEditor";
+import SectionHeader from "../../../components/SectionHeader";
+import { uploadReview } from "../../../fetchData/fetchReviews";
+import OneLineInput from "../components/OneLineInput";
+import MultipleSelect from "../components/MultipleSelect";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
-import OneLineInput from "../components/OneLineInput";
-import { ReviewAdd } from "../../../api/api";
-import SimplePopup from "../../../components/Popups/SimplePopup";
 
-export interface PopupsState {
-  ok: boolean;
-  error: boolean;
-}
+// temp
+import { convertToRaw } from "draft-js";
+import { useNavigate } from "react-router-dom";
+import { loadAllGames } from "../../../fetchData/fetchGames";
+import withLoading from "../../../fetchData/withLoading";
+import { useAlert } from "../../../hooks/useAlert";
 
-export default function CreateReview() {
+function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
+  const [gameId, setGameId] = useState<number>(7);
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [score, setScore] = useState<number | null>(null);
   const [pluses, setPluses] = useState<Array<string>>([""]);
   const [minuses, setMinuses] = useState<Array<string>>([""]);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
+  const { displayAlert } = useAlert();
+  const navigate = useNavigate();
   const handleSave = async () => {
-    //
-    // TODO obsługa błędów
-    // //
     const review: ReviewAdd = {
-      gameId: 7,
+      gameId: gameId,
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
@@ -40,11 +41,20 @@ export default function CreateReview() {
       pluses: pluses,
       minuses: minuses,
     };
-    uploadReview(review).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));;
-    // .catch(
-    //   (e) => console.error(e)
-    // );
-    // const rev:any = await loadReview(12);
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+
+    uploadReview(review, formData)
+      .then(id => navigate(`/recenzje/${id}`))
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, x.status));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -58,6 +68,28 @@ export default function CreateReview() {
       >
         <Box sx={{ display: "flex", flexDirection: "column", rowGap: 1.5, mb: 4 }}>
           <Box>
+            <Select
+              value={gameId}
+              onChange={(val) => setGameId(val.target.value as number)}
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  "&:hover fieldset": {
+                    borderColor: "secondary.dark",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "secondary.main",
+                  },
+                }
+              }}
+            >
+              {
+                games.map(x => <MenuItem key={x.id} value={x.id}>{x.title}</MenuItem>)
+              }
+            </Select>
             <OneLineInput label="Tytuł" value={title} onChange={(e: any) => setTitle(e.target.value)} />
             <OneLineInput
               label="Wprowadzenie"
@@ -94,12 +126,7 @@ export default function CreateReview() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Recenzja zoztała zapizana."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
-      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Recenzja nie została zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
     </Container>
   );
 }
+export default withLoading(CreateReview, { games: loadAllGames })

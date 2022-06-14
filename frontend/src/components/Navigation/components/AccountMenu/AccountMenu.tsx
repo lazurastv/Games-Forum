@@ -68,11 +68,11 @@ export default function AccountMenu({ anchorEl, setAnchorEl }) {
               onClick={handleClose}
               jsxElement={
                 <Avatar
-                  src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
+                  src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.jpg`}
                   sx={{ mr: 2, ml: -1, width: 32, height: 32 }}
                 />
               }
-              path="/profil"
+              path={"/profil/" + session.user?.id}
               text={session.user?.username ?? "unknown"}
             />
             <Divider key="divider" sx={{ my: 1 }} />

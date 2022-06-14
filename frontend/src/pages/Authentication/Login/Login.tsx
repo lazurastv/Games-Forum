@@ -14,9 +14,11 @@ import { GoogleIcon } from "../../../assets/GoogleIcon";
 import DividerWithText from "../../../components/DividerWithText";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSessionContext } from "../../../components/Authentication/SessionContext";
+import { useAlert } from "../../../hooks/useAlert";
 
 export default function Login() {
   const { login, session } = useSessionContext();
+  const { displayAlert } = useAlert();
   const navigate = useNavigate();
   const location = useLocation();
   const hasPreviousState = location.key !== "default";
@@ -25,8 +27,17 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const username = data.get("username") as string;
     const password = data.get("password") as string;
-    console.log(session.isAuthenticated);
-    login(username, password).catch((err) => console.error(err));
+    login(username, password).catch(err => err.json()).then(x => {
+      if (x === undefined) {
+        return;
+      } else if (x.errorMessage === "Wrong username or password") {
+        displayAlert("Nieprawidłowy login lub hasło", true);
+      } else if (x.errorMessage === "User has not verified") {
+        displayAlert("Konto nie zostało zweryfikowane. Sprawdź skrzynkę pocztową", true);
+      } else {
+        displayAlert(x.errorMessage, true);
+      }
+    });
   };
 
   return session.isAuthenticated ? (

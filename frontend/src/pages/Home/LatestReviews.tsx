@@ -18,7 +18,7 @@ function LatestReviews({ reviews }: { reviews: ReviewSearchInfoVM[] }) {
                             key={id}
                             reviewId={x.id}
                             title={x.title}
-                            src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                            src={`${NGINX_URL}/${x.path}/horizontal.jpg`}
                             author={x.authorName}
                             date={convertDate(x.publishDate)}
                         />

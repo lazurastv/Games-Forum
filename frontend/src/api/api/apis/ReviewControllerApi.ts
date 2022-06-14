@@ -36,6 +36,12 @@ export interface AddReviewRequest {
     reviewAdd: ReviewAdd;
 }
 
+export interface AddReviewWithImagesRequest {
+    reviewId: number;
+    content: string;
+    files?: Array<Blob>;
+}
+
 export interface DeleteReviewRequest {
     reviewId: number;
 }
@@ -64,7 +70,7 @@ export class ReviewControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async addReviewRaw(requestParameters: AddReviewRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+    async addReviewRaw(requestParameters: AddReviewRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<number>> {
         if (requestParameters.reviewAdd === null || requestParameters.reviewAdd === undefined) {
             throw new runtime.RequiredError('reviewAdd','Required parameter requestParameters.reviewAdd was null or undefined when calling addReview.');
         }
@@ -83,13 +89,53 @@ export class ReviewControllerApi extends runtime.BaseAPI {
             body: ReviewAddToJSON(requestParameters.reviewAdd),
         }, initOverrides);
 
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async addReview(requestParameters: AddReviewRequest, initOverrides?: RequestInit): Promise<number> {
+        const response = await this.addReviewRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async addReviewWithImagesRaw(requestParameters: AddReviewWithImagesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
+            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling addReviewWithImages.');
+        }
+
+        if (requestParameters.content === null || requestParameters.content === undefined) {
+            throw new runtime.RequiredError('content','Required parameter requestParameters.content was null or undefined when calling addReviewWithImages.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.content !== undefined) {
+            queryParameters['content'] = requestParameters.content;
+        }
+
+        if (requestParameters.files) {
+            queryParameters['files'] = requestParameters.files;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/review/upload-content-and-images/{reviewId}`.replace(`{${"reviewId"}}`, encodeURIComponent(String(requestParameters.reviewId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
         return new runtime.VoidApiResponse(response);
     }
 
     /**
      */
-    async addReview(requestParameters: AddReviewRequest, initOverrides?: RequestInit): Promise<void> {
-        await this.addReviewRaw(requestParameters, initOverrides);
+    async addReviewWithImages(requestParameters: AddReviewWithImagesRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.addReviewWithImagesRaw(requestParameters, initOverrides);
     }
 
     /**

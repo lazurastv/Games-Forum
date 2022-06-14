@@ -49,6 +49,12 @@ export interface GameVM {
      * @memberof GameVM
      */
     authorName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GameVM
+     */
+    introduction?: string;
 }
 
 export function GameVMFromJSON(json: any): GameVM {
@@ -66,6 +72,7 @@ export function GameVMFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ga
         'path': !exists(json, 'path') ? undefined : json['path'],
         'publishDate': !exists(json, 'publishDate') ? undefined : (new Date(json['publishDate'])),
         'authorName': !exists(json, 'authorName') ? undefined : json['authorName'],
+        'introduction': !exists(json, 'introduction') ? undefined : json['introduction'],
     };
 }
 
@@ -83,6 +90,7 @@ export function GameVMToJSON(value?: GameVM | null): any {
         'path': value.path,
         'publishDate': value.publishDate === undefined ? undefined : (value.publishDate.toISOString()),
         'authorName': value.authorName,
+        'introduction': value.introduction,
     };
 }
 

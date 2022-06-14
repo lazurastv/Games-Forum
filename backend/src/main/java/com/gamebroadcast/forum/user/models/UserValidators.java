@@ -4,8 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gamebroadcast.forum.exceptions.InvalidInputException;
-
-import org.springframework.context.support.BeanDefinitionDsl.Role;
+import com.gamebroadcast.forum.security.Role;
 
 public class UserValidators {
 
@@ -13,12 +12,12 @@ public class UserValidators {
         final String USERNAME_PATTERN = "^[\\p{L}]+([\\p{L}0-9_-]+)$";
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
         Matcher matcher = pattern.matcher(username);
-        if (username == null) {
-            throw new InvalidInputException("Username is required.");
+        if (username == "") {
+            throw new RuntimeException("Nazwa użytkownika jest wymagana");
         } else if (username.length() > 60) {
-            throw new InvalidInputException("Username is too long.");
+            throw new RuntimeException("Nazwa użytkownika jest za długa");
         } else if (!matcher.matches()) {
-            throw new InvalidInputException("Invalid username");
+            throw new RuntimeException("Nazwa użytkownika może się składać tylko z cyfr, liczb i znaku _");
         }
     }
 
@@ -27,12 +26,12 @@ public class UserValidators {
                 + "[a-zA-Z0-9][a-zA-Z0-9-]*(\\.[a-zA-Z0-9_+-]+)+$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
-        if (email == null) {
-            throw new InvalidInputException("Email is required.");
+        if (email == "") {
+            throw new InvalidInputException("Adres email jest wymagany");
         } else if (email.length() > 254) {
-            throw new InvalidInputException("Email is too long.");
+            throw new InvalidInputException("Adres email jest za długi");
         } else if (!matcher.matches()) {
-            throw new InvalidInputException("Invalid email.");
+            throw new InvalidInputException("Niepoprawny adres email");
         }
     }
 
@@ -41,16 +40,17 @@ public class UserValidators {
                 + "(?=.*[@#$^&%+=\\-_?!*(){}<>,\\./\\\\\\[\\]])(?=\\S+$).{8,}$"; // /
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
-        if (password == null) {
-            throw new InvalidInputException("Password is required.");
+        if (password == "") {
+            throw new InvalidInputException("Hasło jest wymagane");
         } else if (!matcher.matches()) {
-            throw new InvalidInputException("Invalid password.");
+            throw new InvalidInputException(
+                    "Hasło musi mieć co najmniej 8 znaków i co najmniej 1 literę, cyfrę, dużą literę i znak specjalny");
         }
     }
 
     public static void checkShortDescription(String shortDescription) {
         if (shortDescription.length() > 300) {
-            throw new InvalidInputException("Short description is too long.");
+            throw new InvalidInputException("Opis jest za długi");
         }
     }
 
@@ -60,6 +60,6 @@ public class UserValidators {
                 return;
             }
         }
-        throw new InvalidInputException("Such role doesn't exist.");
+        throw new InvalidInputException("Nie ma takiej roli");
     }
 }

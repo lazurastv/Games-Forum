@@ -23,9 +23,9 @@ function filterData<T extends ContentData>(
         Object.values(value).every((v) => !v)
           ? a
           : {
-              ...a,
-              [key]: value,
-            },
+            ...a,
+            [key]: value,
+          },
       {}
     );
     if (Object.entries(activeCheckboxGroups).length !== 0) {
@@ -35,7 +35,9 @@ function filterData<T extends ContentData>(
           .map((v) => v[0]);
         console.log(propertyValues);
         dataToKeep = dataToKeep.filter(
-          (d) => Array.isArray(d[property]) && propertyValues.some((el) => d[property].includes(el))
+          (d) => property === "role" ?
+            propertyValues.some((el) => d[property] === el) :
+            Array.isArray(d[property]) && propertyValues.some((el) => d[property].includes(el))
         );
       }
     }
@@ -44,7 +46,8 @@ function filterData<T extends ContentData>(
     (d) =>
       (d.title && match(d.title, searchValue)) ||
       (d.introduction && match(d.introduction, searchValue)) ||
-      (d.authorName && match(d.authorName, searchValue))
+      (d.authorName && match(d.authorName, searchValue)) ||
+      ((d as any).username) && match((d as any).username, searchValue)
   );
   console.log(dataToKeep);
   dataToKeep = dataToKeep.filter((d) => {
@@ -81,10 +84,10 @@ function sortData<T extends ContentData>(data: T[], sortValue: string): number[]
   } else {
     newSortOrder = data
       .sort((a, b) => {
-        if (!a.popularity) {
+        if (a.popularity === undefined) {
           return -1;
         }
-        if (!b.popularity) {
+        if (b.popularity === undefined) {
           return 1;
         }
         if (a.popularity > b.popularity) {

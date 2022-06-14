@@ -1,11 +1,12 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { GameFullInfoVM, RatingControllerApi } from "../../../api/api";
+import { GameFullInfoPlusContent } from "../../../api/api/models/GameFullInfoPlusContent";
 import { useSessionContext } from "../../../components/Authentication/SessionContext";
+import { stringToHtml } from "../../../components/Editor/dataConversion";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 import SectionHeader from "../../../components/SectionHeader";
 import HeaderTile from "../../../components/Tile/HeaderTile";
-import { articleDangerousHtml } from "../../../data-mock/editorData";
 import { loadGame } from "../../../fetchData/fetchGames";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
@@ -17,7 +18,7 @@ import SimilarGames from "./SimilarGames";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
-function Game({ game }: { game: GameFullInfoVM }) {
+function Game({ game }: { game: GameFullInfoPlusContent }) {
   const { session } = useSessionContext();
   const [rating, setRating] = useState<number | null>(null);
   // fetch rating on component load
@@ -60,7 +61,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
     <Box>
       <HeaderTile
         title={game.title}
-        imgSrc={`${NGINX_URL}/${game.path}/horizontal.png`}
+        imgSrc={`${NGINX_URL}/${game.path}/horizontal.jpg`}
         caption={
           <Grid container spacing={2} sx={{ color: "staticText.secondary" }}>
             <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>
@@ -107,7 +108,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
                     ...styles.score,
                   }}
                 >
-                  {game.userScore && isNaN(game.userScore) ? "?" : game.userScore?.toFixed(0)}/10
+                  {game.userScore && isNaN(game.editorScore!) ? "?" : game.editorScore?.toFixed(0)}/10
                 </Typography>
               </Box>
               <Box>
@@ -136,7 +137,7 @@ function Game({ game }: { game: GameFullInfoVM }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: articleDangerousHtml }} />
+              <div dangerouslySetInnerHTML={{ __html: game.content !== undefined ? stringToHtml(game.content): "" }} />
             </StyledEditorContent>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -165,4 +166,13 @@ const styles = {
     borderRadius: "10px",
   },
 };
-export default withLoading(Game, { game: loadGame });
+export default withLoading(Game, { 
+  game: async (id) => {
+    let rev = await loadGame(id);
+    let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+      .then(res => res.json()).then(data => JSON.stringify(data));
+    let articleWithContent:GameFullInfoPlusContent = rev;
+    articleWithContent.content = content;
+    return articleWithContent;
+  },
+});

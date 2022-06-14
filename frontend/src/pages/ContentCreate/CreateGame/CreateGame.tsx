@@ -14,7 +14,11 @@ import CRRating from "../CreateReview/CRRating";
 import DatePicker from "../components/DatePicker";
 import { sliderConf } from "../../../components/Filters/Filter/Filter.conf";
 import { game } from "../../../data-mock/gameDataDictionary";
-import SimplePopup from "../../../components/Popups/SimplePopup";
+// temp
+import { convertToRaw } from "draft-js";
+import { useAlert } from "../../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
+
 const checkboxGroup = [
   {
     name: "Gatunek",
@@ -37,11 +41,6 @@ const date =
   "-" +
   String(today.getDate()).padStart(2, "0");
 
-export interface PopupsState {
-  ok: boolean;
-  error: boolean;
-}
-
 export default function CreateGame() {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
@@ -52,7 +51,8 @@ export default function CreateGame() {
   const [genres, setGenres] = useState<string[]>([checkboxGroup[0].checkboxLabels[0]]);
   const [platforms, setPlatforms] = useState<string[]>([checkboxGroup[1].checkboxLabels[0]]);
   const [distributions, setDistributions] = useState<string[]>([checkboxGroup[2].checkboxLabels[0]]);
-  const [isOpen, setIsOpen] = useState<PopupsState>({ok: false, error: false});
+  const { displayAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const game: GameAddUpdate = {
@@ -69,8 +69,20 @@ export default function CreateGame() {
     //
     // TODO obsługa błędów
     //
-    console.log(game);
-    uploadGame(game).then(() => setIsOpen({...isOpen, ok: true})).catch(() => setIsOpen({...isOpen, error: true}));
+
+    let list = convertToRaw(editorState.getCurrentContent()).entityMap;
+    let formData: FormData = new FormData();
+    formData.append("content", editorToString(editorState));
+    for (let key in list) {
+      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
+        formData.append("files", blob);
+      });
+    }
+
+    uploadGame(game, formData)
+      .then(id => navigate(`/gry/${id}`))
+      .catch(err => err.json())
+      .then(x => displayAlert(x.message, x.status));
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
@@ -112,7 +124,7 @@ export default function CreateGame() {
             sx={{
               display: "flex",
               gap: 1,
-              columnGap:2,
+              columnGap: 2,
               flexDirection: { xs: "column", md: "row" },
             }}
           >
@@ -160,12 +172,6 @@ export default function CreateGame() {
           </Button>
         </Box>
       </Box>
-      <SimplePopup open={isOpen.ok} title={"Zapisano"} content={"Gra zoztała zapizana."} handleClose={function (): void {
-        setIsOpen({...isOpen, ok: false});
-      } } />
-      <SimplePopup open={isOpen.error} title={"Błąd"} content={"Gra nie została zapisana."} handleClose={function (): void {
-        setIsOpen({...isOpen, error: false});
-      } } />
     </Container>
   );
 }

@@ -1,8 +1,11 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
+import { UpdateCredentialsRequest, UserControllerApi, UserCredentialsUpdate } from "../../api/api";
+import { useSessionContext } from "../../components/Authentication/SessionContext";
 import MultilineTruncatedText from "../../components/MultilineTruncatedText";
 interface IProfileDataBox {
+  id: number;
   username: string;
   email: string;
   numberOfComments: number;
@@ -19,12 +22,17 @@ export default function ProfileDataBox(props: IProfileDataBox) {
   const [descValue, setDescValue] = useState(props.description);
   const [editingDesc, setEditingDesc] = useState<IChangeDesc>({ editing: false, text: "Zmień opis" });
 
+  const isSessionUser = props.id === useSessionContext().session.user?.id;
+
   const handleChangeDesc = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDescValue(event.target.value);
   };
 
-  const handleChangeDescButton = () => {
+  const handleChangeDescButton = async () => {
     let txt = editingDesc.text === "Zmień opis" ? "Zapisz zmiany" : "Zmień opis";
+    if (editingDesc.editing) {
+      await new UserControllerApi().updateCredentials({ id: props.id, userCredentialsUpdate: { shortDescription: descValue } }, { credentials: 'include' });
+    }
     setEditingDesc({ editing: !editingDesc.editing, text: txt });
   };
 
@@ -62,20 +70,23 @@ export default function ProfileDataBox(props: IProfileDataBox) {
         />
       )}
       <Stack direction="row" justifyContent="end">
-        <Button
-          disableElevation
-          variant="outlined"
-          color="secondary"
-          onClick={handleChangeDescButton}
-          sx={{
-            color: "text.primary",
-            borderColor: "secondary.main",
-            width: 200,
-            mt: 1,
-          }}
-        >
-          {editingDesc.text}
-        </Button>
+        {
+          isSessionUser &&
+          <Button
+            disableElevation
+            variant="outlined"
+            color="secondary"
+            onClick={handleChangeDescButton}
+            sx={{
+              color: "text.primary",
+              borderColor: "secondary.main",
+              width: 200,
+              mt: 1,
+            }}
+          >
+            {editingDesc.text}
+          </Button>
+        }
       </Stack>
     </Box>
   );

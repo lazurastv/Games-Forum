@@ -1,8 +1,21 @@
 package com.gamebroadcast.forum.user;
 
-import com.gamebroadcast.forum.exceptions.InvalidInputException;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.servlet.ServletContext;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
+import com.gamebroadcast.forum.exceptions.TokenInvalidException;
+import com.gamebroadcast.forum.mail.OnRegistrationCompleteEvent;
+import com.gamebroadcast.forum.mail.VerificationToken;
+import com.gamebroadcast.forum.mail.VerificationTokenRepository;
 import com.gamebroadcast.forum.user.models.UserAdd;
 import com.gamebroadcast.forum.user.models.UserCredentialsUpdate;
 import com.gamebroadcast.forum.user.models.UserRoleUpdate;
@@ -10,9 +23,6 @@ import com.gamebroadcast.forum.user.models.UserVM;
 import com.gamebroadcast.forum.user.models.UserValidators;
 import com.gamebroadcast.forum.user.schemas.AppUser;
 import com.gamebroadcast.forum.utils.SessionUtils;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +32,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VerificationTokenRepository tokenRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final ServletContext context;
+    private final EntityManager entityManager;
+
+    public List<UserVM> getAll() throws IllegalStateException {
+        return UserVM.toUserVMList(userRepository.findAll());
+    }
 
     public UserVM getByUserId(Long id) throws IllegalStateException {
         UserVM userVM = new UserVM(getUser(id));
@@ -46,49 +64,57 @@ public class UserService {
         return new UserVM(user);
     }
 
-    public void add(UserAdd userAdd) {
+    public void add(UserAdd userAdd, String path) {
         UserValidators.checkUsername(userAdd.username);
         UserValidators.checkEmail(userAdd.email);
         UserValidators.checkPassword(userAdd.password);
 
         if (usernameExists(userAdd.username) || emailExists(userAdd.email)) {
-            throw new ItemAlreadyExistsException("user");
+            throw new RuntimeException("Nazwa użytkownika lub adres email są już przypisane do innego konta");
         }
 
         userAdd.password = passwordEncoder.encode(userAdd.password);
         AppUser user = userAdd.toAppUser();
+        user.setProfilePicturePath(path);
         userRepository.save(user);
+
+        String appUrl = context.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, appUrl));
     }
 
     public void updateCredentials(Long id, UserCredentialsUpdate userUpdate) throws IllegalStateException {
         boolean requirePasswordConfirmation = false;
-        if (userUpdate.username != "") {
+        if (userUpdate.username != null) {
             UserValidators.checkUsername(userUpdate.username);
             requirePasswordConfirmation = true;
         }
-        if (userUpdate.username != "") {
+        if (userUpdate.email != null) {
             UserValidators.checkEmail(userUpdate.email);
             requirePasswordConfirmation = true;
         }
-        if (userUpdate.password != "") {
+        if (userUpdate.password != null) {
             UserValidators.checkPassword(userUpdate.password);
             userUpdate.password = passwordEncoder.encode(userUpdate.password);
             requirePasswordConfirmation = true;
         }
-        UserValidators.checkShortDescription(userUpdate.shortDescription);
+        if (userUpdate.shortDescription != null) {
+            UserValidators.checkShortDescription(userUpdate.shortDescription);
+        }
 
         AppUser user = getUser(id);
 
-        if(requirePasswordConfirmation && !SessionUtils.getUserFromSession().getRole().equals("ADMIN")) {  // should be changed to a better solution
-            if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword()))
-            {
-                throw new InvalidInputException("Current password doesn't match.");
+        if (requirePasswordConfirmation && !SessionUtils.getUserFromSession().getRole().equals("ADMIN")) { // should be
+                                                                                                           // changed to
+                                                                                                           // a better
+                                                                                                           // solution
+            if (!passwordEncoder.matches(userUpdate.currentPassword, user.getPassword())) {
+                throw new RuntimeException("Niepoprawne hasło");
             }
         }
 
         if ((usernameExists(userUpdate.username) && !isCurrentUsername(userUpdate.username, id))
                 || (emailExists(userUpdate.email) && !isCurrentEmail(userUpdate.email, id))) {
-            throw new ItemAlreadyExistsException("user");
+            throw new RuntimeException("Nazwa użytkownika lub adres email są już przypisane do innego konta");
         }
 
         userUpdate.updateCredentials(user);
@@ -103,10 +129,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void banUser(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
         user.setLocked(true);
         userRepository.save(user);
+        logoutUser(user.getUsername());
     }
 
     public void unbanUser(Long id) throws IllegalStateException {
@@ -115,9 +143,40 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void createVerificationToken(AppUser user, String token) {
+        VerificationToken userToken = new VerificationToken(user, token);
+        tokenRepository.save(userToken);
+    }
+
+    public void checkToken(String token) {
+        VerificationToken verificationToken = getVerificationToken(token);
+        Calendar cal = Calendar.getInstance();
+        if (verificationToken == null ||
+                (verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            throw new TokenInvalidException();
+        } else {
+            AppUser user = verificationToken.getUser();
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
+
+    public VerificationToken getVerificationToken(String VerificationToken) {
+        return tokenRepository.findByToken(VerificationToken);
+    }
+
+    @Transactional
     public void delete(Long id) throws IllegalStateException {
         AppUser user = getUser(id);
+        logoutUser(user.getUsername());
         userRepository.delete(user);
+    }
+
+    private void logoutUser(String username) {
+        entityManager
+                .createNativeQuery("delete from spring_session where principal_name = :username")
+                .setParameter("username", username)
+                .executeUpdate();
     }
 
     public boolean sessionUserIsOwner(Long id) {

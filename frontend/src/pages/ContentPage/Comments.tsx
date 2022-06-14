@@ -119,8 +119,8 @@ setCommentContent("");
                     <Link to={`/profil/${comment.authorVM?.id}`}>
                     <Avatar
                       alt="avatar"
-                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.png`}
-                      sx={{ width: 44, height: 44 }}
+                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.jpg`}
+                      sx={{ mr: 2, width: 44, height: 44 }}
                     />
                     </Link>
                   </ListItemAvatar>

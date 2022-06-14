@@ -6,8 +6,11 @@ import java.util.List;
 import com.gamebroadcast.forum.content.content.ContentVM;
 
 public class GameVM extends ContentVM {
+    public String introduction;
+
     public GameVM(Game game) {
         super(game);
+        introduction = game.getIntroduction();
     }
 
     public static List<GameVM> toGameVMList(List<Game> games) {

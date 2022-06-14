@@ -10,8 +10,14 @@ interface ChatMessageProps {
 }
 export default function ChatMessage({ isMyMessage, message }: ChatMessageProps) {
   const publishDate = message.publishDate as Date;
-  const hour = publishDate.getHours();
-  const minute = publishDate.getMinutes();
+  let hour = publishDate.getHours().toString();
+  let minute = publishDate.getMinutes().toString();
+  if (hour.length < 2) {
+    hour = "0" + hour;
+  }
+  if (minute.length < 2) {
+    minute = "0" + minute;
+  }
 
   return (
     <Box
@@ -35,7 +41,7 @@ export default function ChatMessage({ isMyMessage, message }: ChatMessageProps) 
       >
         <Avatar
           sx={{ width: 32, height: 32 }}
-          src={`${NGINX_URL}/${message.profilePicturePath}/profile.png`}
+          src={`${NGINX_URL}/${message.profilePicturePath}/profile.jpg`}
           alt={message.authorName}
         />
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: isMyMessage ? "flex-end" : "flex-start" }}>

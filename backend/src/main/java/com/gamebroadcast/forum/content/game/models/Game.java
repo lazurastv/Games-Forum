@@ -50,6 +50,13 @@ public class Game extends Content {
     @ElementCollection
     private List<String> distributions;
 
+    public void setEditorScore(Double editorScore) {
+        if (editorScore < 1.0 || editorScore > 10.0) {
+            throw new RuntimeException("Ocena gry musi być w zakresie od 1 do 10");
+        }
+        this.editorScore = editorScore;
+    }
+
     public void setGenres(List<String> genres) {
         if (!TagRepositories.genresExist(genres)) {
             throw new InvalidTagException("genres");

@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import com.gamebroadcast.forum.content.game.GameService;
 import com.gamebroadcast.forum.content.game.models.Game;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.interaction.rating.models.Rating;
 import com.gamebroadcast.forum.interaction.rating.models.RatingAdd;
@@ -49,7 +48,7 @@ public class RatingService {
         Rating rating = ratingAdd.toRating(game);
 
         if (ratingExists(rating)) {
-            throw new ItemAlreadyExistsException("rating");
+            throw new RuntimeException("Gra już została oceniona");
         }
 
         rating.publish();

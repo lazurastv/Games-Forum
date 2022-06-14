@@ -14,7 +14,6 @@ import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewSearchInfoVM;
 import com.gamebroadcast.forum.content.review.models.ReviewVM;
-import com.gamebroadcast.forum.exceptions.ItemAlreadyExistsException;
 import com.gamebroadcast.forum.exceptions.ItemNotFoundException;
 import com.gamebroadcast.forum.utils.SessionUtils;
 
@@ -54,12 +53,14 @@ public class ReviewService {
         return new ReviewFullInfoVM(review);
     }
 
-    public void addReview(ReviewAdd reviewAdd) {
+    public Long addReview(ReviewAdd reviewAdd, String path) {
         checkIfTitleIsUnique(reviewAdd.title);
         Game game = gameService.getGame(reviewAdd.gameId);
         Review review = reviewAdd.toReview(game);
+        review.setPath(path);
         review.publish();
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        return savedReview.getId();
     }
 
     @Transactional
@@ -84,7 +85,7 @@ public class ReviewService {
     private void checkIfTitleIsUnique(String title) {
         Optional<Review> review = reviewRepository.findByTitle(title);
         if (review.isPresent()) {
-            throw new ItemAlreadyExistsException("review");
+            throw new RuntimeException("Istnieje już recenzja o takim samym tytule");
         }
     }
 

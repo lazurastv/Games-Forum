@@ -37,7 +37,7 @@ public class Review extends Content {
 
     public void setScore(Double score) {
         if (score < 1 || score > 10) {
-            throw new IllegalArgumentException("Score must be between 1 and 10.");
+            throw new RuntimeException("Ocena gry musi być w zakresie od 1 do 10");
         }
         this.score = score;
     }

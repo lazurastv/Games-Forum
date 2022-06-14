@@ -19,7 +19,7 @@ function SimilarGames({ games }: { games: GameSearchInfoVM }) {
           <GameTile
             key={idx}
             game={a}
-            src={`${NGINX_URL}/${a.path}/horizontal.png`}
+            src={`${NGINX_URL}/${a.path}/horizontal.jpg`}
           />
         ))}
     </Carousel>

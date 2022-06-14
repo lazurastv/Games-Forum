@@ -15,13 +15,14 @@ async function deleteGame(id: number): Promise<void> {
   const games = new GameControllerApi();
   return games.deleteGame({ gameId: id }, { credentials: "include" });
 }
-async function uploadGame(game: GameAddUpdate) {
+async function uploadGame(game: GameAddUpdate, files: FormData) {
   const games = new GameControllerApi();
-  return games
-    .addGame({ gameAddUpdate: game }, { credentials: "include" })
-    .then(() => games.getAllGames())
-    .then((result) => {
-      result.forEach((x) => console.log(x));
-    });
+  const id: number = await games.addGame({ gameAddUpdate: game }, { credentials: "include" });
+  fetch(`http://localhost:8080/api/game/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
+  return id;
 }
 export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame };
