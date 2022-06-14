@@ -73,10 +73,10 @@ export default function CreateArticle() {
             onChange={(e: any) => setIntroduction(e.target.value)}
           />
         </Box>
-        <Box sx={{ mb: 4, display: "flex", gap: "10px"}}>
+        <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
           <Button variant="contained" component="label" color="secondary" >
             Dodaj obraz
-            <input type="file" onChange={handlePictureChange} accept=".png,.jpeg" hidden/>
+            <input type="file" onChange={handlePictureChange} accept=".png,.jpeg,.jpg" hidden />
           </Button>
           <Label>{pictureName}</Label>
         </Box>

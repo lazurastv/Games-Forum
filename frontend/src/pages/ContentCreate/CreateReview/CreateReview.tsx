@@ -113,7 +113,7 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
           <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
             <Button variant="contained" component="label" color="secondary" >
               Dodaj obraz
-              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg" hidden />
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg,.jpg" hidden />
             </Button>
             <Label>{pictureName}</Label>
           </Box>

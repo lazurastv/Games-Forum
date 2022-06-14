@@ -91,7 +91,7 @@ public class FileService {
         try {
             if (mainPicture != null) {
                 String path = CONTENT_DRIVE_PATH + "/" + hash;
-                saveImage(mainPicture, path, "horizontal.png");
+                saveImage(mainPicture, path, "horizontal.jpg");
             }
             if (files != null) {
                 for (long i = 0L; i < files.length; i++) {
