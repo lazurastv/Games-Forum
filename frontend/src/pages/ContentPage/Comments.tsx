@@ -19,6 +19,7 @@ import withLoading from "../../fetchData/withLoading";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import { Link } from "react-router-dom";
 import { convertDate } from "../../utils/convertDate";
+import { useAlert } from "../../hooks/useAlert";
 const NGINX_URL = process.env.REACT_APP_NGINX_USER;
 
 function Comments({
@@ -37,9 +38,17 @@ function Comments({
       contentId: contentId,
       comment: commentContent,
     };
-    uploadComment(comment).then(r => 
-    loadCommentsByContentId(contentId).then((x) => {setComments2(x)}));
-    setCommentContent("");
+    if(comment.comment?.trim().length === 0){
+      alert("Nie można dodać pustego komentarza!")
+    } else {
+      uploadComment(comment).then((r) =>
+      loadCommentsByContentId(contentId).then((x) => {
+      setComments2(x);
+  })
+);
+setCommentContent("");
+    }
+    
   };
 
   return (
