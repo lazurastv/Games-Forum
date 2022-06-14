@@ -20,7 +20,7 @@ const ContentLikes = ({
   likes: LikeVM[];
   contentId: number;
 }) => {
-  const {session: { user }} = useSessionContext();
+  const {session, session: { user }} = useSessionContext();
   const [likes2, setLikes2] = useState<LikeVM[]>(likes);
   var n_l = likes2.filter((x) => x.isLike === true).length;
   var n_d = likes2.filter((x) => x.isLike === false).length;
@@ -40,46 +40,42 @@ const ContentLikes = ({
     }
   }
 
-  const getUserLike = () => {
+  const getUserLikeId = () => {
     const l = likes2.find((x) => x.authorName === user?.username);
     if (l === undefined) {
-      console.log("nie zwraca id!!!")
+      console.log("nie ma id!")
       return -1;
     } else {
       return l.id;
     }
   }
 
-  const [userLike, setUserLike] = useState<number>(checkUserLike());
+  const [userLikeType, setUserLikeType] = useState<number>(checkUserLike());
 
   const handleLike = () => {
     const like: LikeAdd = {
       contentId: contentId,
       isLike: true,
     };
-    if (userLike === -1){
-      deleteLike(getUserLike() as number);
+    if (userLikeType === -1){
+      deleteLike(getUserLikeId() as number);
       uploadLike(like).then(() => {
         setNumLikes((l) => l + 1);
         setNumDislikes((l) => l - 1);
-        setUserLike(1);
-        loadLikesByContentId(contentId).then((x) => {
-          setLikes2(x);
-        });
+        setUserLikeType(1);
+        loadLikesByContentId(contentId).then((x) => {setLikes2(x)});
       });
-    } else if (userLike === 1) {
+    } else if (userLikeType === 1) {
       setNumLikes((l) => l - 1);
-      deleteLike(getUserLike() as number).then(() => loadLikesByContentId(contentId).then((x) => {setLikes2(x)}));
-      setUserLike(0);
+      deleteLike(getUserLikeId() as number).then(() => loadLikesByContentId(contentId).then((x) => {setLikes2(x)}));
+      setUserLikeType(0);
     } else {
       uploadLike(like).then(() => {
         setNumLikes((l) => l + 1);
-        loadLikesByContentId(contentId).then((x) => {
-        setLikes2(x);
-      });});
-      setUserLike(1);
+        loadLikesByContentId(contentId).then((x) => {setLikes2(x);});
+      });
+      setUserLikeType(1);
     }
-    
   };
 
   const handleDislike = () => {
@@ -87,31 +83,24 @@ const ContentLikes = ({
       contentId: contentId,
       isLike: false,
     };
-    if(userLike === 1){
-      deleteLike(getUserLike() as number);
-      uploadLike(like).then(() => {
-        setNumDislikes((l) => l + 1);
-        setNumLikes((l) => l - 1);
-        setUserLike(-1);
-        loadLikesByContentId(contentId).then((x) => {
-          setLikes2(x);
-        });
-      });
-    } else if (userLike === -1) {
+    if(userLikeType === 1){
+      deleteLike(getUserLikeId() as number);
+      uploadLike(like)
+      setNumDislikes((l) => l + 1);
+      setNumLikes((l) => l - 1);
+      setUserLikeType(-1);
+      loadLikesByContentId(contentId).then((x) => {setLikes2(x);});
+    } else if (userLikeType === -1) {
       setNumDislikes((l) => l - 1);
-      deleteLike(getUserLike() as number).then(() => loadLikesByContentId(contentId).then((x) => {setLikes2(x)}));
-      setUserLike(0);
+      deleteLike(getUserLikeId() as number).then(() => loadLikesByContentId(contentId).then((x) => {setLikes2(x)}));
+      setUserLikeType(0);
     } else {
       uploadLike(like).then(() => {
         setNumDislikes((l) => l + 1);
-        loadLikesByContentId(contentId).then((x) => {
-          setLikes2(x);
-        });
+        loadLikesByContentId(contentId).then((x) => {setLikes2(x);});
       });
-      setUserLike(-1);
+      setUserLikeType(-1);
     }
-    loadLikesByContentId(contentId).then((x) => {setLikes2(x)});
-    
   };
 
   return (
@@ -122,8 +111,8 @@ const ContentLikes = ({
       alignItems="center"
     >
       <Grid item>
-        <IconButton onClick={handleLike}>
-          {userLike === 1 ? (
+        <IconButton onClick={handleLike} disabled={!session.isAuthenticated}>
+          {userLikeType === 1 ? (
             <ThumbUpIcon
               sx={{ color: "staticText.secondary", fontSize: "22px" }}
             />
@@ -138,8 +127,8 @@ const ContentLikes = ({
         <Typography sx={{ ml: 0.5, textAlign: "left" }}>{numLikes}</Typography>
       </Grid>
       <Grid item sx={{ ml: 2 }}>
-        <IconButton onClick={handleDislike}>
-          {userLike === -1 ? (
+        <IconButton onClick={handleDislike} disabled={!session.isAuthenticated}>
+          {userLikeType === -1 ? (
             <ThumbDownIcon
               sx={{ color: "staticText.secondary", fontSize: "22px" }}
             />

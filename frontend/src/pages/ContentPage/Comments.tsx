@@ -32,6 +32,7 @@ function Comments({
   const { session } = useSessionContext();
   const [commentContent, setCommentContent] = useState<string>("");
   const [comments2, setComments2] = useState<CommentVM[]>(comments);
+  const { displayAlert } = useAlert();
 
   const handleSave = async () => {
     const comment: CommentAdd = {
@@ -39,7 +40,7 @@ function Comments({
       comment: commentContent,
     };
     if(comment.comment?.trim().length === 0){
-      alert("Nie można dodać pustego komentarza!")
+      displayAlert("Nie można dodać pustego komentarza!", true);
     } else {
       uploadComment(comment).then((r) =>
       loadCommentsByContentId(contentId).then((x) => {

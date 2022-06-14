@@ -2,11 +2,15 @@ import { Rating, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import StarIcon from "@mui/icons-material/Star";
 import Widget from "../../../components/Widget";
+import { useSessionContext } from "../../../components/Authentication/SessionContext";
+import { Link } from "react-router-dom";
+
 const starFonSize = {
   xs: "clamp(1.5rem, 8vw, 3rem)",
   md: "clamp(1.2rem, 2.8vw, 2.1rem)",
 };
 export default function Rate(props: any) {
+  const { session } = useSessionContext();
   return (
     <Widget sx={{ ...props.sx, textAlign: "center", position: "relative" }}>
       <Box
@@ -48,6 +52,7 @@ export default function Rate(props: any) {
         }}
         value={props.rating}
         onChange={(e, newValue) => props.setRating(newValue)}
+        disabled={!session.isAuthenticated}
         size="large"
         max={10}
         icon={<StarIcon color="secondary" fontSize="inherit" />}
@@ -62,6 +67,13 @@ export default function Rate(props: any) {
           />
         }
       />
+      {session.isAuthenticated ? (
+        <></>
+      ) : (
+        <Typography sx={{ mt: 1, fontSize: "14px" }}>
+          <Link to="/logowanie">Zaloguj się aby ocenić grę!</Link>
+        </Typography>
+      )}
     </Widget>
   );
 }
