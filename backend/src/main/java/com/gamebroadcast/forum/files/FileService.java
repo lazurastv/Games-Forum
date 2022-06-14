@@ -15,10 +15,10 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class FileService {
     private final String CONTENT_DRIVE_PATH = "src/main/resources/static/content";
-    private final String CONTENT_URL_PATH = "https://forum-graczy-backend.herokuapp.com/content";
+    private final String CONTENT_URL_PATH = "https://forum-graczy.herokuapp.com/data/content";
 
     private final String USER_DRIVE_PATH = "src/main/resources/static/user";
-    private final String USER_URL_PATH = "https://forum-graczy-backend.herokuapp.com/user";
+    private final String USER_URL_PATH = "https://forum-graczy.herokuapp.com/data/user";
 
     public String getUniqueName(String username) {
         String name = username + System.currentTimeMillis();

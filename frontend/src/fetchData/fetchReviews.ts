@@ -22,7 +22,7 @@ async function deleteReview(id: number) {
 async function uploadReview(review: ReviewAdd, files: FormData) {
   const reviews = new ReviewControllerApi();
   const id: number = await reviews.addReview({ reviewAdd: review }, { credentials: "include" });
-  await fetch(`https://forum-graczy-backend.herokuapp.com/api/review/upload-content-and-images/${id}`, {
+  await fetch(`https://forum-graczy.herokuapp.com/data/api/review/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include",
@@ -31,7 +31,7 @@ async function uploadReview(review: ReviewAdd, files: FormData) {
 }
 async function updateReview(id: number, review: ReviewAddUpdate, files: FormData) {
   const reviews = new ReviewControllerApi();
-  await fetch(`https://forum-graczy-backend.herokuapp.com/api/review/upload-content-and-images/${id}`, {
+  await fetch(`https://forum-graczy.herokuapp.com/data/api/review/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include",

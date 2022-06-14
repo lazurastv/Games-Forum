@@ -125,7 +125,7 @@
             "type": "IMAGE",
             "mutability": "MUTABLE",
             "data": {
-                "src": "https://forum-graczy-backend.herokuapp.com/content/BiQ74nQT/image0.jpg",
+                "src": "https://forum-graczy.herokuapp.com/data/content/BiQ74nQT/image0.jpg",
                 "height": "auto",
                 "width": "auto",
                 "alt": ""
@@ -135,7 +135,7 @@
             "type": "IMAGE",
             "mutability": "MUTABLE",
             "data": {
-                "src": "https://forum-graczy-backend.herokuapp.com/content/BiQ74nQT/image1.jpg",
+                "src": "https://forum-graczy.herokuapp.com/data/content/BiQ74nQT/image1.jpg",
                 "height": "auto",
                 "width": "auto",
                 "alt": ""

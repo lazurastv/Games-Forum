@@ -32,24 +32,24 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verify_sequence")
     @Column(updatable = false)
     private Long id;
-    
+
     @Column(nullable = false)
     private String token;
-  
+
     @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private AppUser user;
-    
+
     @Column(nullable = false)
     private Date expiryDate;
-   
+
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
         return new Date(cal.getTime().getTime());
     }
-    
+
     public VerificationToken(AppUser user, String token) {
         this.user = user;
         this.token = token;

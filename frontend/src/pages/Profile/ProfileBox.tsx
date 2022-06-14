@@ -5,7 +5,6 @@ import { UserControllerApi } from "../../api/api";
 import { useSessionContext } from "../../components/Authentication/SessionContext";
 import PasswordPopup from "./PasswordPopup";
 import 'reactjs-popup/dist/index.css';
-import { HOME_PATH } from "../../App";
 import { fromJS } from "immutable";
 
 interface IProfileBox {
@@ -54,7 +53,7 @@ export default function ProfileBox(props: IProfileBox) {
     let file = event.target.files[0];
     formData.append("image", file, file.name);
 
-    fetch(`https://forum-graczy-backend.herokuapp.com/api/user/upload-profile-picture/${props.id}`, {
+    fetch(`https://forum-graczy.herokuapp.com/data/api/user/upload-profile-picture/${props.id}`, {
       method: "POST",
       body: formData,
       credentials: "include"
