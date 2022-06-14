@@ -3,7 +3,7 @@ import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 
-export default function AccountCreatedMessage() {
+export default function AccountConfirmedMessage() {
   return (
     <Box
       sx={{
