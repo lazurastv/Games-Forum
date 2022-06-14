@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadAllReviews, loadReview, uploadReview } from "../../../fetchData/fetchReviews";
+import { loadAllReviews, loadReview, updateReview, uploadReview } from "../../../fetchData/fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
@@ -31,7 +31,7 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
   const handleSave = async () => {
-    const review: ReviewAdd = {
+    const addReview: ReviewAdd = {
       gameId: 7,
       title: title,
       introduction: introduction,
@@ -51,11 +51,17 @@ function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
           formData.append("files", blob);
         });
     }
-
-    uploadReview(review, formData)
-      .then((id) => navigate(`/recenzje/${id}`))
-      .catch((err) => err.json())
-      .then((x) => displayAlert(x.message, x.status));
+    if (review && review.id) {
+      updateReview(review.id, addReview, formData)
+        .then(() => navigate(`/recenzje/${review.id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    } else {
+      uploadReview(addReview, formData)
+        .then((id) => navigate(`/recenzje/${id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    }
   };
   useEffect(() => {
     if (review) {
