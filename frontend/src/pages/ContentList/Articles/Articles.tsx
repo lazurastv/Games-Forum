@@ -42,7 +42,7 @@ const Articles = (props: ArticlesProps) => {
                   date={convertDate(a.publishDate)}
                   title={a.title as string}
                   author={a.authorName as string}
-                  image={`${NGINX_URL}/${a.path}/horizontal.png`}
+                  image={`${NGINX_URL}/${a.path}/horizontal.jpg`}
                 />
               </EditMenuSupply>
             ))}

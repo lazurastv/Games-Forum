@@ -109,7 +109,7 @@ function Comments({
                   <ListItemAvatar>
                     <Avatar
                       alt="avatar"
-                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.png`}
+                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.jpg`}
                       sx={{ mr: 2, width: 44, height: 44 }}
                     />
                   </ListItemAvatar>

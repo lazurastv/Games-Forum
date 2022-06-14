@@ -10,8 +10,8 @@ Ten plik to miejsce na wszystkie standardy jakie przyjęliśmy
 	- Wymiary: ?
 	- Ścieżka: content/{path}/square.png
 - Poziome zdjęcie artykułu
-	- Wymiary: ?
-	- Ścieżka: content/{path}/horizontal.png
+	- Wymiary: 1920x720
+	- Ścieżka: content/{path}/horizontal.jpg
 - Pionowe zdjęcie gry / recenzji
 	- Wymiary: ?
 	- Ścieżka: content/{path}/vertical.png
