@@ -111,7 +111,7 @@ export default function Registration() {
                   control={
                     <Checkbox value="allowExtraEmails" color="secondary" />
                   }
-                  label="Akceptuje regulamin forum itd..."
+                  label="Akceptuję regulamin forum"
                 />
               </Grid>
             </Grid>
