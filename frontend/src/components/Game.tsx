@@ -10,7 +10,7 @@ interface GameProps {
 }
 export default function Game({ gameData, sx }: GameProps) {
     return (
-        <Link to={`/ gry / ${gameData.id}`}>
+        <Link to={`/gry/${gameData.id}`}>
             <Widget sx={{ ...sx, mb: 5 }}>
                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                     <Avatar
@@ -28,7 +28,7 @@ export default function Game({ gameData, sx }: GameProps) {
                         mt: 2,
                     }}
                 >
-                    {/* {gameData.introduction} */}
+                    {gameData.introduction}
                 </Typography>
             </Widget>
         </Link>
