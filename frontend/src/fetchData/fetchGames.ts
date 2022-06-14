@@ -25,4 +25,19 @@ async function uploadGame(game: GameAddUpdate, files: FormData) {
   });
   return id;
 }
-export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame };
+async function updateGame(id: number,game: GameAddUpdate, files: FormData) {
+  const games = new GameControllerApi();
+  fetch(`http://localhost:8080/api/game/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
+  return games.updateGame(
+    {
+      gameId: id,
+      gameAddUpdate: game,
+    },
+    { credentials: "include" }
+  );
+}
+export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame,updateGame };
