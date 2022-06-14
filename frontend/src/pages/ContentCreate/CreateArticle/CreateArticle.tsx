@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
+import { loadArticle, updateArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
@@ -26,7 +26,7 @@ function CreateArticle({ article }: { article?: ArticleFullInfoPlusContent }) {
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
   const handleSave = async () => {
-    const article: ArticleAddUpdate = {
+    const addArticle: ArticleAddUpdate = {
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
@@ -42,16 +42,26 @@ function CreateArticle({ article }: { article?: ArticleFullInfoPlusContent }) {
           formData.append("files", blob);
         });
     }
-    uploadArticle(article, formData)
-      .then((id) => navigate(`/artykuly/${id}`))
-      .catch((err) => err.json())
-      .then((x) => displayAlert(x.message, x.status));
+    if (article && article.id) {
+      updateArticle(article.id, addArticle)
+        .then(() => navigate(`/artykuly/${article.id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    } else {
+      uploadArticle(addArticle, formData)
+        .then((id) => navigate(`/artykuly/${id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    }
   };
   useEffect(() => {
     if (article) {
       console.log(article);
       article.title && setTitle(article.title);
       article.introduction && setIntroduction(article.introduction);
+      if (article.content && !JSON.parse(article.content).error) {
+        setEditorState(stringToEditorState(article.content));
+      }
       // article.content && setEditorState(stringToEditorState(article.content));
     }
   }, [article]);

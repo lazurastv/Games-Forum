@@ -17,12 +17,22 @@ async function deleteArticle(id: number): Promise<void> {
 }
 async function uploadArticle(article: ArticleAddUpdate, files: FormData) {
   const articles = new ArticleControllerApi();
-  const id: number = await articles.addArticle({ articleAddUpdate: article }, { credentials: "include" })
+  const id: number = await articles.addArticle({ articleAddUpdate: article }, { credentials: "include" });
   fetch(`http://localhost:8080/api/article/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
-    credentials: "include"
+    credentials: "include",
   });
   return id;
 }
-export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle };
+async function updateArticle(id: number, article: ArticleAddUpdate) {
+  const articles = new ArticleControllerApi();
+  return articles.updateArticle(
+    {
+      articleId: id,
+      articleAddUpdate: article,
+    },
+    { credentials: "include" }
+  );
+}
+export { uploadArticle, loadArticle, loadAllArticles, loadSimilarArticles, deleteArticle, updateArticle };
