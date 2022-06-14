@@ -5,22 +5,22 @@ Ten plik to miejsce na wszystkie standardy jakie przyjęliśmy
 ## Zdjęcia
 - Zdjęcie profilowe użytkownika
 	- Wymiary: 180x180
-	- Ścieżka: user/{path}/profile.png
+	- Ścieżka: user/{path}/profile.jpg
 - Kwadratowe zdjęcie artykułu (np. na stronie głównej)
 	- Wymiary: ?
 	- Ścieżka: content/{path}/square.png
 - Poziome zdjęcie artykułu
-	- Wymiary: ?
-	- Ścieżka: content/{path}/horizontal.png
+	- Wymiary: 1920x720
+	- Ścieżka: content/{path}/horizontal.jpg
 - Pionowe zdjęcie gry / recenzji
 	- Wymiary: ?
 	- Ścieżka: content/{path}/vertical.png
 
 ## Zawartość artykułu
-Ścieżka: content/{path}/main.html
+Ścieżka: content/{path}/content.json
 
 ## Nazwa folderu (path)
-8 znaków base64, slash / zamieniony na podłogę _
+8 znaków base64, slash / zamieniony na podłogę -
 
 ## Hasło:
 - brak pustych znaków

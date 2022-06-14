@@ -18,7 +18,7 @@ function SimilarArticles({ articles }: { articles: ArticleSearchInfoVM }) {
             articleId={a.id}
             key={idx}
             title={a.title}
-            src={`${NGINX_URL}/${a.path}/horizontal.png`}
+            src={`${NGINX_URL}/${a.path}/horizontal.jpg`}
             author={a.authorName}
             date={convertDate(a.publishDate)}
           />

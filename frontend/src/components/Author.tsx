@@ -14,7 +14,7 @@ export default function Author({ authorData, sx }: AuthorProps) {
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <Avatar
             alt={authorData.name}
-            src={`${NGINX_URL}/${authorData.profilePicturePath}/profile.png`}
+            src={`${NGINX_URL}/${authorData.profilePicturePath}/profile.jpg`}
             sx={{ mr: 1 }}
           />
           <Typography sx={{ fontSize: "18px", textAlign: "left" }}>{authorData.name}</Typography>

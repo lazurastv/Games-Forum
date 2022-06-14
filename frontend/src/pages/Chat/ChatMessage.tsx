@@ -41,7 +41,7 @@ export default function ChatMessage({ isMyMessage, message }: ChatMessageProps) 
       >
         <Avatar
           sx={{ width: 32, height: 32 }}
-          src={`${NGINX_URL}/${message.profilePicturePath}/profile.png`}
+          src={`${NGINX_URL}/${message.profilePicturePath}/profile.jpg`}
           alt={message.authorName}
         />
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: isMyMessage ? "flex-end" : "flex-start" }}>

@@ -14,7 +14,7 @@ function SampleGames({ games }: { games: GameSearchInfoVM[] }) {
                     <GameTile
                         key={id}
                         game={x}
-                        src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                        src={`${NGINX_URL}/${x.path}/horizontal.jpg`}
                     />
                 )
             }

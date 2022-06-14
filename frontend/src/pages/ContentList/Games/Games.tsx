@@ -41,7 +41,7 @@ function Games(props: GamesProps) {
             {filter.data.map((x: any, i) => (
               <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2.4}>
                 <EditMenuSupply edit={edit} position="left" onDelete={() => handleDeleteGame(x.id, x.title)}>
-                  <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.png`} />
+                  <GameTile game={x} src={`${NGINX_URL}/${x.path}/horizontal.jpg`} />
                 </EditMenuSupply>
               </Grid>
             ))}
