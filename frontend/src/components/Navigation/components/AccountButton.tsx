@@ -28,7 +28,7 @@ export default function AccountButton() {
             <IconButton size="large" onClick={handleClick} sx={{ mx: 1 }}>
               <Avatar
                 alt={session.user?.username}
-                src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
+                src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.jpg`}
                 sx={{ width: 28, height: 28 }}
               />
             </IconButton>

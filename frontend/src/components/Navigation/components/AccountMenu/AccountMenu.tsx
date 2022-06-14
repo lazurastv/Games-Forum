@@ -68,7 +68,7 @@ export default function AccountMenu({ anchorEl, setAnchorEl }) {
               onClick={handleClose}
               jsxElement={
                 <Avatar
-                  src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.png`}
+                  src={`${NGINX_URL}/${session.user?.profilePicturePath}/profile.jpg`}
                   sx={{ mr: 2, ml: -1, width: 32, height: 32 }}
                 />
               }

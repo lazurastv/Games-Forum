@@ -61,7 +61,7 @@ function Game({ game }: { game: GameFullInfoPlusContent }) {
     <Box>
       <HeaderTile
         title={game.title}
-        imgSrc={`${NGINX_URL}/${game.path}/horizontal.png`}
+        imgSrc={`${NGINX_URL}/${game.path}/horizontal.jpg`}
         caption={
           <Grid container spacing={2} sx={{ color: "staticText.secondary" }}>
             <Grid item xs={12} md={4} sx={{ textAlign: "left", marginTop: "auto" }}>

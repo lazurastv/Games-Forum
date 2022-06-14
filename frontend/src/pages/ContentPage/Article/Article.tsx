@@ -19,7 +19,7 @@ function Article({ article }: { article: ArticleFullInfoPlusContent }) {
     <Box>
       <HeaderTile
         title={article.title}
-        imgSrc={`${NGINX_URL}/${article.path}/horizontal.png`}
+        imgSrc={`${NGINX_URL}/${article.path}/horizontal.jpg`}
         caption={
           <Typography sx={{ textAlign: "right" }}>
             {convertDate(article.publishDate)}

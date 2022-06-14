@@ -42,7 +42,7 @@ const Reviews = (props: ReviewsProps): React.ReactNode => {
                   content={r.introduction ?? ""}
                   author={r.authorName ?? ""}
                   rate={r.score && isNaN(r.score) ? "?" : r.score?.toFixed(0) ?? -1}
-                  image={`${NGINX_URL}/${r.path}/horizontal.png`}
+                  image={`${NGINX_URL}/${r.path}/horizontal.jpg`}
                 />
               </EditMenuSupply>
             ))}

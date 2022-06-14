@@ -18,7 +18,7 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
     <Box>
       <HeaderTile
         title={review.title}
-        imgSrc={`${NGINX_URL}/${review.path}/horizontal.png`}
+        imgSrc={`${NGINX_URL}/${review.path}/horizontal.jpg`}
         caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
       />
       <Container maxWidth="lg">
