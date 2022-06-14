@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Button, Input } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
-import { loadArticle, uploadArticle } from "../../../fetchData/fetchArticles";
+import { loadArticle, updateArticle, uploadArticle } from "../../../fetchData/fetchArticles";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { editorToString } from "../../../components/Editor/dataConversion";
+import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
 import { ArticleAddUpdate } from "../../../api/api";
 import OneLineInput from "../components/OneLineInput";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
 import { useNavigate } from "react-router-dom";
+import withLoading from "../../../fetchData/withLoading";
+import { ArticleFullInfoPlusContent } from "../../../api/api/models/ArticleFullInfoPlusContent";
 import Label from "../components/Label";
 
-export default function CreateArticle() {
+function CreateArticle({ article }: { article?: ArticleFullInfoPlusContent }) {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [picture, setPicture] = useState(null);
@@ -25,7 +27,7 @@ export default function CreateArticle() {
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
   const handleSave = async () => {
-    const article: ArticleAddUpdate = {
+    const addArticle: ArticleAddUpdate = {
       title: title,
       introduction: introduction,
       content: editorToString(editorState),
@@ -38,16 +40,34 @@ export default function CreateArticle() {
       formData.append("mainPicture", picture);
     }
     for (let key in list) {
-      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-        formData.append("files", blob);
-      });
+      await fetch(list[key].data.src)
+        .then((res) => res.blob())
+        .then((blob) => {
+          formData.append("files", blob);
+        });
     }
-
-    uploadArticle(article, formData)
-      .then(id => navigate(`/artykuly/${id}`))
-      .catch(err => err.json())
-      .then(x => displayAlert(x.message, x.status));
+    if (article && article.id) {
+      updateArticle(article.id, addArticle, formData)
+        .then(() => navigate(`/artykuly/${article.id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    } else {
+      uploadArticle(addArticle, formData)
+        .then((id) => navigate(`/artykuly/${id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    }
   };
+  useEffect(() => {
+    if (article) {
+      console.log(article);
+      article.title && setTitle(article.title);
+      article.introduction && setIntroduction(article.introduction);
+      if (article.content && !JSON.parse(article.content).error) {
+        setEditorState(stringToEditorState(article.content));
+      }
+    }
+  }, [article]);
 
   const handlePictureChange = (event) => {
     setPicture(event.target.files[0]);
@@ -103,3 +123,18 @@ export default function CreateArticle() {
     </Container>
   );
 }
+export default withLoading(
+  CreateArticle,
+  {
+    article: async (id) => {
+      let art = await loadArticle(id);
+      let content = await fetch(`http://localhost:8080/content/${art.path}/content.json`)
+        .then((res) => res.json())
+        .then((data) => JSON.stringify(data));
+      let articleWithContent: ArticleFullInfoPlusContent = art;
+      articleWithContent.content = content;
+      return articleWithContent;
+    },
+  },
+  true
+);

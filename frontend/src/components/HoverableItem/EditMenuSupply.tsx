@@ -9,10 +9,10 @@ interface EditMenuSupplyProps {
   position?: "left" | "right";
   children: React.ReactNode;
   edit?: boolean;
-  onEdit?: () => void;
+  editPath?: string;
   onDelete?: () => void;
 }
-export default function EditMenuSupply({ edit, position = "right", children, onDelete, onEdit }: EditMenuSupplyProps) {
+export default function EditMenuSupply({ edit, position = "right", children, onDelete, editPath }: EditMenuSupplyProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,7 +66,7 @@ export default function EditMenuSupply({ edit, position = "right", children, onD
             },
           }}
         >
-          <MenuItemLink path="/" jsxElement={<EditIcon fontSize="small" />} text="Edytuj" onClick={onEdit} />
+          <MenuItemLink path={`${editPath}`} jsxElement={<EditIcon fontSize="small" />} text="Edytuj" />
           <MenuItem onClick={onDelete}>
             <ListItemIcon>
               <DeleteIcon fontSize="small" />

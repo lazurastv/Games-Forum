@@ -1,28 +1,22 @@
-import { Button, MenuItem, Select } from "@mui/material";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import { EditorState } from "draft-js";
-import { useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Container, Box, Select, MenuItem, Button } from "@mui/material";
+import { EditorState, convertToRaw } from "draft-js";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GameSearchInfoVM, ReviewAdd } from "../../../api/api";
-import { editorToString } from "../../../components/Editor/dataConversion";
+import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
+import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
 import DraftEditor from "../../../components/Editor/DraftEditor";
 import SectionHeader from "../../../components/SectionHeader";
-import { uploadReview } from "../../../fetchData/fetchReviews";
+import { loadAllGames } from "../../../fetchData/fetchGames";
+import { updateReview, uploadReview, loadReview } from "../../../fetchData/fetchReviews";
+import withLoading from "../../../fetchData/withLoading";
+import { useAlert } from "../../../hooks/useAlert";
+import Label from "../components/Label";
 import OneLineInput from "../components/OneLineInput";
-import MultipleSelect from "../components/MultipleSelect";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
 
-// temp
-import { convertToRaw } from "draft-js";
-import { useNavigate } from "react-router-dom";
-import Label from "../components/Label";
-import { loadAllGames } from "../../../fetchData/fetchGames";
-import withLoading from "../../../fetchData/withLoading";
-import { useAlert } from "../../../hooks/useAlert";
-
-function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
+function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
   const [gameId, setGameId] = useState<number>(7);
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
@@ -34,9 +28,15 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
   const navigate = useNavigate();
   const [picture, setPicture] = useState(null);
   const [pictureName, setPictureName] = useState<string>("");
+  const [games, setGames] = useState<GameSearchInfoVM[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  if (!loading) {
+    setLoading(true);
+    loadAllGames().then(x => setGames(x));
+  }
 
   const handleSave = async () => {
-    const review: ReviewAdd = {
+    const addReview: ReviewAdd = {
       gameId: gameId,
       title: title,
       introduction: introduction,
@@ -53,16 +53,36 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
       formData.append("mainPicture", picture);
     }
     for (let key in list) {
-      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-        formData.append("files", blob);
-      });
+      await fetch(list[key].data.src)
+        .then((res) => res.blob())
+        .then((blob) => {
+          formData.append("files", blob);
+        });
     }
-
-    uploadReview(review, formData)
-      .then(id => navigate(`/recenzje/${id}`))
-      .catch(err => err.json())
-      .then(x => displayAlert(x.message, x.status));
+    if (review && review.id) {
+      updateReview(review.id, addReview, formData)
+        .then(() => navigate(`/recenzje/${review.id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    } else {
+      uploadReview(addReview, formData)
+        .then((id) => navigate(`/recenzje/${id}`))
+        .catch((err) => err.json())
+        .then((x) => displayAlert(x.message, x.status));
+    }
   };
+  useEffect(() => {
+    if (review) {
+      review.title && setTitle(review.title);
+      review.introduction && setIntroduction(review.introduction);
+      review.pluses && setPluses(review.pluses);
+      review.minuses && setMinuses(review.minuses);
+      review.score && setScore(parseInt(review.score.toFixed(0)));
+      if (review.content && !JSON.parse(review.content).error) {
+        setEditorState(stringToEditorState(review.content));
+      }
+    }
+  }, [review]);
 
   const handlePictureChange = (event) => {
     setPicture(event.target.files[0]);
@@ -149,4 +169,18 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
     </Container>
   );
 }
-export default withLoading(CreateReview, { games: loadAllGames })
+export default withLoading(
+  CreateReview,
+  {
+    review: async (id) => {
+      let rev = await loadReview(id);
+      let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+        .then((res) => res.json())
+        .then((data) => JSON.stringify(data));
+      let articleWithContent: ReviewFullInfoPlusContent = rev;
+      articleWithContent.content = content;
+      return articleWithContent;
+    },
+  },
+  true
+);

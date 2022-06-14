@@ -24,6 +24,7 @@ export default function CRRating(props: any) {
         onChange={(e, newValue) => {
           props.setRating(newValue);
         }}
+        value={props.rating}
         size="large"
         max={10}
         icon={<StarIcon color="secondary" fontSize="inherit" />}
