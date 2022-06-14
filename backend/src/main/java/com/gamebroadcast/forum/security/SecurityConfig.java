@@ -8,8 +8,6 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
@@ -29,9 +27,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
 
@@ -112,25 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         roleHierarchy.setHierarchy(hierarchy);
 
         return roleHierarchy;
-    }
-
-    @Bean // TODO add frontend url and maybe tweak settings
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        // configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
-        // "DELETE", "OPTIONS"));
-        // configuration.setAllowedHeaders(Arrays.asList("authorization",
-        // "content-type", "x-auth-token"));
-        // configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
     }
 
     @Bean // TODO add extra params in the future

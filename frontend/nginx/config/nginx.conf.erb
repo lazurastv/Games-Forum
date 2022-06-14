@@ -51,12 +51,6 @@ http {
 			index  index.html index.htm;
 		}
 		
-		location /user/ {
-		}
-		
-		location /content/ {
-		}
-		
 		location /data/ {
 			proxy_pass https://backend/;
             proxy_ssl_name forum-graczy-backend.herokuapp.com;

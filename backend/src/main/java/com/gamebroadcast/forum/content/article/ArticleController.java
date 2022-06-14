@@ -76,7 +76,6 @@ public class ArticleController {
 
     @PostMapping(path = "/upload-content-and-images/{articleId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('EDITOR')")
     public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content,
             @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
