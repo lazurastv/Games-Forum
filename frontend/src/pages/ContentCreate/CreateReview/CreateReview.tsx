@@ -1,4 +1,3 @@
-import { Label } from "@mui/icons-material";
 import { Container, Box, Select, MenuItem, Button } from "@mui/material";
 import { EditorState, convertToRaw } from "draft-js";
 import { useState, useEffect } from "react";
@@ -12,11 +11,12 @@ import { loadAllGames } from "../../../fetchData/fetchGames";
 import { updateReview, uploadReview, loadReview } from "../../../fetchData/fetchReviews";
 import withLoading from "../../../fetchData/withLoading";
 import { useAlert } from "../../../hooks/useAlert";
+import Label from "../components/Label";
 import OneLineInput from "../components/OneLineInput";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
 
-function CreateReview({ games, review }: { games: GameSearchInfoVM[], review?: ReviewFullInfoPlusContent }) {
+function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
   const [gameId, setGameId] = useState<number>(7);
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
@@ -28,6 +28,12 @@ function CreateReview({ games, review }: { games: GameSearchInfoVM[], review?: R
   const navigate = useNavigate();
   const [picture, setPicture] = useState(null);
   const [pictureName, setPictureName] = useState<string>("");
+  const [games, setGames] = useState<GameSearchInfoVM[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  if (!loading) {
+    setLoading(true);
+    loadAllGames().then(x => setGames(x));
+  }
 
   const handleSave = async () => {
     const addReview: ReviewAdd = {
@@ -166,7 +172,6 @@ function CreateReview({ games, review }: { games: GameSearchInfoVM[], review?: R
 export default withLoading(
   CreateReview,
   {
-    games: loadAllGames,
     review: async (id) => {
       let rev = await loadReview(id);
       let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
