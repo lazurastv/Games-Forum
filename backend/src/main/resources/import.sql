@@ -35,6 +35,8 @@ INSERT INTO content (id, title, introduction, path, author_id, publish_date, sco
 INSERT INTO content (id, title, introduction, path, author_id, publish_date, score, game_id, dtype) VALUES (nextval('content_sequence'), 'Death Stranding to niedocenione arcydzieło', 'Wielu graczy po zagraniu w najnowszy tytuł Kojimy stwierdziło, że jest to nudna gra. Dla mnie był to jeden z najprzyjemniejszych tytułów ostatnich lat.', 'pOta72hD', 3, '2020-01-03 06:14:00.742000000', 7.7, 11, 'R')
 INSERT INTO content (id, title, introduction, path, author_id, publish_date, score, game_id, dtype) VALUES (nextval('content_sequence'), 'Hollow Knight - super!', 'Prawdziwa uczta dla fanów metroidvanii.', '72oaJdu2', 4, '2017-03-13 06:14:00.742000000', 9.1, 12, 'R')
 
+INSERT INTO content (id, title, introduction, path, author_id, publish_date, dtype) VALUES (nextval('content_sequence'), 'Czy Xbox Series S to najtańszy sposób na granie w najnowsze gry? Sprawdzamy', 'Xbox Series S to najtańsza konsola nowej generacji na rynku. Jak radzi sobie z najpopularniejszymi tytułami?', 'BiQ74nQT', 3, '2019-08-23 06:14:00.742000000', 'A')
+
 INSERT INTO rating(id, value, author_id, game_id) VALUES(nextval('rating_sequence'), 9, 6, 7)
 INSERT INTO rating(id, value, author_id, game_id) VALUES(nextval('rating_sequence'), 7, 11, 7)
 INSERT INTO rating(id, value, author_id, game_id) VALUES(nextval('rating_sequence'), 8, 13, 7)
