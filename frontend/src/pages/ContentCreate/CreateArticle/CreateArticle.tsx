@@ -62,7 +62,6 @@ function CreateArticle({ article }: { article?: ArticleFullInfoPlusContent }) {
       if (article.content && !JSON.parse(article.content).error) {
         setEditorState(stringToEditorState(article.content));
       }
-      // article.content && setEditorState(stringToEditorState(article.content));
     }
   }, [article]);
 

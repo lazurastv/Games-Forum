@@ -69,9 +69,9 @@ function App() {
               <Route path="artykul" element={<CreateArticle />} />
               <Route path="artykul/:id" element={<CreateArticle />} />
               <Route path="recenzja" element={<CreateReview />} />
-              <Route path="recenzja/id" element={<CreateReview />} />
+              <Route path="recenzja/:id" element={<CreateReview />} />
               <Route path="gra" element={<CreateGame />} />
-              <Route path="gra/id" element={<CreateGame />} />
+              <Route path="gra/:id" element={<CreateGame />} />
             </Route>
             <Route
               path="wpisy/:userName"

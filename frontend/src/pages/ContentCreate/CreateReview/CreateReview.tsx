@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Container from "@mui/material/Container";
@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import SectionHeader from "../../../components/SectionHeader";
 import { loadAllReviews, loadReview, uploadReview } from "../../../fetchData/fetchReviews";
 import DraftEditor from "../../../components/Editor/DraftEditor";
-import { editorToString } from "../../../components/Editor/dataConversion";
+import { editorToString, stringToEditorState } from "../../../components/Editor/dataConversion";
 import CRRating from "./CRRating";
 import PlusMinus from "./PlusMinus";
 import OneLineInput from "../components/OneLineInput";
@@ -18,8 +18,10 @@ import SimplePopup from "../../../components/Popups/SimplePopup";
 import { convertToRaw } from "draft-js";
 import { useAlert } from "../../../hooks/useAlert";
 import { useNavigate } from "react-router-dom";
+import withLoading from "../../../fetchData/withLoading";
+import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
 
-export default function CreateReview() {
+function CreateReview({ review }: { review?: ReviewFullInfoPlusContent }) {
   const [title, setTitle] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [score, setScore] = useState<number | null>(null);
@@ -43,16 +45,30 @@ export default function CreateReview() {
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
     for (let key in list) {
-      await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
-        formData.append("files", blob);
-      });
+      await fetch(list[key].data.src)
+        .then((res) => res.blob())
+        .then((blob) => {
+          formData.append("files", blob);
+        });
     }
 
     uploadReview(review, formData)
-      .then(id => navigate(`/recenzje/${id}`))
-      .catch(err => err.json())
-      .then(x => displayAlert(x.message, x.status));
+      .then((id) => navigate(`/recenzje/${id}`))
+      .catch((err) => err.json())
+      .then((x) => displayAlert(x.message, x.status));
   };
+  useEffect(() => {
+    if (review) {
+      review.title && setTitle(review.title);
+      review.introduction && setIntroduction(review.introduction);
+      review.pluses && setPluses(review.pluses);
+      review.minuses && setMinuses(review.minuses);
+      review.score && setScore(parseInt(review.score.toFixed(0)));
+      if (review.content && !JSON.parse(review.content).error) {
+        setEditorState(stringToEditorState(review.content));
+      }
+    }
+  }, [review]);
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
@@ -104,3 +120,18 @@ export default function CreateReview() {
     </Container>
   );
 }
+export default withLoading(
+  CreateReview,
+  {
+    review: async (id) => {
+      let rev = await loadReview(id);
+      let content = await fetch(`http://localhost:8080/content/${rev.path}/content.json`)
+        .then((res) => res.json())
+        .then((data) => JSON.stringify(data));
+      let articleWithContent: ReviewFullInfoPlusContent = rev;
+      articleWithContent.content = content;
+      return articleWithContent;
+    },
+  },
+  true
+);

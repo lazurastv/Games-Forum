@@ -34,7 +34,7 @@ const Reviews = (props: ReviewsProps): React.ReactNode => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((r: any, idx) => (
-              <EditMenuSupply key={idx} edit={edit} onDelete={() => handleDeleteReview(r.id, r.title)}>
+              <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/recenzja/${r.id}`} onDelete={() => handleDeleteReview(r.id, r.title)}>
                 <ReviewItem
                   reviewId={r.id as number}
                   date={convertDate(r.publishDate)}
