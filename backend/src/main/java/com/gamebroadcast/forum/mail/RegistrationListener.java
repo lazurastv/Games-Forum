@@ -35,13 +35,13 @@ public class RegistrationListener implements
 
     String recipientAddress = user.getEmail();
     String subject = "Potwierdzenie tożsamości";
-    String confirmationUrl = event.getAppUrl() + "/api/user/regitrationConfirm/" + token;
+    String confirmationUrl = token;
 
     SimpleMailMessage email = new SimpleMailMessage();
     email.setFrom("noreply@gmail.com");
     email.setTo(recipientAddress);
     email.setSubject(subject);
-    email.setText("Aby potwierdzić swoją tożsamość, wejdź na poniższy link.\nhttp://localhost:8080" + confirmationUrl);
+    email.setText("Aby potwierdzić swoją tożsamość, wejdź na poniższy link.\nhttp://localhost:3000/rejestracja/mail-akceptacja/" + confirmationUrl);
     mailSender.send(email);
   }
 }

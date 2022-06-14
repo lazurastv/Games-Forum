@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { ArticleFullInfoVM } from "../../../api/api";
 import Author from "../../../components/Author";
 import StyledEditorContent from "../../../components/Editor/StyledEditorContent";
@@ -9,6 +9,7 @@ import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 import SimilarArticles from "./SimilarArticles";
 import Comments from "../Comments";
+import ContentLikes from "../ContentLikes";
 import { stringToHtml } from "../../../components/Editor/dataConversion";
 import { ArticleFullInfoPlusContent } from "../../../api/api/models/ArticleFullInfoPlusContent";
 
@@ -21,33 +22,50 @@ function Article({ article }: { article: ArticleFullInfoPlusContent }) {
         title={article.title}
         imgSrc={`${NGINX_URL}/${article.path}/horizontal.jpg`}
         caption={
-          <Typography sx={{ textAlign: "right" }}>
-            {convertDate(article.publishDate)}
-          </Typography>
+          <Grid container direction="row" justifyContent="space-between">
+            <Grid item>
+              <ContentLikes contentId={article.id as number} />
+            </Grid>
+            <Grid item>
+              <Typography sx={{ textAlign: "right" }}>
+                {convertDate(article.publishDate)}
+              </Typography>
+            </Grid>
+          </Grid>
         }
       />
       <Container maxWidth="lg">
         <Box sx={{ pb: 6 }}>
           <Author sx={{ maxWidth: "550px" }} authorData={article.author} />
           <StyledEditorContent>
-            <div dangerouslySetInnerHTML={{ __html: article.content !== undefined ? stringToHtml(article.content): "" }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  article.content !== undefined
+                    ? stringToHtml(article.content)
+                    : "",
+              }}
+            />
           </StyledEditorContent>
         </Box>
         <SectionHeader>Podobne artykuły</SectionHeader>
         <SimilarArticles />
         <SectionHeader>Komentarze</SectionHeader>
-        <Comments contentId={article.id}/>
+        <Comments contentId={article.id} />
       </Container>
     </Box>
   );
 }
 export default withLoading(Article, {
   article: async (id) => {
-      let art = await loadArticle(id);
-      let content = await fetch(`http://localhost:8080/content/${art.path}/content.json`)
-        .then(res => res.json()).then(data => JSON.stringify(data));
-      let articleWithContent:ArticleFullInfoPlusContent = art;
-      articleWithContent.content = content;
-      return articleWithContent;
-    },
+    let art = await loadArticle(id);
+    let content = await fetch(
+      `http://localhost:8080/content/${art.path}/content.json`
+    )
+      .then((res) => res.json())
+      .then((data) => JSON.stringify(data));
+    let articleWithContent: ArticleFullInfoPlusContent = art;
+    articleWithContent.content = content;
+    return articleWithContent;
+  },
 });
