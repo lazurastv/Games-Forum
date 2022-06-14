@@ -1,9 +1,17 @@
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Stack from '@mui/material/Stack';
+import { confirmRegistration } from "../../fetchData/fetchUser";
 
 export default function AccountConfirmedMessage() {
+  let { token } = useParams();
+
+  if (token != undefined) {
+    console.log(token);
+    confirmRegistration(token);
+  }
+
   return (
     <Box
       sx={{

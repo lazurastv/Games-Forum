@@ -88,7 +88,7 @@ function App() {
             <Route path="profil/:id" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
             <Route path="rejestracja/mail-powiadomienie" element={<AccountCreatedMessage />} />
-            <Route path="rejestracja/mail-akceptacja" element={<AccountConfirmedMessage />} />
+            <Route path="rejestracja/mail-akceptacja/:token" element={<AccountConfirmedMessage />} />
             <Route path="uzytkownicy" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="ADMIN" outlet={<Users />} />} />
             <Route path="*" element={<PageNotFoundError />} />
           </Routes>

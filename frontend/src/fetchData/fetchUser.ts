@@ -8,4 +8,7 @@ async function loadUser(id: number) {
 async function loadAllUsers() {
     return userController.getAllUsers({ credentials: "include" });
 }
-export { loadUser, loadAllUsers };
+async function confirmRegistration(token: string) {
+    return userController.confirmRegistration({token: token}, { credentials: "include" });
+}
+export { loadUser, loadAllUsers, confirmRegistration };
