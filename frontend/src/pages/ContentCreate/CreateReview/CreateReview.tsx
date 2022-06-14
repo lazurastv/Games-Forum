@@ -17,6 +17,7 @@ import PlusMinus from "./PlusMinus";
 // temp
 import { convertToRaw } from "draft-js";
 import { useNavigate } from "react-router-dom";
+import Label from "../components/Label";
 import { loadAllGames } from "../../../fetchData/fetchGames";
 import withLoading from "../../../fetchData/withLoading";
 import { useAlert } from "../../../hooks/useAlert";
@@ -31,6 +32,9 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const { displayAlert } = useAlert();
   const navigate = useNavigate();
+  const [picture, setPicture] = useState(null);
+  const [pictureName, setPictureName] = useState<string>("");
+
   const handleSave = async () => {
     const review: ReviewAdd = {
       gameId: gameId,
@@ -45,6 +49,9 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
     let list = convertToRaw(editorState.getCurrentContent()).entityMap;
     let formData: FormData = new FormData();
     formData.append("content", editorToString(editorState));
+    if (picture != null) {
+      formData.append("mainPicture", picture);
+    }
     for (let key in list) {
       await fetch(list[key].data.src).then(res => res.blob()).then(blob => {
         formData.append("files", blob);
@@ -56,6 +63,12 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
       .catch(err => err.json())
       .then(x => displayAlert(x.message, x.status));
   };
+
+  const handlePictureChange = (event) => {
+    setPicture(event.target.files[0]);
+    setPictureName(event.target.files[0].name);
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 4 }}>
       <SectionHeader>Dodaj recenzję</SectionHeader>
@@ -96,6 +109,13 @@ function CreateReview({ games }: { games: GameSearchInfoVM[] }) {
               value={introduction}
               onChange={(e: any) => setIntroduction(e.target.value)}
             />
+          </Box>
+          <Box sx={{ mb: 4, display: "flex", gap: "10px" }}>
+            <Button variant="contained" component="label" color="secondary" >
+              Dodaj obraz
+              <input type="file" onChange={handlePictureChange} accept=".png,.jpeg,.jpg" hidden />
+            </Button>
+            <Label>{pictureName}</Label>
           </Box>
           <PlusMinus pluses={pluses} setPluses={setPluses} minuses={minuses} setMinuses={setMinuses} />
         </Box>

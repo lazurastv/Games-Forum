@@ -81,11 +81,13 @@ public class ReviewController {
     )
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('EDITOR')")
-    public void addReviewWithImages(@PathVariable("reviewId") Long reviewId, @RequestParam("content") String content, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+    public void addReviewWithImages(@PathVariable("reviewId") Long reviewId, @RequestParam("content") String content,
+                                    @RequestParam(value = "mainPicture", required = false) MultipartFile mainPicture,
+                                    @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
             ReviewVM review =  reviewService.getReviewById(reviewId);
             String path = review.path;
-            fileService.saveNewContentFiles(path, content, files);
+            fileService.saveNewContentFiles(path, content, mainPicture, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }
