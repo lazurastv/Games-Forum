@@ -91,7 +91,7 @@ public class FileService {
             if (files != null) {
                 for (long i = 0L; i < files.length; i++) {
                     String path = CONTENT_DRIVE_PATH + "/" + hash;
-                    String imageName = "image" + i + ".png";
+                    String imageName = "image" + i + ".jpg";
                     saveImage(files[(int) i], path, imageName);
                     path = CONTENT_URL_PATH + "/" + hash + "/" + imageName;
                     content = changeUrlInJson(content, path, i);
@@ -109,7 +109,7 @@ public class FileService {
 
     public void saveProfilePicture(String hash, MultipartFile profilePicture) {
         try {
-            saveImage(profilePicture, USER_DRIVE_PATH + "/" + hash, "profile.png");
+            saveImage(profilePicture, USER_DRIVE_PATH + "/" + hash, "profile.jpg");
         } catch (IOException e) {
             // TODO add custom exception
             throw new RuntimeException(e);
