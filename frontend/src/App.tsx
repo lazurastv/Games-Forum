@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/Authentication/ProtectedRoute";
 import { useSessionContext } from "./components/Authentication/SessionContext";
+import AccountConfirmedMessage from "./components/Errors/AccountConfirmedMessage";
 import AccountCreatedMessage from "./components/Errors/AccountCreatedMessage";
 import PageNotFoundError from "./components/Errors/PageNotFoundError";
 import Navigation from "./components/Navigation/Navigation";
@@ -69,8 +70,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="dodaj" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="EDITOR" />}>
               <Route path="artykul" element={<CreateArticle />} />
+              <Route path="artykul/:id" element={<CreateArticle />} />
               <Route path="recenzja" element={<CreateReview />} />
+              <Route path="recenzja/:id" element={<CreateReview />} />
               <Route path="gra" element={<CreateGame />} />
+              <Route path="gra/:id" element={<CreateGame />} />
             </Route>
             <Route
               path="wpisy/:userName"
@@ -89,6 +93,7 @@ function App() {
             <Route path="profil/:id" element={<Profile />} />
             <Route path="rejestracja" element={<Registration />} />
             <Route path="rejestracja/mail-powiadomienie" element={<AccountCreatedMessage />} />
+            <Route path="rejestracja/mail-akceptacja/:token" element={<AccountConfirmedMessage />} />
             <Route path="uzytkownicy" element={<ProtectedRoute {...defaultProtectedRouteProps} requiredRole="ADMIN" outlet={<Users />} />} />
             <Route path="*" element={<PageNotFoundError />} />
           </Routes>

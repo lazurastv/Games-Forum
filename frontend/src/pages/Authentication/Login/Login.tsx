@@ -107,28 +107,8 @@ export default function Login() {
             >
               Zaloguj
             </Button>
-            <DividerWithText>Lub</DividerWithText>
-            <Button
-              disableElevation
-              fullWidth
-              size="large"
-              variant="outlined"
-              color="secondary"
-              sx={{
-                color: "text.primary",
-                borderColor: "secondary.main",
-                mt: 2,
-              }}
-            >
-              <GoogleIcon />
-              <Box sx={{ mr: 1 }}></Box>
-              Zaloguj się kontem Google
-            </Button>
             <Grid container sx={{ mt: 1 }}>
               <Grid item xs>
-                <Box component={Link} to="/" sx={{ color: "text.secondary" }}>
-                  Nie pamiętasz hasła?
-                </Box>
               </Grid>
               <Grid item>
                 <Box component={Link} to="/rejestracja" sx={{ color: "text.secondary" }}>

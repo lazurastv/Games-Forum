@@ -76,12 +76,14 @@ public class ArticleController {
 
     @PostMapping(path = "/upload-content-and-images/{articleId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('EDITOR')")
     public void addArticleWithImages(@PathVariable("articleId") Long articleId, @RequestParam("content") String content,
+            @RequestParam(value = "mainPicture", required = false) MultipartFile mainPicture,
             @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
             ArticleVM article = articleService.getArticleById(articleId);
             String path = article.path;
-            fileService.saveNewContentFiles(path, content, files);
+            fileService.saveNewContentFiles(path, content, mainPicture, files);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
         }

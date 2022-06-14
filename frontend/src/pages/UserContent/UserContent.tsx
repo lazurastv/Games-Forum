@@ -27,7 +27,7 @@ export default function UserContent() {
           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 4 }}>
             <Avatar
               alt={user?.username}
-              src={`${NGINX_URL}/${user?.profilePicturePath}/profile.png`}
+              src={`${NGINX_URL}/${user?.profilePicturePath}/profile.jpg`}
               sx={{ mr: 3, width: 72, height: 72 }}
             />
             <Box sx={{ display: "flex", flexDirection: "column" }}>

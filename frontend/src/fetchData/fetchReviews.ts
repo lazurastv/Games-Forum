@@ -1,4 +1,5 @@
 import { ReviewAdd, ReviewControllerApi, ReviewSearchInfoVM } from "../api/api";
+import { ReviewAddUpdate } from "../api/api/models/ReviewAddUpdate";
 async function loadSimilarReviews(id: number) {
   const reviews = new ReviewControllerApi();
   return reviews.getSimilarReviews({ reviewId: id });
@@ -21,11 +22,26 @@ async function deleteReview(id: number) {
 async function uploadReview(review: ReviewAdd, files: FormData) {
   const reviews = new ReviewControllerApi();
   const id: number = await reviews.addReview({ reviewAdd: review }, { credentials: "include" });
-  fetch(`https://forum-graczy-backend.herokuapp.com/api/review/upload-content-and-images/${id}`, {
+  await fetch(`http://localhost:8080/api/review/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
-    credentials: "include"
+    credentials: "include",
   });
   return id;
 }
-export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews, deleteReview };
+async function updateReview(id: number, review: ReviewAddUpdate, files: FormData) {
+  const reviews = new ReviewControllerApi();
+  await fetch(`http://localhost:8080/api/review/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include",
+  });
+  return reviews.updateReview(
+    {
+      reviewId: id,
+      reviewUpdate: review,
+    },
+    { credentials: "include" }
+  );
+}
+export { uploadReview, loadReview, loadAllReviews, loadSimilarReviews, deleteReview, updateReview };

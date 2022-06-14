@@ -35,7 +35,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
                   key={id}
                   articleId={x.id}
                   title={x.title}
-                  src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                  src={`${NGINX_URL}/${x.path}/horizontal.jpg`}
                   author={x.authorName}
                   date={convertDate(x.publishDate)}
                 />
@@ -53,7 +53,7 @@ function TopNews({ news }: { news: ArticleVM[] }) {
                   <ArticleTile
                     articleId={x.id}
                     title={x.title}
-                    src={`${NGINX_URL}/${x.path}/horizontal.png`}
+                    src={`${NGINX_URL}/${x.path}/horizontal.jpg`}
                     author={x.authorName}
                     date={convertDate(x.publishDate)}
                   />

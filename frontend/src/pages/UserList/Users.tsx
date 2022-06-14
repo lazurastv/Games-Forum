@@ -29,7 +29,7 @@ const Users = (props: UsersProps) => {
               id={a.id}
               username={a.username}
               shortDescription={a.shortDescription}
-              image={`${NGINX_URL}/${a.profilePicturePath}/profile.png`}
+              image={`${NGINX_URL}/${a.profilePicturePath}/profile.jpg`}
               role={a.role}
             />
           ))}

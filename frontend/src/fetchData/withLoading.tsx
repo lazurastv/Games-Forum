@@ -1,5 +1,3 @@
-import { CircularProgress } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
@@ -7,7 +5,7 @@ import LoadingFailure from "../pages/Errors/LoadingFailure";
 interface IFetchFun {
   [key: string]: Function;
 }
-function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
+function withLoading(WrappedComponent: any, fetchFun: IFetchFun, skipIfNoId?: boolean) {
   const WithLoading = (props: any) => {
     let { id } = useParams();
     const [reload, setReload] = useState<number>(0);
@@ -18,21 +16,31 @@ function withLoading(WrappedComponent: any, fetchFun: IFetchFun) {
       setIsLoading(true);
       setIsError(false);
       setData({});
-      for (const [key, value] of Object.entries(fetchFun)) {
-        value(id)
-          .then((res: any) => {
-            setData((d) => {
-              return { ...d, [key]: res };
+      if (skipIfNoId && !id) {
+        setIsLoading(false);
+      } else {
+        for (const [key, value] of Object.entries(fetchFun)) {
+          value(id)
+            .then((res: any) => {
+              setData((d) => {
+                return { ...d, [key]: res };
+              });
+              setIsLoading(false);
+            })
+            .catch((err: any) => {
+              console.error(err);
+              setIsError(true);
             });
-            setIsLoading(false);
-          })
-          .catch((err: any) => {
-            console.error(err);
-            setIsError(true);
-          });
+        }
       }
-    }, [id,reload]);
-    return isError ? <LoadingFailure /> : isLoading ? <LoadingSpinner /> : <WrappedComponent {...props} {...data} setReload={setReload}/>;
+    }, [id, reload]);
+    return isError ? (
+      <LoadingFailure />
+    ) : isLoading ? (
+      <LoadingSpinner />
+    ) : (
+      <WrappedComponent {...props} {...data} setReload={setReload} />
+    );
   };
   return WithLoading;
 }

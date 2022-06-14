@@ -18,11 +18,26 @@ async function deleteGame(id: number): Promise<void> {
 async function uploadGame(game: GameAddUpdate, files: FormData) {
   const games = new GameControllerApi();
   const id: number = await games.addGame({ gameAddUpdate: game }, { credentials: "include" });
-  fetch(`https://forum-graczy-backend.herokuapp.com/api/game/upload-content-and-images/${id}`, {
+  await fetch(`http://localhost:8080/api/game/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include"
   });
   return id;
 }
-export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame };
+async function updateGame(id: number, game: GameAddUpdate, files: FormData) {
+  const games = new GameControllerApi();
+  await fetch(`http://localhost:8080/api/game/upload-content-and-images/${id}`, {
+    method: "POST",
+    body: files,
+    credentials: "include"
+  });
+  return games.updateGame(
+    {
+      gameId: id,
+      gameAddUpdate: game,
+    },
+    { credentials: "include" }
+  );
+}
+export { uploadGame, loadGame, loadAllGames, loadSimilarGames, deleteGame, updateGame };
