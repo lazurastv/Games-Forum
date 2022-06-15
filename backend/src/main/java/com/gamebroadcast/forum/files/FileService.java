@@ -87,6 +87,15 @@ public class FileService {
         return hash;
     }
 
+    public static void deleteDirectory(String  path)
+    {
+        File file = new File(path);
+        for (File subfile : file.listFiles()) {
+            subfile.delete();
+        }
+        file.delete();
+    }
+
     public void saveNewContentFiles(String hash, String content, MultipartFile mainPicture, MultipartFile[] files) {
         try {
             if (mainPicture != null) {
@@ -119,5 +128,9 @@ public class FileService {
             // TODO add custom exception
             throw new RuntimeException(e);
         }
+    }
+
+    public void deleteContent(String hash) {
+        deleteDirectory(CONTENT_DRIVE_PATH + "/" + hash);
     }
 }

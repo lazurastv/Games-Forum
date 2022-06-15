@@ -111,6 +111,9 @@ public class ArticleController {
             if (!sessionUserCanDeleteArticle(articleId)) {
                 throw new NoEditRightsException("article");
             }
+            ArticleVM article = articleService.getArticleById(articleId);
+            String path = article.path;
+            fileService.deleteContent(path);
             articleService.deleteArticle(articleId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
