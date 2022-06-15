@@ -13,6 +13,7 @@ import StyledEditorContent from "../../../components/Editor/StyledEditorContent"
 import Comments from "../Comments";
 import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
 import Game from "../../../components/Game";
+import ContentLikes from "../ContentLikes";
 
 const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
 
@@ -22,7 +23,18 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
       <HeaderTile
         title={review.title}
         imgSrc={`${NGINX_URL}/${review.path}/horizontal.jpg`}
-        caption={<Typography sx={{ textAlign: "right" }}>{convertDate(review.publishDate)}</Typography>}
+        caption={
+          <Grid container direction="row" justifyContent="space-between">
+            <Grid item>
+              <ContentLikes contentId={review.id as number} />
+            </Grid>
+            <Grid item>
+              <Typography sx={{ textAlign: "right" }}>
+                {convertDate(review.publishDate)}
+              </Typography>
+            </Grid>
+          </Grid>
+        }
       />
       <Container maxWidth="lg">
         <Grid container sx={{ flexWrap: "wrap-reverse", pb: 6 }}>
@@ -35,7 +47,14 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
             }}
           >
             <StyledEditorContent>
-              <div dangerouslySetInnerHTML={{ __html: review.content !== undefined ? stringToHtml(review.content) : "" }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    review.content !== undefined
+                      ? stringToHtml(review.content)
+                      : "",
+                }}
+              />
             </StyledEditorContent>
           </Grid>
           <Grid
