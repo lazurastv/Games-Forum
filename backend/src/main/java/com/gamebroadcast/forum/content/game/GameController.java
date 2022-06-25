@@ -1,5 +1,6 @@
 package com.gamebroadcast.forum.content.game;
 
+import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.content.game.models.GameAddUpdate;
 import com.gamebroadcast.forum.content.game.models.GameFullInfoVM;
 import com.gamebroadcast.forum.content.game.models.GameSearchInfoVM;
@@ -114,6 +115,9 @@ public class GameController {
             if (!sessionUserCanDeleteGame(gameId)) {
                 throw new NoEditRightsException("game");
             }
+            GameVM game = gameService.getGameById(gameId);
+            String path = game.path;
+            fileService.deleteContent(path);
             gameService.deleteGame(gameId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());

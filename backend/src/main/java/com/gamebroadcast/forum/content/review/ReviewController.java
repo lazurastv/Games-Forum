@@ -1,5 +1,6 @@
 package com.gamebroadcast.forum.content.review;
 
+import com.gamebroadcast.forum.content.article.models.ArticleVM;
 import com.gamebroadcast.forum.content.review.models.ReviewUpdate;
 import com.gamebroadcast.forum.content.review.models.ReviewAdd;
 import com.gamebroadcast.forum.content.review.models.ReviewFullInfoVM;
@@ -115,6 +116,9 @@ public class ReviewController {
             if (!sessionUserCanDeleteReview(reviewId)) {
                 throw new NoEditRightsException("review");
             }
+            ReviewVM review = reviewService.getReviewById(reviewId);
+            String path = review.path;
+            fileService.deleteContent(path);
             reviewService.deleteReview(reviewId);
         } catch (RuntimeException e) {
             throw new ApiRequestException(e.getMessage());
