@@ -115,8 +115,8 @@ public class GameController {
             if (!sessionUserCanDeleteGame(gameId)) {
                 throw new NoEditRightsException("game");
             }
-            GameVM article = gameService.getGameById(gameId);
-            String path = article.path;
+            GameVM game = gameService.getGameById(gameId);
+            String path = game.path;
             fileService.deleteContent(path);
             gameService.deleteGame(gameId);
         } catch (RuntimeException e) {
