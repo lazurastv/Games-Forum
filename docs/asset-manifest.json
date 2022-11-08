@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/Forum-Graczy/static/css/main.5241a615.css",
+    "main.js": "/Forum-Graczy/static/js/main.eed84050.js",
+    "static/media/slick.svg": "/Forum-Graczy/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/Forum-Graczy/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/Forum-Graczy/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/Forum-Graczy/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/Forum-Graczy/index.html",
+    "main.5241a615.css.map": "/Forum-Graczy/static/css/main.5241a615.css.map",
+    "main.eed84050.js.map": "/Forum-Graczy/static/js/main.eed84050.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5241a615.css",
+    "static/js/main.eed84050.js"
+  ]
+}
