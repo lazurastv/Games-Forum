@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { GameVM } from "../api/api";
 import Widget from "./Widget";
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 interface GameProps {
     gameData: GameVM;
     sx?: any;

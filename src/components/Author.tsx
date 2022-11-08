@@ -2,7 +2,7 @@ import { Avatar, Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import Widget from "./Widget";
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 interface AuthorProps {
   authorData: any;
   sx?: any;

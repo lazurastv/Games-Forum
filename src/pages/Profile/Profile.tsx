@@ -7,7 +7,7 @@ import withLoading from "../../fetchData/withLoading";
 import ProfileBox from "./ProfileBox";
 import ProfileDataBox from "./ProfileDataBox";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 const Profile = ({ user }: { user: UserVM }) => {
   return (

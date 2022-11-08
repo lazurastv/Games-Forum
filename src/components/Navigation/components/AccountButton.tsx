@@ -6,7 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Tooltip from "@mui/material/Tooltip";
 import { useSessionContext } from "../../Authentication/SessionContext";
 import AccountMenu from "./AccountMenu/AccountMenu";
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 export default function AccountButton() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

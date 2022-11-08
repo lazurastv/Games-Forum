@@ -18,7 +18,7 @@ async function deleteGame(id: number): Promise<void> {
 async function uploadGame(game: GameAddUpdate, files: FormData) {
   const games = new GameControllerApi();
   const id: number = await games.addGame({ gameAddUpdate: game }, { credentials: "include" });
-  await fetch(`https://forum-graczy.azurewebsites.net/api/game/upload-content-and-images/${id}`, {
+  await fetch(`${process.env.REACT_APP_URL}/api/game/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include"
@@ -27,7 +27,7 @@ async function uploadGame(game: GameAddUpdate, files: FormData) {
 }
 async function updateGame(id: number, game: GameAddUpdate, files: FormData) {
   const games = new GameControllerApi();
-  await fetch(`https://forum-graczy.azurewebsites.net/api/game/upload-content-and-images/${id}`, {
+  await fetch(`${process.env.REACT_APP_URL}/api/game/upload-content-and-images/${id}`, {
     method: "POST",
     body: files,
     credentials: "include"

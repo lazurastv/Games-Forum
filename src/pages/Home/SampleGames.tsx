@@ -4,7 +4,7 @@ import GameTile from "../../components/Tile/GameTile";
 import { loadAllGames } from "../../fetchData/fetchGames";
 import withLoading from "../../fetchData/withLoading";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function SampleGames({ games }: { games: GameSearchInfoVM[] }) {
     return (

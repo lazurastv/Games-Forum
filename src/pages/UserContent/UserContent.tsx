@@ -8,7 +8,7 @@ import Articles from "../ContentList/Articles/Articles";
 import Games from "../ContentList/Games/Games";
 import Reviews from "../ContentList/Reviews/Reviews";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 export default function UserContent() {
   const {

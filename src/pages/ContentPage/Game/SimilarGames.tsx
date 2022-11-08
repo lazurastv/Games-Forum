@@ -5,7 +5,7 @@ import GameTile from "../../../components/Tile/GameTile";
 import { loadSimilarGames } from "../../../fetchData/fetchGames";
 import withLoading from "../../../fetchData/withLoading";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function SimilarGames({ games }: { games: GameSearchInfoVM }) {
   console.log(games);

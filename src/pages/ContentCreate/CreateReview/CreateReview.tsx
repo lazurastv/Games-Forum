@@ -174,7 +174,7 @@ export default withLoading(
   {
     review: async (id) => {
       let rev = await loadReview(id);
-      let content = await fetch(`https://forum-graczy.azurewebsites.net/content/${rev.path}/content.json`)
+      let content = await fetch(`${process.env.REACT_APP_CONTENT}/${rev.path}/content.json`)
         .then((res) => res.json())
         .then((data) => JSON.stringify(data));
       let articleWithContent: ReviewFullInfoPlusContent = rev;

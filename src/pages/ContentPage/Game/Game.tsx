@@ -16,7 +16,7 @@ import Details from "./Details";
 import Rate from "./Rate";
 import SimilarGames from "./SimilarGames";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function Game({ game }: { game: GameFullInfoPlusContent }) {
   const { session } = useSessionContext();
@@ -169,7 +169,7 @@ const styles = {
 export default withLoading(Game, {
   game: async (id) => {
     let rev = await loadGame(id);
-    let content = await fetch(`https://forum-graczy.azurewebsites.net/content/${rev.path}/content.json`)
+    let content = await fetch(`${process.env.REACT_APP_CONTENT}/${rev.path}/content.json`)
       .then(res => res.json()).then(data => JSON.stringify(data));
     let articleWithContent: GameFullInfoPlusContent = rev;
     articleWithContent.content = content;

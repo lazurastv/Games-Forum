@@ -53,7 +53,7 @@ export default function ProfileBox(props: IProfileBox) {
     let file = event.target.files[0];
     formData.append("image", file, file.name);
 
-    fetch(`https://forum-graczy.azurewebsites.net/api/user/upload-profile-picture/${props.id}`, {
+    fetch(`${process.env.REACT_APP_URL}/api/user/upload-profile-picture/${props.id}`, {
       method: "POST",
       body: formData,
       credentials: "include"

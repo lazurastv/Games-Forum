@@ -9,7 +9,7 @@ import { ContentList } from "../ContentList.types";
 import useFilterData from "../../../hooks/useFilterData";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
 import { useAlert } from "../../../hooks/useAlert";
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 interface GamesProps extends ContentList {
   games: GameSearchInfoVM[];
 }

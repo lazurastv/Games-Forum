@@ -2,7 +2,7 @@ import { Avatar, Box, Typography } from "@mui/material";
 import { darken, styled } from "@mui/system";
 import React from "react";
 import { ChatMessageVM } from "../../api/api/models/ChatMessageVM";
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 interface ChatMessageProps {
   isMyMessage?: boolean;

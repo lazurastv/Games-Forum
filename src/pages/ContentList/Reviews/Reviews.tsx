@@ -11,7 +11,7 @@ import { ContentList } from "../ContentList.types";
 import useFilterData from "../../../hooks/useFilterData";
 import EditMenuSupply from "../../../components/HoverableItem/EditMenuSupply";
 import { useAlert } from "../../../hooks/useAlert";
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 interface ReviewsProps extends ContentList {
   reviews: ReviewSearchInfoVM[];
 }
@@ -34,18 +34,18 @@ const Reviews = (props: ReviewsProps): React.ReactNode => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((r: any, idx) => (
-              <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/recenzja/${r.id}`} onDelete={() => handleDeleteReview(r.id, r.title)}>
-                <ReviewItem
-                  reviewId={r.id as number}
-                  date={convertDate(r.publishDate)}
-                  title={r.title ?? ""}
-                  content={r.introduction ?? ""}
-                  author={r.authorName ?? ""}
-                  rate={r.score && isNaN(r.score) ? "?" : r.score?.toFixed(0) ?? -1}
-                  image={`${NGINX_URL}/${r.path}/horizontal.jpg`}
-                />
-              </EditMenuSupply>
-            ))}
+            <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/recenzja/${r.id}`} onDelete={() => handleDeleteReview(r.id, r.title)}>
+              <ReviewItem
+                reviewId={r.id as number}
+                date={convertDate(r.publishDate)}
+                title={r.title ?? ""}
+                content={r.introduction ?? ""}
+                author={r.authorName ?? ""}
+                rate={r.score && isNaN(r.score) ? "?" : r.score?.toFixed(0) ?? -1}
+                image={`${NGINX_URL}/${r.path}/horizontal.jpg`}
+              />
+            </EditMenuSupply>
+          ))}
       </Box>
     </Container>
   );

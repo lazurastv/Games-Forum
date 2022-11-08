@@ -5,7 +5,7 @@ import { loadSimilarReviews } from "../../../fetchData/fetchReviews";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function SimilarReviews({ reviews }: { reviews: ReviewSearchInfoVM }) {
   return (

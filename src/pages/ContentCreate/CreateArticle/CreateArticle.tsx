@@ -128,7 +128,7 @@ export default withLoading(
   {
     article: async (id) => {
       let art = await loadArticle(id);
-      let content = await fetch(`https://forum-graczy.azurewebsites.net/content/${art.path}/content.json`)
+      let content = await fetch(`${process.env.REACT_APP_CONTENT}/${art.path}/content.json`)
         .then((res) => res.json())
         .then((data) => JSON.stringify(data));
       let articleWithContent: ArticleFullInfoPlusContent = art;

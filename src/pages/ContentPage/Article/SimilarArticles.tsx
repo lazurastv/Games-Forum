@@ -5,7 +5,7 @@ import { loadSimilarArticles } from "../../../fetchData/fetchArticles";
 import withLoading from "../../../fetchData/withLoading";
 import { convertDate } from "../../../utils/convertDate";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function SimilarArticles({ articles }: { articles: ArticleSearchInfoVM }) {
   return (

@@ -40,7 +40,7 @@ const collapseButtons = [
     jsxElement: <VideogameAssetIcon />,
   },
 ];
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 export default function AccountMenu({ anchorEl, setAnchorEl }) {
   const open = Boolean(anchorEl);
   const { session, logout } = useSessionContext();

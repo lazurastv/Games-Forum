@@ -11,7 +11,7 @@ import { convertDate } from "../../../utils/convertDate";
 import { ContentList } from "../ContentList.types";
 import ArticleItem from "./ArticleItem";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 interface ArticlesProps extends ContentList {
   articles: ArticleSearchInfoVM[];
 }
@@ -35,17 +35,17 @@ const Articles = (props: ArticlesProps) => {
         {filter.Feedback
           ? filter.Feedback
           : filter.data.map((a: any, idx: any) => (
-              <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/artykul/${a.id}`} onDelete={() => handleDeleteArticle(a.id, a.title)}>
-                <ArticleItem
-                  articleId={a.id}
-                  content={a.introduction}
-                  date={convertDate(a.publishDate)}
-                  title={a.title as string}
-                  author={a.authorName as string}
-                  image={`${NGINX_URL}/${a.path}/horizontal.jpg`}
-                />
-              </EditMenuSupply>
-            ))}
+            <EditMenuSupply key={idx} edit={edit} editPath={`/dodaj/artykul/${a.id}`} onDelete={() => handleDeleteArticle(a.id, a.title)}>
+              <ArticleItem
+                articleId={a.id}
+                content={a.introduction}
+                date={convertDate(a.publishDate)}
+                title={a.title as string}
+                author={a.authorName as string}
+                image={`${NGINX_URL}/${a.path}/horizontal.jpg`}
+              />
+            </EditMenuSupply>
+          ))}
       </Box>
     </Container>
   );

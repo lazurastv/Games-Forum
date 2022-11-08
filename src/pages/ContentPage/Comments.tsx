@@ -20,7 +20,7 @@ import { useSessionContext } from "../../components/Authentication/SessionContex
 import { Link } from "react-router-dom";
 import { convertDate } from "../../utils/convertDate";
 import { useAlert } from "../../hooks/useAlert";
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 function Comments({
   comments,
@@ -38,17 +38,17 @@ function Comments({
       contentId: contentId,
       comment: commentContent,
     };
-    if(comment.comment?.trim().length === 0){
+    if (comment.comment?.trim().length === 0) {
       alert("Nie można dodać pustego komentarza!")
     } else {
       uploadComment(comment).then((r) =>
-      loadCommentsByContentId(contentId).then((x) => {
-      setComments2(x);
-  })
-);
-setCommentContent("");
+        loadCommentsByContentId(contentId).then((x) => {
+          setComments2(x);
+        })
+      );
+      setCommentContent("");
     }
-    
+
   };
 
   return (
@@ -117,11 +117,11 @@ setCommentContent("");
                 <ListItem key={idx} alignItems="flex-start">
                   <ListItemAvatar>
                     <Link to={`/profil/${comment.authorVM?.id}`}>
-                    <Avatar
-                      alt="avatar"
-                      src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.jpg`}
-                      sx={{ mr: 2, width: 44, height: 44 }}
-                    />
+                      <Avatar
+                        alt="avatar"
+                        src={`${NGINX_URL}/${comment.authorVM?.profilePicturePath}/profile.jpg`}
+                        sx={{ mr: 2, width: 44, height: 44 }}
+                      />
                     </Link>
                   </ListItemAvatar>
                   <ListItemText
@@ -150,5 +150,5 @@ setCommentContent("");
 };
 
 export default withLoading(Comments, {
-  comments: loadCommentsByContentId, 
+  comments: loadCommentsByContentId,
 });

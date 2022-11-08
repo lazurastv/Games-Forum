@@ -58,7 +58,7 @@ function App() {
   useEffect(() => { document.title = "Forum Graczy" }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Forum-Graczy">
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <Navigation />

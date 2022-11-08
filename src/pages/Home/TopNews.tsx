@@ -7,7 +7,7 @@ import withLoading from "../../fetchData/withLoading";
 import { loadAllArticles } from "../../fetchData/fetchArticles";
 import { compareDate, convertDate } from "../../utils/convertDate";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function TopNews({ news }: { news: ArticleVM[] }) {
   const theme = useTheme();

@@ -14,7 +14,7 @@ import Comments from "../Comments";
 import { ReviewFullInfoPlusContent } from "../../../api/api/models/ReviewFullInfoPlusContent";
 import Game from "../../../components/Game";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function Review({ review }: { review: ReviewFullInfoPlusContent }) {
   return (
@@ -69,7 +69,7 @@ function Review({ review }: { review: ReviewFullInfoPlusContent }) {
 export default withLoading(Review, {
   review: async (id) => {
     let rev = await loadReview(id);
-    let content = await fetch(`https://forum-graczy.azurewebsites.net/content/${rev.path}/content.json`)
+    let content = await fetch(`${process.env.REACT_APP_CONTENT}/${rev.path}/content.json`)
       .then(res => res.json()).then(data => JSON.stringify(data));
     let articleWithContent: ReviewFullInfoPlusContent = rev;
     articleWithContent.content = content;

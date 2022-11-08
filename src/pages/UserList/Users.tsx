@@ -7,7 +7,7 @@ import withLoading from "../../fetchData/withLoading";
 import useFilterData from "../../hooks/useFilterData";
 import UserItem from "./UserItem";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_USER;
+const NGINX_URL = process.env.REACT_APP_USER;
 
 interface UsersProps {
   users: UserVM[];

@@ -13,7 +13,7 @@ import ContentLikes from "../ContentLikes";
 import { stringToHtml } from "../../../components/Editor/dataConversion";
 import { ArticleFullInfoPlusContent } from "../../../api/api/models/ArticleFullInfoPlusContent";
 
-const NGINX_URL = process.env.REACT_APP_NGINX_CONTENT;
+const NGINX_URL = process.env.REACT_APP_CONTENT;
 
 function Article({ article }: { article: ArticleFullInfoPlusContent }) {
   return (
@@ -60,7 +60,7 @@ export default withLoading(Article, {
   article: async (id) => {
     let art = await loadArticle(id);
     let content = await fetch(
-      `https://forum-graczy.azurewebsites.net/content/${art.path}/content.json`
+      `${process.env.REACT_APP_CONTENT}/${art.path}/content.json`
     )
       .then((res) => res.json())
       .then((data) => JSON.stringify(data));
