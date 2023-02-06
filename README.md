@@ -1,6 +1,8 @@
-# Forum Graczy
-Link do strony  
+# Games Forum
+## Frontend
 https://lazurastv.github.io/Forum-Graczy/
 
-## Wdrożenie w Azure App Service
+## Backend deployed on Azure
 Swagger: https://forum-graczy.azurewebsites.net/swagger-ui/index.html
+
+Note: launching the app takes a couple minutes due to the free Azure plan restrictions.
